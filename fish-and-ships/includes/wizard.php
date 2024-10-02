@@ -4,7 +4,7 @@
  *
  * @package Fish and Ships
  * @since 1.0.0
- * @version 1.5.8
+ * @version 1.6
  */
    
 defined( 'ABSPATH' ) || exit;
@@ -231,7 +231,7 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 								'param'  => $param,
 								'fns_wizard_ajax_fail' => '1'
 							);
-			$html  = '<a href="' . add_query_arg( $href_attrs ) . '" data-kind="' . esc_attr( $kind ) . '"';
+			$html  = '<a href="' . esc_url( add_query_arg( $href_attrs ) ) . '" data-kind="' . esc_attr( $kind ) . '"';
 			$html .= ' data-key="' . esc_attr( $key ) . '" data-param="' . esc_attr( $param ) . '"';
 			$html .= ' class="' . esc_attr( $class ) . '"' . ( $id == '' ? '' : ' id="' . esc_attr( $id ) . '"' ) . '>';
 			$html .= $caption . '</a>';
@@ -383,8 +383,8 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 							 array('strong'=>array())
 				) . '</p>'
 				. '<p><a href="' . esc_url('https://wordpress.org/support/plugin/fish-and-ships/reviews/?rate=5#new-post') . '" class="button-primary" target="_blank" data-kind="five-stars" data-param="later">' . esc_html__('Rate the plugin', 'fish-and-ships') . '</a> &nbsp;'
-				  . '<a href="' . add_query_arg('wc-fns-five-stars', 'later') . '" class="button" data-kind="five-stars" data-param="later">' . esc_html__('Remind later', 'fish-and-ships') . '</a> &nbsp;'
-				 . '<a href="' . add_query_arg('wc-fns-five-stars', 'off') . '" class="button" data-kind="five-stars" data-param="off">' . esc_html__('Don\'t show again', 'fish-and-ships') . '</a>'
+				  . '<a href="' . esc_url( add_query_arg('wc-fns-five-stars', 'later') ) . '" class="button" data-kind="five-stars" data-param="later">' . esc_html__('Remind later', 'fish-and-ships') . '</a> &nbsp;'
+				 . '<a href="' . esc_url( add_query_arg('wc-fns-five-stars', 'off') ) . '" class="button" data-kind="five-stars" data-param="off">' . esc_html__('Don\'t show again', 'fish-and-ships') . '</a>'
 
 				  . '</p></div>';
 		}
@@ -410,9 +410,9 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 
 					if ( isset ($notice['call_to_action']) ) $buttons .= wp_kses_post($notice['call_to_action']) . '&nbsp;';
 
-					if ( isset ($notice['later']) ) $buttons .= '<a href="' . add_query_arg(array('wc-fns-notice-dismiss' => key($wc_fns_news), 'time' => intval($notice['later']) ) ) . '" class="button" data-kind="fns-news" data-key ="' . esc_html(key($wc_fns_news)) . '" data-param="' . intval($notice['later']) . '">' . esc_html__('Remind later', 'fish-and-ships') . '</a>&nbsp;';
+					if ( isset ($notice['later']) ) $buttons .= '<a href="' . esc_url( add_query_arg(array('wc-fns-notice-dismiss' => key($wc_fns_news), 'time' => intval($notice['later']) ) ) ) . '" class="button" data-kind="fns-news" data-key ="' . esc_html(key($wc_fns_news)) . '" data-param="' . intval($notice['later']) . '">' . esc_html__('Remind later', 'fish-and-ships') . '</a>&nbsp;';
 
-					if ( isset ($notice['dismissable']) ) $buttons .= '<a href="' . add_query_arg(array('wc-fns-notice-dismiss' => key($wc_fns_news), 'time' => 'never' ) ) . '" class="button" data-kind="fns-news" data-key ="' . esc_html(key($wc_fns_news)) . '" data-param="never">' . esc_html__('Don\'t show again', 'fish-and-ships') . '</a>';
+					if ( isset ($notice['dismissable']) ) $buttons .= '<a href="' . esc_url( add_query_arg(array('wc-fns-notice-dismiss' => key($wc_fns_news), 'time' => 'never' ) ) ) . '" class="button" data-kind="fns-news" data-key ="' . esc_html(key($wc_fns_news)) . '" data-param="never">' . esc_html__('Don\'t show again', 'fish-and-ships') . '</a>';
 
 					if ($buttons != '') echo '<p>' . $buttons . '</p>';
 
@@ -434,13 +434,8 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 				. '<h3>'. esc_html__('Welcome to Fish and Ships:', 'fish-and-ships') . '</h3>'
 				. '<p class="fns-space-up big">' . esc_html__('A WooCommerce shipping method. Easy to understand and easy to use, it gives you an incredible flexibility.', 'fish-and-ships') . '</p>'
 			    . '<p><a href="' . admin_url('admin.php?page=wc-settings&tab=shipping&wc-fns-wizard=now') . '" class="button-primary">' . esc_html__('Start wizard', 'fish-and-ships') . '</a> &nbsp;'
-
 				. $this->safe_link_builder( esc_html__('Remind later', 'fish-and-ships'), 'wizard', '', 'later' ) . ' &nbsp;'
-				// . '<a href="' . add_query_arg('wc-fns-wizard', 'later') . '" class="button" data-kind="wizard" data-param="later">' . esc_html__('Remind later', 'fish-and-ships') . '</a> &nbsp;'
-				
 				. $this->safe_link_builder( esc_html__('Thanks, I know how to use it', 'fish-and-ships'), 'wizard', '', 'off' ) . '</p>'
-				// . '<a href="' . add_query_arg('wc-fns-wizard', 'off') . '" class="button" data-kind="wizard" data-param="off">' . esc_html__('Thanks, I know how to use it', 'fish-and-ships') . '</a></p>'
-				
 				. '<p class="fns-space-up"><a href="#" class="fns-show-videos">' . esc_html__('...or maybe you prefer to see one of our introductory videos before:', 'fish-and-ships') . '</a></p>'
 				. '<div class="fns-hidden-videos"><p><a href="https://www.youtube.com/watch?v=wRsoUYiHQRY&ab_channel=WpCentricsFishAndShips" target="_blank" alt="See video on YouTube" class="fns-video-link"><img src="' . WC_FNS_URL . 'assets/img/video-1.png" width="232" height="130" /><span>General overview</span></a>'
 				. '<a href="https://www.youtube.com/watch?v=sjQKbt2Nn7k&ab_channel=WpCentricsFishAndShips" target="_blank" alt="See video on YouTube" class="fns-video-link"><img src="' . WC_FNS_URL . 'assets/img/video-2.png" width="232" height="130" /><span>Short tutorial</span></a>'
@@ -484,15 +479,15 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 			if( ! isset($_POST['wc-fns-samples']) )
 			{
 				echo '<p class="fns-space-up big"><strong>A quick way to get started</strong>...is by selecting a pre-solved full case example that closely matches the configuration you need. Or you can continue the wizard:</p>'
-					. '<p><a href="#" class="button button-wc-fns-colors woocommerce-fns-case">Load a full example</a> &nbsp; <a href="' . add_query_arg('wc-fns-wizard', 'off') . '" class="button wc-fns-continue-wizard button-wc-fns-colors" data-kind="wizard" data-param="off">Continue wizard</a> &nbsp; '
-					. '<a href="' . add_query_arg('wc-fns-wizard', 'later') . '" class="button" data-kind="wizard" data-param="later">' . esc_html__('Remind later', 'fish-and-ships') . '</a> &nbsp; '
-					. '<a href="' . add_query_arg('wc-fns-wizard', 'off') . '" class="button" data-kind="wizard" data-param="off">' . esc_html__('Thanks, I know how to use it', 'fish-and-ships') . '</a></p>';
+					. '<p><a href="#" class="button button-wc-fns-colors woocommerce-fns-case">Load a full example</a> &nbsp; <a href="' . esc_url( add_query_arg('wc-fns-wizard', 'off') ) . '" class="button wc-fns-continue-wizard button-wc-fns-colors" data-kind="wizard" data-param="off">Continue wizard</a> &nbsp; '
+					. '<a href="' . esc_url( add_query_arg('wc-fns-wizard', 'later') ) . '" class="button" data-kind="wizard" data-param="later">' . esc_html__('Remind later', 'fish-and-ships') . '</a> &nbsp; '
+					. '<a href="' . esc_url( add_query_arg('wc-fns-wizard', 'off') ) . '" class="button" data-kind="wizard" data-param="off">' . esc_html__('Thanks, I know how to use it', 'fish-and-ships') . '</a></p>';
 			}
 			else 
 			{
 				echo '<p class="fns-space-up big"><strong>Your choosen examples has been added.</strong> Let\'s fine-tune it and finish the tour:</p>'
 			
-					. '<p><a href="' . add_query_arg('wc-fns-wizard', 'off') . '" class="button wc-fns-continue-wizard button-wc-fns-colors" data-kind-OFF="wizard__" data-param-OFF="off__">Continue</a></p>';
+					. '<p><a href="' . esc_url( add_query_arg('wc-fns-wizard', 'off') ) . '" class="button wc-fns-continue-wizard button-wc-fns-colors" data-kind-OFF="wizard__" data-param-OFF="off__">Continue</a></p>';
 			}
 			
 			echo '</div>';

@@ -2,7 +2,7 @@
  * Javascript for the shipping method functionality.
  *
  * @package Fish and Ships
- * @version 1.5.4
+ * @version 1.6
  */
 
 jQuery(document).ready(function($) {
@@ -2576,7 +2576,7 @@ jQuery(document).ready(function($) {
 		$('#mainform')
 			.append( $('input:checked', cont).clone() )
 			.append( '<input type="hidden" name="keep_current" value="1" />' )
-			.find('.woocommerce-save-button').trigger('click');
+			.find('.woocommerce-save-button').prop('disabled', false).trigger('click');
 			
 		return false;
 	});
@@ -2601,7 +2601,7 @@ jQuery(document).ready(function($) {
 			.append( $('select', cont).clone() )
 			.append( '<input type="hidden" name="wc-fns-samples[]" value="'+key+'" />' )
 			.append( '<input type="hidden" name="keep_current" value="0" />' )
-			.find('.woocommerce-save-button').trigger('click');
+			.find('.woocommerce-save-button').prop('disabled', false).trigger('click');
 			
 		return false;
 	});
