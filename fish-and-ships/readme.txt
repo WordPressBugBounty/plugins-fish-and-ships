@@ -3,10 +3,10 @@ Contributors: wpcentrics
 Donate link: https://www.wp-centrics.com/
 Tags: shipping table rate, shipping rate, conditional shipping, table rate shipping
 Requires at least: 4.7
-Tested up to: 6.6
+Tested up to: 6.7
 WC requires at least: 3.0
-WC tested up to: 9.3
-Stable tag: 1.6
+WC tested up to: 9.4
+Stable tag: 1.6.1
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -295,6 +295,12 @@ Fish and Ships has widely tested with older and latest; our philosophy is to cov
 15. Apply coupons automatically (Pro)
 
 == Changelog ==
+
+= 1.6.1 - 18/11/2024 =
+* Checked for WC 9.4
+* Checked for WP 6.7
+* Fixed CSS bug in some installations that affect the help/settings popups in the shipping method configuration screens
+* Fixed bug in notices system
 
 = 1.6 - 30/09/2024 =
 * XSS vulnerability fixed

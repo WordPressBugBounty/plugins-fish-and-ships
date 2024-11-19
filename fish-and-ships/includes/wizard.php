@@ -4,7 +4,7 @@
  *
  * @package Fish and Ships
  * @since 1.0.0
- * @version 1.6
+ * @version 1.6.1
  */
    
 defined( 'ABSPATH' ) || exit;
@@ -105,7 +105,7 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 			} else {
 
 				// Then maybe should show some fish and ships news?
-				// add_action('admin_notices', array( $this, 'woocommerce_fns_news' ) );
+				add_action('admin_notices', array( $this, 'woocommerce_fns_news' ) );
 			}
 			
 		}
@@ -117,7 +117,9 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 		 * @since 1.5.8
 		 */
 		function load_all_messages() {
-
+			
+			global $Fish_n_Ships;
+			
 			$wizard_on_method = false;
 
 			if ( $this->options['show_wizard'] < time() && isset($_GET['instance_id']) &&
@@ -128,8 +130,9 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 				 $wizard_on_method = true;
 			}
 
-			// Load remote news & pointers (loading scheduled, loaded so time ago) in first place
-			$this->news_and_pointers = get_option( 'fish-and-ships-woocommerce-news', array() );
+			// Load remote news & pointers (loading scheduled, loaded so time ago in Pro only) in first place
+			if( $Fish_n_Ships->im_pro() )
+				$this->news_and_pointers = get_option( 'fish-and-ships-woocommerce-news', array() );
 
 			// Load local news & pointers, then merge it with remote
 			require WC_FNS_PATH . 'includes/local-news-n-pointers.php';
@@ -173,7 +176,9 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 				if( ! isset( $data['type'] ) || $data['type'] != 'pointer' )
 					continue;
 				
-				// 
+				if( ! isset( $data['content'] ) || trim($data['content']) == '' )
+					continue;
+
 				if( 
 					( ! isset( $data['where'] ) || in_array( $page, (array) $data['where'], TRUE ) ) &&
 					( ! isset( $data['where_not'] ) || ! in_array( $page, (array) $data['where_not'], TRUE ) )
@@ -389,35 +394,37 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 				  . '</p></div>';
 		}
 
+		/**
+		 * Show the admin notices (if there is any to show)
+		 *
+		 * @version 1.6.1
+		 */
 		function woocommerce_fns_news() {
 
 			global $Fish_n_Ships;
 
-			if ( is_array($wc_fns_news) ) {
-				foreach ($this->options['closed_news'] as $key => $value ) {
-					if ( $value > time() && isset($wc_fns_news[$key]) ) unset ( $wc_fns_news[$key] );
-				}
+			foreach( $this->news_and_pointers as $key=>$data ) 
+			{
+				if( ! isset( $data['type'] ) || ( $data['type'] != 'notice-success' && $data['type'] != 'notice' && $data['type'] != 'error' ) )
+					continue;
 
-				if (count($wc_fns_news) > 0 ) {
+				if( ! isset( $data['message'] ) || trim($data['message']) == '' )
+					continue;
 
-					$notice = reset($wc_fns_news);
+				echo '<div class="wc-fns-news notice ' . esc_attr($data['type']) . '">'
+					. wp_kses_post($data['message']);
 
-					echo '<div class="wc-fns-news notice ' . esc_attr($notice['type']) . '">'
-						//. '<a class="notice-dismiss" href="#">' . esc_html__('Dismiss') . '</a>'
-						. wp_kses_post($notice['message']);
+				$buttons = '';
 
-					$buttons = '';
+				if ( isset ($data['call_to_action']) ) $buttons .= wp_kses_post($data['call_to_action']) . '&nbsp;';
 
-					if ( isset ($notice['call_to_action']) ) $buttons .= wp_kses_post($notice['call_to_action']) . '&nbsp;';
+				if ( isset ($data['later']) ) $buttons .= '<a href="' . esc_url( add_query_arg(array('wc-fns-notice-dismiss' => $key, 'time' => intval($data['later']) ) ) ) . '" class="button" data-kind="fns-news" data-key ="' . esc_html($key) . '" data-param="' . intval($data['later']) . '">' . esc_html__('Remind later', 'fish-and-ships') . '</a>&nbsp;';
 
-					if ( isset ($notice['later']) ) $buttons .= '<a href="' . esc_url( add_query_arg(array('wc-fns-notice-dismiss' => key($wc_fns_news), 'time' => intval($notice['later']) ) ) ) . '" class="button" data-kind="fns-news" data-key ="' . esc_html(key($wc_fns_news)) . '" data-param="' . intval($notice['later']) . '">' . esc_html__('Remind later', 'fish-and-ships') . '</a>&nbsp;';
+				if ( isset ($data['dismissable']) ) $buttons .= '<a href="' . esc_url( add_query_arg(array('wc-fns-notice-dismiss' => $key, 'time' => 'never' ) ) ) . '" class="button" data-kind="fns-news" data-key ="' . esc_html($key) . '" data-param="never">' . esc_html__('Don\'t show again', 'fish-and-ships') . '</a>';
 
-					if ( isset ($notice['dismissable']) ) $buttons .= '<a href="' . esc_url( add_query_arg(array('wc-fns-notice-dismiss' => key($wc_fns_news), 'time' => 'never' ) ) ) . '" class="button" data-kind="fns-news" data-key ="' . esc_html(key($wc_fns_news)) . '" data-param="never">' . esc_html__('Don\'t show again', 'fish-and-ships') . '</a>';
+				if ($buttons != '') echo '<p>' . $buttons . '</p>';
 
-					if ($buttons != '') echo '<p>' . $buttons . '</p>';
-
-					echo '</div>';
-				}
+				echo '</div>';
 			}
 		}
 
