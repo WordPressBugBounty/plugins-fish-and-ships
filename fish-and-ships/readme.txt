@@ -1,7 +1,7 @@
-﻿=== Fish and Ships - Most flexible table rate shipping for WooCommerce ===
+﻿=== Fish and Ships - Table Rate Shipping Method - Advanced Shipping Rates - Flexible shipping ===
 Contributors: wpcentrics
 Donate link: https://www.wp-centrics.com/
-Tags: table rate shipping, shipping rates, conditional shipping
+Tags: shipping rates, table rate shipping, shipping method, shipping
 Requires at least: 4.7
 Tested up to: 6.7
 WC requires at least: 3.0
@@ -11,7 +11,7 @@ Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Best table rate shipping method for WooCommerce: easy and flexible table rate. Set shipping rates by price, volume, category... whatever.
+The best WooCommerce shipping method. Powerful table rate shipping plugin in the simplest way. Advanced shipping rates to meet your business needs. 
 
 == Description ==
 
@@ -56,7 +56,7 @@ Fish and Ships is a **WooCommerce table rate shipping** based method that helps 
 
 You can set multiple conditional rules on the table rate: based on price, weight, product quantity on cart, dimensions, volume, shipping class, product tag, and product category.
 
-While there are other table rate-based shipping rate calculation plugins, only Fish and Ships allows you to add multiple criteria selections to every rule:
+While there are other table rate shipping calculation plugins, only Fish and Ships allows you to add multiple criteria selections to every rule:
 
 *(condition #1 AND condition #2 AND condition #3)*, or (condition #1 OR condition #2 OR condition #3)... as you needed, on every rule!
 
@@ -82,12 +82,12 @@ While there are other table rate-based shipping rate calculation plugins, only F
 * User role: customer, subscriber, etc. [PRO]
 * Date selectors: Weekday, Day of month, Month, Year, Full date, Day of year and Time. [PRO]
 
-...Everything can be combined with AND / OR logical operator, on every rule. [OR only on PRO]
+...Everything can be combined with AND / OR logical operator, on every rule in the table rate. [OR only on PRO]
 
 
 = Group by =
 
-You can establish a grouping of items in the basket before analysing the conditions by following one of these strategies:
+You can establish a grouping of items in the basket before analysing the table rate conditions by following one of these strategies:
 
 * None (every item will be analyzed alone)
 * Per ID / SKU (same item will be grouped)
@@ -132,11 +132,11 @@ Add custom messages, rename the woocommerce shipping method or add extra info on
 * Cart total messages (when there isn't shipping options available) [PRO]
 * NEW: Order notes [PRO]
 
-...all combinable on every rule.
+...all combinable on every table rate rule.
 
 = Other shipping method options =
 
-Apart of the table rules, you'll find this options on the method:
+Apart of the table rate rules, you'll find this options on the method:
 
 * Method title
 * Tax status (apply tax or not over the calculated shipping rate)
@@ -177,11 +177,13 @@ Apart of the table rules, you'll find this options on the method:
 
 * Import / export settings added: duplicate the shipping method settings or move between stage/production site in one breath [NEW]
 
-*A built-in log system to help you to learn, understand or debug any complex shipping method configuration
+*A built-in log system to help you to learn, understand or debug any complex table rate configuration
+
+Here you can get Fish and Ships Pro, the [ *Best WooCommerce Shipping Plugin* ](https://www.wp-centrics.com/)
 
 [Here you can read the help files &rarr;](https://www.wp-centrics.com/help/fish-and-ships/)
 
-[Here you can compare the *Free vs Pro features* &rarr;](https://www.wp-centrics.com/woocommerce-fish-and-ships-free-vs-pro/)
+
 
 
 = Languages =
@@ -267,8 +269,8 @@ Sure. Any combination of rules can be achieved: nested weight, volume, dimension
 Fish and Ships has widely tested with older and latest; our philosophy is to cover the maximum releases (when are viable) and obviously cover all future releases.
 
 * PHP: from 7.0 to current release (tested up to 8.3).
-* WordPress: from 4.7, all posterior releases (tested up to 6.4).
-* WooCommerce: from 3.0, all posterior releases (tested up to 8.6).
+* WordPress: from 4.7, all posterior releases (tested up to 6.7).
+* WooCommerce: from 3.0, all posterior releases (tested up to 9.4).
 * WPML: Tested the contemporary releases with the WooCommerce / WP releases.
 
 = Fish and Ships Free vs Pro? =
