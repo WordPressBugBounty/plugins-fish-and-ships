@@ -3,7 +3,7 @@
  * Plugin Name: Fish and Ships
  * Plugin URI: https://www.wp-centrics.com/
  * Description: A WooCommerce conditional table rate shipping method. Easy to understand and easy to use, it gives you an incredible flexibility.
- * Version: 1.6.2
+ * Version: 1.6.3
  * Author: wpcentrics
  * Author URI: https://www.wp-centrics.com
  * Text Domain: fish-and-ships
@@ -11,8 +11,9 @@
  * Requires at least: 4.7
  * Tested up to: 6.7
  * WC requires at least: 3.0
- * WC tested up to: 9.4
+ * WC tested up to: 9.5
  * Requires PHP: 7.0
+ * Requires Plugins: woocommerce 
  * License: GPLv2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
@@ -41,7 +42,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 
 } else {
 
-	define ('WC_FNS_VERSION', '1.6.2' );
+	define ('WC_FNS_VERSION', '1.6.3' );
 	define ('WC_FNS_PATH', dirname(__FILE__) . '/' );
 	define ('WC_FNS_URL', plugin_dir_url( __FILE__ ) );
 
@@ -2315,7 +2316,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		 * Get text field (can be used for asking Labels), with or without currency especific for duplication
 		 * With the unit
 		 *
-		 * @since x.x.x
+		 * @since 1.6.2
 		 *
 		 * @param $field_name (string) the field name
 		 * @param $rule_nr (integer) rule ordinal (starting 0)
@@ -2354,7 +2355,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		 * Get textarea field
 		 *
 		 * @since 1.4.13
-		 * @version 1.6.2
+		 * @version 1.6.3
 		 *
 		 * @param $field_name (string) the field name
 		 * @param $rule_nr (integer) rule ordinal (starting 0)
@@ -2368,15 +2369,13 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		 * @return $html (HTML code) form code for the fields min / max
 		 *
 		 */
-		function get_textarea_field( $field_name, $rule_nr, $sel_nr, $method_id, $values, $ambit_field, $tips, $placeholder='')
+		function get_textarea_field( $field_name, $rule_nr, $sel_nr, $method_id, $value, $ambit_field, $tips, $placeholder='')
 		{
-			$value = '';
-			if ( isset($values[$field_name]) ) $value = $values[$field_name];
 
 			$html = '<textarea name="shipping_rules[' . $rule_nr . ']['.$ambit_field.']['.$method_id.']['.$field_name.']['.$sel_nr.']" 
 						data-wc-fns-tip="i18n_'.$field_name.'_' . $tips . '"' . ' class="wc_fns_input_tip" placeholder="' . esc_attr($placeholder) . '" autocomplete="off">';
 			
-			$html .= esc_html($value) . '</textarea>';
+			$html .= esc_textarea($value) . '</textarea>';
 				
 			return $html;
 		}

@@ -3,7 +3,7 @@
  * Add on for Plugin Republic's WooCommerce Product Add-Ons Ultimate (PR_PAU)
  *
  * @package Fish and Ships
- * @since x.x.x
+ * @since 1.6.2
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -17,7 +17,7 @@ if ( !class_exists( 'Fish_n_Ships_PR_PAU' ) ) {
 		/**
 		 * Constructor.
 		 *
-		 * @since x.x.x
+		 * @since 1.6.2
 		 */
 		public function __construct() {
 			
@@ -46,7 +46,7 @@ if ( !class_exists( 'Fish_n_Ships_PR_PAU' ) ) {
 		/**
 		 * Pointers to announce support
 		 *
-		 * @since x.x.x
+		 * @since 1.6.2
 		 *
 		 */
 		public function add_message( $news_and_pointers, $wizard_on_method )
@@ -73,7 +73,7 @@ if ( !class_exists( 'Fish_n_Ships_PR_PAU' ) ) {
 		/**
 		 * Filter to get all selection methods
 		 *
-		 * @since x.x.x
+		 * @since 1.6.2
 		 *
 		 * @param $methods (array) maybe incomming  a pair method-id / method-name array
 		 *
@@ -102,7 +102,7 @@ if ( !class_exists( 'Fish_n_Ships_PR_PAU' ) ) {
 		/**
 		 * Filter to get the HTML selection fields for one method
 		 *
-		 * @since x.x.x
+		 * @since 1.6.2
 		 *
 		 * @param $html (HTML) maybe incomming html
 		 * @param $rule_nr (integer) the rule number
@@ -188,7 +188,7 @@ if ( !class_exists( 'Fish_n_Ships_PR_PAU' ) ) {
 		/**
 		 * Filter to set the groupable methods
 		 *
-		 * @since x.x.x
+		 * @since 1.6.2
 		 *
 		 * @param $groupable_methods (array) methods keys
 		 */
@@ -204,7 +204,7 @@ if ( !class_exists( 'Fish_n_Ships_PR_PAU' ) ) {
 		/**
 		 * Filter to sanitize one selection criterion and his auxiliary fields prior to save in the database
 		 *
-		 * @since x.x.x
+		 * @since 1.6.2
 		 */
 		function wc_fns_sanitize_selection_fields_fn($rule_sel) {
 						
@@ -297,7 +297,7 @@ if ( !class_exists( 'Fish_n_Ships_PR_PAU' ) ) {
 		/**
 		 * Filter to check matching elements for selection method
 		 *
-		 * @since x.x.x
+		 * @since 1.6.2
 		 *
 		 * @param $rule_groups (array) all the groups of current rule
 		 * @param $selector (array) the selector criterion
@@ -540,7 +540,7 @@ if ( !class_exists( 'Fish_n_Ships_PR_PAU' ) ) {
 		 *
 		 * Here we use the new 5th parameter, used for getting the PR_PAU field ID to looking for.
 		 *
-		 * @since x.x.x
+		 * @since 1.6.2
 		 */
 		function wc_fns_group_external_calculate_fn ( $external, $what, $product, $qty, $selector ) {
 
@@ -705,7 +705,7 @@ if ( !class_exists( 'Fish_n_Ships_PR_PAU' ) ) {
 		/**
 		 * Check if no product in group has the lookin field
 		 *
-		 * @since x.x.x
+		 * @since 1.6.2
 		 *
 		 * @param $group (class object) the group of products to lookin into
 		 * @param $target (string) field_id | label
@@ -754,7 +754,7 @@ if ( !class_exists( 'Fish_n_Ships_PR_PAU' ) ) {
 		/**
 		 * AJAX info based on user input fields
 		 *
-		 * @since x.x.x
+		 * @since 1.6.2
 		 */
 		function wc_fns_get_messages_method_fn( $message, $type, $method_id, $raw_params )
 		{
@@ -910,7 +910,7 @@ if ( !class_exists( 'Fish_n_Ships_PR_PAU' ) ) {
 		/**
 		 * set the variables for math calculation
 		 *
-		 * @since x.x.x
+		 * @since 1.6.2
 		 */
 		function wc_fns_get_vars_for_math_fn ( $vars, $group_by, $group, $shipping_class ) {
 			

@@ -5,9 +5,10 @@ Tags: shipping rates, table rate shipping, shipping method, shipping
 Requires at least: 4.7
 Tested up to: 6.7
 WC requires at least: 3.0
-WC tested up to: 9.4
-Stable tag: 1.6.2
+WC tested up to: 9.5
+Stable tag: 1.6.3
 Requires PHP: 7.0
+Requires Plugins: woocommerce 
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -297,6 +298,10 @@ Fish and Ships has widely tested with older and latest; our philosophy is to cov
 15. Apply coupons automatically (Pro)
 
 == Changelog ==
+
+= 1.6.3 - 17/01/2024 =
+* Checked for WC 9.5
+* Requires WooCommerce declaration added
 
 = 1.6.2 - 11/12/2024 =
 * Compatible with Plugin Republic's WooCommerce Product Add-Ons Ultimate (PR_PAU)
