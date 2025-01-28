@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Group the products by - Fish and Ships for WooCommerce</title>
+<title>Group the products by - Advanced Shipping Rates for WooCommerce</title>
 <link rel="stylesheet" href="../assets/css/help-alone.css?v=1.0.2" media="all" />
 <link rel="stylesheet" href="../assets/css/dashicons.css" media="all" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2.0" />
@@ -20,7 +20,7 @@
 					<strong><a href="group_by.html" data-fns-tip="group_by">Group-by</a></strong>
 					<a href="special_actions.html" data-fns-tip="special_actions">Special Actions</a>
 					<a href="other_fields.html" data-fns-tip="other_fields">Other fields & logs</a>
-					<a href="pro.html" data-fns-tip="pro">Free vs Pro</a>
+					<a href="pro.html" data-fns-tip="pro">Free vs PRO</a>
 					<a href="help.html" data-fns-tip="help">Help and Support</a>
 				</nav>
 			</div>
@@ -437,27 +437,35 @@
 	<tbody>
 	<tr>
 		<td style="width:50%;">
+			<p><strong>Product data:</strong></p>
 			<ul>
 			<li>Price</li>
 			<li>Weight</li>
 			<li>Volume</li>
+			<li>Volumetric&nbsp;<span class="fns-pro-icon darker">PRO</span></li>
+			<li>Volumetric set&nbsp;<span class="fns-pro-icon darker">PRO</span></li>
+			</ul>
+			<p><strong>Advanced:</strong></p>
+			<ul>
 			<li>Cart items</li>
-			<li>Volumetric calculation <span class="pro">[PRO]</span></li>
+			<li>Number of groups</li>
 			</ul>
 		</td>
 		<td class="left_border">
+			<p><strong>Product data:</strong></p>
 			<ul>
-			<li>Min dimension</li>
-			<li>Mid dimension</li>
-			<li>Max dimension</li>
-			<li>Length+Width+Height <span class="pro">[PRO]</span></li>
+			<li>Min / Mid / Max dimension</li>
+			<li>Length+Width+Height&nbsp;<span class="fns-pro-icon darker">PRO</span></li>
+			<li>Length+Girth (L + 2W + 2H)&nbsp;<span class="fns-pro-icon darker">PRO</span></li>
 			</ul>
-			
+			<p><strong>All product kind selectors</strong></p>
+			<p><strong>Advanced:</strong></p>
 			<ul>
-			<li>In shipping class / NOT In shipping class</li>
-			<li>In category / NOT In category <span class="pro">[PRO]</span></li>
-			<li>Tagged as / NOT Tagged as <span class="pro">[PRO]</span></li>
+			<li>Cart total</li>
+			<li>User Roles</li>
 			</ul>
+			<p><strong>All data&amp;time selectors</strong></p>
+			<p><strong>All shipping address selectors</strong></p>
 		</td>
 	</tr>
 	</tbody>
@@ -465,7 +473,7 @@
 
 <p>Why can't they be grouped? Well, relative to size, it would not make sense to sum the dimensions of the products. And about taxonomies, different products may belong to different taxonomies, so they cannot be considered together. <strong>In any case, it will be taken product per product</strong>.</p>
 
-<h2>Different grouping criteria on each condition <span class="pro">[PRO]</span></h2>
+<h2>Different grouping criteria on each condition&nbsp;<span class="fns-pro-icon darker">PRO</span></h2>
 <p>In the PRO version, a <strong>different grouping for each condition</strong> can be set.</p>
 <p>Let's say we want to set a flat shipping cost of <strong>$10</strong> if the cart has more than 4 products, discarding those weighing more than a pound:</p>
 <p>You must first uncheck the option to group globally:</p>
@@ -480,6 +488,6 @@
 			</div><!-- /wc_fns_col_content -->
 		</div>
 	</div>
-	<p class="signature"><a href="https://www.wp-centrics.com/" target="_blank">wp-centrics Fish and Ships</a></p>
+	<p class="signature"><a href="https://www.wp-centrics.com/" target="_blank">Wp-Centrics | Advanced Shipping Rates for WooCommerce</a></p>
 </body>
 </html>

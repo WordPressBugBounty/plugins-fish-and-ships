@@ -635,8 +635,8 @@ nav.lang_switch {
     cursor: pointer;
 }
 .wc_fns_col_content .fns_do_actions .button-rounded:hover {
-    background: #e5e5e5;
-    color: #666666;
+    background: #a36597;
+    color: #fff !important;
 }
 .wc_fns_col_content .fns_do_actions .button-rounded.alt,
 .wc_fns_col_content .fns_do_actions .button-rounded.here,
@@ -646,7 +646,7 @@ nav.lang_switch {
     color: #fff !important;
 }
 .wc_fns_col_content .fns_do_actions .button-rounded.alt:hover {
-    background: #a36597;
+    background: #000;
     cursor: pointer;
 }
 .wc_fns_col_content .widefat.free_pro th, 
@@ -680,6 +680,19 @@ nav.lang_switch {
 	margin:2em 0;
 	max-width:1082px;
 }
+	.wc_fns_col_content table.methods thead th {
+		background: #a36597;
+		color: #fff;
+		border-color: #a36597;
+	}
+	.wc_fns_col_content table.methods thead th p.subtitle {
+		font-weight:600;
+		margin: 0;
+		font-size: 1.1em;
+		padding: 0;
+		color: #fff;
+	}
+
 	.wc_fns_col_content table.methods td,
 	.wc_fns_col_content table.methods th {
 		vertical-align:top;
@@ -687,6 +700,7 @@ nav.lang_switch {
 		border:1px solid #ccd0d4;
 		font-size:15px;
 	}
+
 	.wc_fns_col_content table.methods th {
 		width:170px;
 	}
@@ -978,6 +992,7 @@ table.free_pro .dashicons.purple {
 		.fns-charge-col {
 			order: 3;
 		}
+		p.fns-dim-col,
 		p.fns-grouping-range-col {
 			order: 4;
 			width: 100%;
@@ -985,6 +1000,11 @@ table.free_pro .dashicons.purple {
 			label {
 				width: 50%;
 			}
+		}
+		p.fns-dim-col {
+			order: 5;
+			display: block;
+			background: #fff;
 		}
 		label {
 			width: calc(~"100% - 140px");

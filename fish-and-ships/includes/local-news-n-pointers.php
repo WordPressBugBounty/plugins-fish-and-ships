@@ -2,7 +2,7 @@
 /**
  * Local news & pointers, loaded from wizard.php
  *
- * @package Fish and Ships
+ * @package Advanced Shipping Rates for WC
  * @version 1.5.8
  */
 

@@ -1,7 +1,7 @@
 /**
  * Front-end JS for cart 
  *
- * @package Fish and Ships Pro
+ * @package Advanced Shipping Rates for WC Pro
  * @since 1.1.12
  * @version 1.2.5
  */

@@ -2,7 +2,7 @@
  * Lightweight JS without UI dependencies for wizard, rate, fns-news & messages. 
  * It will be loaded in the whole admin side, and is appart for performance reasons
  *
- * @package Fish and Ships
+ * @package Advanced Shipping Rates for WC
  * @version 1.5
  */
 

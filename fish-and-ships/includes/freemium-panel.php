@@ -2,8 +2,8 @@
 /**
  * The freemium panels: Free and Pro panels. (Save serial for Pro, check license, etc)
  *
- * @package Fish and Ships
- * @version 1.1.9
+ * @package Advanced Shipping Rates for WC
+ * @version 2.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -19,7 +19,7 @@ if ($Fish_n_Ships->im_pro()) {
 	</table>
 	<div class="fns-clearfix">
 	<div id="wc-fns-freemium-panel" class="free-version ' . ($options['close_freemium'] < time() ? 'opened' : 'closed') . '">
-		<h2>Fish and Ships (free)</h2>
+		<h2>Advanced Shipping Rates for WC (free)</h2>
 		<a href="#" class="close_panel"><span class="dashicons dashicons-dismiss"></span></a>
 		<a href="#" class="open_panel"><span class="dashicons dashicons-plus-alt"></span></a>
 		<div class="wrap_content">';
@@ -35,7 +35,7 @@ if ($Fish_n_Ships->im_pro()) {
 		
 		$html .= '</div>
 		</div>
-		<p class="center go_button"><a href="https://www.wp-centrics.com" class="button-primary" target="_blank">WC Fish and Ships Pro</a></p>
+		<p class="center go_button"><a href="https://www.wp-centrics.com" class="button-primary" target="_blank">Advanced Shipping Rates for WC Pro</a></p>
 	</div>
 	<div id="wc-fns-table_envelope">
 	<table class="form-table">';

@@ -8,9 +8,9 @@
  * Logs will be deleted after 7 days, but you can change this defining this constant into your wp-config.php:
  * define('WC_FNS_DAYS_LOG', 15); // for 15 days
  *
- * @package Fish and Ships
+ * @package Advanced Shipping Rates for WC
  * @since 1.0.0
- * @version 1.6
+ * @version 2.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -87,7 +87,7 @@ if ($deleted !=0) echo '<div id="message" class="updated notice inline"><p>' . e
 
 // too much messages? tell about in the logs pane
 if ( count($logs_index) >= 1000 ) {
-	$html .= '<div class="notice notice-warning inline"><p><strong>Logs are limited to 1000 for performance reasons.</strong><br> Please, check if some Fish and Ships method are logging calculations for all users (not only Admins / Shop managers).</p></div>';
+	$html .= '<div class="notice notice-warning inline"><p><strong>Logs are limited to 1000 for performance reasons.</strong><br> Please, check if some Advanced Shipping Rates for WooCommerce method are logging calculations for all users (not only Admins / Shop managers).</p></div>';
 }
 
 // Save updated index

@@ -2,8 +2,8 @@
 /**
  * The WC-way form for the shipping method options.
  *
- * @package Fish and Ships
- * @version 1.6.2
+ * @package Advanced Shipping Rates for WC
+ * @version 2.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -39,7 +39,7 @@ $settings = array(
 		'title'         => __( 'Method title', 'woocommerce' ),
 		'type'          => 'text',
 		'description'   => __( 'This controls the title which the user sees during checkout.', 'woocommerce' ) . ' ' . __('Click to open detailed help about all input fields.', 'fish-and-ships' ),
-		'default'       => 'Fish and Ships',
+		'default'       => 'Advanced Shipping Rates for WooCommerce',
 		'desc_tip'      => true,
 	),
 	

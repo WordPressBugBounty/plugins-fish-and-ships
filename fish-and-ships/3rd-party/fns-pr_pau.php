@@ -2,7 +2,7 @@
 /**
  * Add on for Plugin Republic's WooCommerce Product Add-Ons Ultimate (PR_PAU)
  *
- * @package Fish and Ships
+ * @package Advanced Shipping Rates for WC
  * @since 1.6.2
  */
 

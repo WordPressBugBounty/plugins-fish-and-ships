@@ -2,8 +2,8 @@
 /**
  * The Pluggable table rules stuff 
  *
- * @package Fish and Ships
- * @version 1.5.9
+ * @package Advanced Shipping Rates for WC
+ * @version 2.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -53,6 +53,9 @@ function wc_fns_get_selection_methods_fn($methods = array()) {
 	
 	$methods['in-class']           = array('onlypro' => false, 'group' => 'Product kind', 'scope' => $scope_all,   'label' => _x('In shipping class', 'shorted, select-by conditional', 'fish-and-ships'));
 	$methods['not-in-class']       = array('onlypro' => false, 'group' => 'Product kind', 'scope' => $scope_all,   'label' => _x('NOT In shipping class', 'shorted, select-by conditional', 'fish-and-ships'));
+
+	$methods['any-this-prod']      = array('onlypro' => true,  'group' => 'Advanced',     'scope' => $scope_all,   'label' => _x('Any of this products', 'shorted, select-by conditional', 'fish-and-ships'));
+	$methods['none-this-prod']     = array('onlypro' => true,  'group' => 'Advanced',     'scope' => $scope_all,   'label' => _x('None of this products', 'shorted, select-by conditional', 'fish-and-ships'));
 
 	$methods['quantity']           = array('onlypro' => false, 'group' => 'Advanced', 'scope' => $scope_all,   'label' => _x('Cart items', 'shorted, select-by conditional', 'fish-and-ships'));
 	$methods['cart-total']         = array('onlypro' => true,  'group' => 'Advanced',     'scope' => $scope_all,   'label' => _x('Cart total (excl. tax)', 'shorted, select-by conditional', 'fish-and-ships'));
@@ -553,7 +556,7 @@ function wc_fns_get_cost_methods_fn($cost_methods = array()) {
 	$cost_methods['group']      = array('onlypro' => false, 'label' => '* [group]');
 	$cost_methods['percent']    = array('onlypro' => false, 'label' => '%');
 	$cost_methods['composite']  = array('onlypro' => false, 'label' => _x('composite', 'VERY shorted, composite price application', 'fish-and-ships'));
-	$cost_methods['ranges']     = array('onlypro' => true,  'label' => _x('Ranges', 'VERY shorted, ranges price application', 'fish-and-ships') );
+	$cost_methods['ranges']     = array('onlypro' => true,  'label' => _x('Ranges', 'VERY shorted, ranges price application', 'fish-and-ships') . ( $Fish_n_Ships->im_pro() ? '' : ' [PRO]') );
 	
 	return $cost_methods;
 }

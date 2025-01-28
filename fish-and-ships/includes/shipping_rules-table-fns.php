@@ -2,9 +2,9 @@
 /**
  * The Shipping rules table. 
  *
- * @package Fish and Ships
+ * @package Advanced Shipping Rates for WC
  * @since 1.0.0
- * @version 1.5.3
+ * @version 2.0
  */
  
 defined( 'ABSPATH' ) || exit;
@@ -302,7 +302,7 @@ if (count($errors) > 0) {
 		$error = str_replace('Warning:', '<span class="wc-fns-error-text">Warning:</span>', $error);
 		$err_message .= '<p>&#8226; ' . $error . '</p>';
 	}
-	$err_message .= '<p><a href="https://wordpress.org/support/plugin/fish-and-ships/" class="button" target="_blank">' . esc_html__('Get support on WordPress repository', 'fish-and-ships') . '</a> &nbsp; <a href="https://www.wp-centrics.com/contact-support/" class="button" target="_blank">' . esc_html__('Get support about Fish and Ships Pro', 'fish-and-ships') . '</a></p></div>';
+	$err_message .= '<p><a href="https://wordpress.org/support/plugin/fish-and-ships/" class="button" target="_blank">' . esc_html__('Get support on WordPress repository', 'fish-and-ships') . '</a> &nbsp; <a href="https://www.wp-centrics.com/contact-support/" class="button" target="_blank">' . esc_html__('Contact us', 'fish-and-ships') . '</a></p></div>';
 	
 	$html = $err_message . $html;
 }
@@ -316,7 +316,7 @@ $html .= '<div class="fns-range-wizard-wrapper"><div class="fns-range-wizard">';
 if( ! $Fish_n_Ships->im_pro() )
 {
 	$html .= '<div class="fns-notice-pro">
-		<p><strong>This feature is part of Fish and Ships Pro.</strong> This is just a demo; no charges will apply.</p>
+		<p><strong>This feature is part of Advanced Shipping Rates for WooCommerce PRO.</strong> This is just a demo: no charges will apply.</p>
 		</div>';
 }
 

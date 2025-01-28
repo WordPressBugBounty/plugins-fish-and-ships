@@ -1,14 +1,14 @@
 /*!
  * Javascript for the shipping method functionality.
  *
- * @package Fish and Ships
- * @version 1.6.2
+ * @package Advanced Shipping Rates for WC
+ * @version 2.0
  */
 
 jQuery(document).ready(function($) {
 	
-	var help_langs = ['en', 'en-si', 'es', 'pt', 'it', 'ca', 'fi'];
-	var help_langs_name = ['English (IU)', 'English (SI)', 'Español', 'Português', 'Italiano', 'Català', 'Suomi'];
+	var help_langs = ['en', 'en-si', 'es', 'fr', 'de', 'pt', 'it', 'ca', 'fi'];
+	var help_langs_name = ['English (IU)', 'English (SI)', 'Español', 'Français', 'Deutsch', 'Português', 'Italiano', 'Català', 'Suomi'];
 
 	/*******************************************************
 	    1. Global functions
@@ -2144,6 +2144,8 @@ jQuery(document).ready(function($) {
 	
 	/* main help */
 	function show_help($what, $concatenated, $lang) {
+		
+		$lang = $lang.split("_")[0]; // Let's cut the second part if there are
 
 		if (!$concatenated) {
 			
@@ -2174,6 +2176,9 @@ jQuery(document).ready(function($) {
 				
 				$('body').append('<div id="fns_help"><div class="popup_scroll_control">' + parsed.find("#content").html() + '</div></div>');
 				
+				console.log(help_langs);
+				console.log($lang);
+
 				n_lang = 0;
 				for (x=0; x<help_langs.length; x++) {
 					if (help_langs[x]==$lang) n_lang = x;
@@ -2641,7 +2646,7 @@ jQuery(document).ready(function($) {
 		{
 			show_groupby_requeriments();
 			var message = "Sorry. The selected snippets needs distinct group-by strategies.";
-			message += "\n\nDistinct group-by strategies in the same shipping method is only available in Fish and Ships Pro";
+			message += "\n\nDistinct group-by strategies in the same shipping method is only available in Advanced Shipping Rates for WooCommerce PRO";
 			if( alert_errors ) alert(message);
 			// $(this).prop('checked', false);
 			its_ok = false;
@@ -2674,7 +2679,7 @@ jQuery(document).ready(function($) {
 				message += "\n\nYour snippet selection needs a group-by strategy change in the shipping method settings.";
 				message += "\n\nTo address this, please, close the samples popup and locate the 'Global group-by' option in the top area of the settings page. Please, check if your rules will continue working with this change before do it.";
 				
-				message += "\n\nDistinct group-by strategies in the same shipping method is only available in Fish and Ships Pro";
+				message += "\n\nDistinct group-by strategies in the same shipping method is only available in Advanced Shipping Rates for WooCommerce PRO";
 				if( alert_errors ) alert(message);
 				//$(this).prop('checked', false);
 				its_ok = false;

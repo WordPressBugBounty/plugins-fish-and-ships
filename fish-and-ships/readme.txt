@@ -1,22 +1,24 @@
-﻿=== Fish and Ships - Table Rate Shipping Method - Advanced Shipping Rates - Flexible shipping ===
+﻿=== Wp-Centrics Advanced Shipping Rates for WooCommerce - Previously "Fish and Ships" ===
 Contributors: wpcentrics
 Donate link: https://www.wp-centrics.com/
-Tags: shipping rates, table rate shipping, shipping method, shipping
+Tags: shipping rates, table rate shipping, shipping method, table rate
 Requires at least: 4.7
 Tested up to: 6.7
 WC requires at least: 3.0
-WC tested up to: 9.5
-Stable tag: 1.6.3
+WC tested up to: 9.6
+Stable tag: 2.0
 Requires PHP: 7.0
 Requires Plugins: woocommerce 
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The best WooCommerce shipping method. Powerful table rate shipping plugin in the simplest way. Advanced shipping rates to meet your business needs. 
+The all-in-one table rate shipping solution for WooCommerce. Flexible and customisable shipping rates for any store's shipping needs.
 
 == Description ==
 
-###The best WooCommerce table rate shipping plugin
+###Conditional table rate shipping methods for WooCommerce: flexible shipping rates in the simplest way.
+
+*Previously known as **Fish and Ships**, this plugin continues to deliver powerful and flexible shipping rules tailored to your WooCommerce store.*
 
 A **conditional table rate shipping method for WooCommerce**: It allows you to set up weight-based **shipping rates** or any other criteria such as price, volume, quantity, or category
 
@@ -53,11 +55,11 @@ Most online shops set generic shipping rates: too much for some products and too
 
 ###Setup exact shipping rates through a table rate shipping
 
-Fish and Ships is a **WooCommerce table rate shipping** based method that helps you to increase sales and avoid costs losses, through an easy-to-use table rate shipping cost, with multiple conditional options (as needed).
+Advanced Shipping Rates for WooCommerce is a **WooCommerce table rate shipping** based method that helps you to increase sales and avoid costs losses, through an easy-to-use table rate shipping cost, with multiple conditional options (as needed).
 
 You can set multiple conditional rules on the table rate: based on price, weight, product quantity on cart, dimensions, volume, shipping class, product tag, and product category.
 
-While there are other table rate shipping calculation plugins, only Fish and Ships allows you to add multiple criteria selections to every rule:
+While there are other table rate shipping calculation plugins, only **Wp-Centrics Advanced Shipping Rates for WooCommerce** allows you to add multiple criteria selections to every rule:
 
 *(condition #1 AND condition #2 AND condition #3)*, or (condition #1 OR condition #2 OR condition #3)... as you needed, on every rule!
 
@@ -168,7 +170,7 @@ Apart of the table rate rules, you'll find this options on the method:
 
 * Free shipping support: now you can take control over zero cost shipping rates
 
-* Fish and Ships for WooCommerce shipping comes with extensvie help files and context links to it
+* Advanced Shipping Rates for WooCommerce comes with extensvie help files and context links to it
 
 * Intuitive wizard will guide you just activate the plugin, through WooCommerce screens
 
@@ -180,7 +182,7 @@ Apart of the table rate rules, you'll find this options on the method:
 
 *A built-in log system to help you to learn, understand or debug any complex table rate configuration
 
-Here you can get Fish and Ships Pro, the [ *Best WooCommerce Shipping Plugin* ](https://www.wp-centrics.com/)
+Here you can get Wp-Centrics Advanced Shipping Rates for WooCommerce Pro, the [ *Best WooCommerce Shipping Plugin* ](https://www.wp-centrics.com/)
 
 [Here you can read the help files &rarr;](https://www.wp-centrics.com/help/fish-and-ships/)
 
@@ -193,14 +195,15 @@ Here you can get Fish and Ships Pro, the [ *Best WooCommerce Shipping Plugin* ](
 * Spanish    (plugin and help files)
 * Portuguese (plugin and help files), thanks to [Nuno Melo](https://www.oxydizerpro.com/)
 * Italian    (plugin and help files), thanks to [Marco Cappalunga](https://fotolandiacarate.marcocappalunga.com)
-* French     (plugin only, lookin for translators)
+* French     (plugin and help files)
+* German     (plugin and help files)
 * Catalan    (plugin and help files)
 * Finnish    (plugin and help files), thanks to [Ari Koivunen](https://www.arifonts.com/)
 
 
 <blockquote>
-<h4>I want to translate Fish and Ships</h4>
-<p>You’re welcomed! We offer a <strong>forever license</strong> of Fish and Ships Pro in exchange for plugin and help translation.</p>
+<h4>I want to translate Advanced Shipping Rates for WooCommerce</h4>
+<p>You’re welcomed! We offer a <strong>forever license</strong> of Wp-Centrics Advanced Shipping Rates for WooCommerce Pro in exchange for plugin and help translation.</p>
 <p><a href="https://www.wp-centrics.com/contact-support/">If you’re interested, please, contact us here &rarr;</a></p>
 </blockquote>
 
@@ -211,21 +214,21 @@ Can be installed as usual:
 
 1. Manual: Download from wordpress.org, unzip and upload through FTP to the /wp-content/plugins/ directory. Then go to admin plugins page and activate it.
 
-2. From admin plugins>add new page: search “fish and ships” and click on install button, then activate.
+2. From admin plugins>add new page: search “Advanced Shipping Rates for WooCommerce” or “fish and ships” and click on install button, then activate.
 
 = How to configure the plugin? =
 
-Simply activate it, and a wizard will appear. Follow it through WooCommerce screens and you’ll get your first Fish and Ships shipping method to start configure the shipping rules.
+Simply activate it, and a wizard will appear. Follow it through WooCommerce screens and you’ll get your first Advanced Shipping Rates for WooCommerce shipping method to start configure the shipping rules.
 
 == Frequently Asked Questions ==
 
 = How I can re-start the wizard? =
 
-Go to plugins admin page again, and look for the link “Start: run wizard” into the Fish and Ships plugin row.
+Go to plugins admin page again, and look for the link “Start: run wizard” into the Advanced Shipping Rates for WooCommerce plugin row.
 
 = Where I can find the help? =
 
-Fish and Ships comes with context help. You can open it on any help icon (?) on the shipping method screen.
+Advanced Shipping Rates for WooCommerce comes with context help. You can open it on any help icon (?) on the shipping method screen.
 
 However, you can see also this help in [our website help docs &rarr;](https://www.wp-centrics.com/help/fish-and-ships/).
 
@@ -241,7 +244,7 @@ Yes. Please read Multicurrency section.
 
 = Which currency and units for dimensions and weight will be used? =
 
-Fish and Ships will work in the currency and measurements that you’ve set in WooCommerce settings, just as the way WC does.
+Advanced Shipping Rates for WooCommerce will work in the currency and measurements that you’ve set in WooCommerce settings, just as the way WC does.
 
 = How I configure conditional local pickup at reduced cost or free? =
 
@@ -249,13 +252,13 @@ Same as flat rate or free shipping, just below:
 
 = How I configure conditional flat rate shipping? =
 
-Create a shipping method with Fish and Ships. Enter to edit it, and rename as you want: Flat rate or whathever.
+Create a shipping method with Advanced Shipping Rates for WooCommerce. Enter to edit it, and rename as you want: Flat rate or whathever.
 
 Then add an unique rule, put the conditions (nested more than one if you need) and set a price with the property "once".
 
 = How I configure conditional free shipping? =
 
-Create a shipping method with Fish and Ships. Enter to edit it, and rename as you want: Free shipping or whathever.
+Create a shipping method with Advanced Shipping Rates for WooCommerce. Enter to edit it, and rename as you want: Free shipping or whathever.
 
 Then add an unique rule, put the conditions (nested more than one if you need) and set a price as 0 with the property "once".
 
@@ -267,16 +270,16 @@ Sure. Any combination of rules can be achieved: nested weight, volume, dimension
 
 = Required plugins and compatibility versions? =
 
-Fish and Ships has widely tested with older and latest; our philosophy is to cover the maximum releases (when are viable) and obviously cover all future releases.
+Advanced Shipping Rates for WooCommerce has widely tested with older and latest; our philosophy is to cover the maximum releases (when are viable) and obviously cover all future releases.
 
 * PHP: from 7.0 to current release (tested up to 8.3).
 * WordPress: from 4.7, all posterior releases (tested up to 6.7).
-* WooCommerce: from 3.0, all posterior releases (tested up to 9.4).
+* WooCommerce: from 3.0, all posterior releases (tested up to 9.5).
 * WPML: Tested the contemporary releases with the WooCommerce / WP releases.
 
-= Fish and Ships Free vs Pro? =
+= Wp-Centrics Advanced Shipping Rates for WooCommerce Free vs Pro? =
 
-[Here you can check the two version features &rarr;](https://www.wp-centrics.com/woocommerce-fish-and-ships-free-vs-pro/)
+[Here you can check the two version features &rarr;](https://www.wp-centrics.com/advanced-shipping-rates-woocommerce-free-vs-pro/)
 
 
 == Screenshots ==
@@ -298,6 +301,12 @@ Fish and Ships has widely tested with older and latest; our philosophy is to cov
 15. Apply coupons automatically (Pro)
 
 == Changelog ==
+
+= 2.0 - 28/01/2024 =
+* Renamed. From "Fish and Ships" to "Advanced Shipping Rates for WooCoomerce" (https://www.wp-centrics.com/the-fish-and-ships-plugin-is-now-advanced-shipping-rates-for-woocommerce/)
+* Updated help docs for all languages
+* Added help docs for french and german
+* Checked for WC 9.6
 
 = 1.6.3 - 17/01/2024 =
 * Checked for WC 9.5

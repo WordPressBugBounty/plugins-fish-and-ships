@@ -1,9 +1,9 @@
 <?php
 /*
- * Plugin Name: Fish and Ships
+ * Plugin Name: Advanced Shipping Rates for WooCommerce
  * Plugin URI: https://www.wp-centrics.com/
- * Description: A WooCommerce conditional table rate shipping method. Easy to understand and easy to use, it gives you an incredible flexibility.
- * Version: 1.6.3
+ * Description: The most flexible and all-in-one table rate shipping plugin. Previously named "Fish and Ships"
+ * Version: 2.0
  * Author: wpcentrics
  * Author URI: https://www.wp-centrics.com
  * Text Domain: fish-and-ships
@@ -11,7 +11,7 @@
  * Requires at least: 4.7
  * Tested up to: 6.7
  * WC requires at least: 3.0
- * WC tested up to: 9.5
+ * WC tested up to: 9.6
  * Requires PHP: 7.0
  * Requires Plugins: woocommerce 
  * License: GPLv2
@@ -30,7 +30,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- * @package Fish and Ships
+ * @package Advanced Shipping Rates for WC
 */
 
 defined( 'ABSPATH' ) || exit;
@@ -42,7 +42,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 
 } else {
 
-	define ('WC_FNS_VERSION', '1.6.3' );
+	define ('WC_FNS_VERSION', '2.0' );
 	define ('WC_FNS_PATH', dirname(__FILE__) . '/' );
 	define ('WC_FNS_URL', plugin_dir_url( __FILE__ ) );
 
@@ -328,6 +328,16 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 			if ( $this->is_wc() ) $methods[ $this->id ] = 'WC_Fish_n_Ships';
 			return $methods;
 		}
+		
+		/**
+		 * Get the plugin descrition, used in a few places
+		 *
+		 * @since 2.0
+		 */
+		public function get_plugin_description()
+		{	
+			return __('The most flexible and all-in-one table rate shipping plugin. Previously named "Fish and Ships".', 'fish-and-ships');
+		}
 
 		/**
 		 * Admin-side styles and scripts
@@ -398,10 +408,10 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 					if ( isset($selectors[$method_id]) ) {
 						if ( $this->im_pro() || !$selectors[$method_id]['onlypro'] ) return true;
 						
-						return sprintf('Warning: The %s method [%s]: only is supported in the Fish and Ships Pro version', $type, $method_id);
+						return sprintf('Warning: The %s method [%s]: only is supported in the Advanced Shipping Rates for WooCommerce PRO version', $type, $method_id);
 					}
 					
-					return sprintf('Error: Unknown %s method [%s]: maybe you are downgroaded Fish n Ships?', $type, $method_id);
+					return sprintf('Error: Unknown %s method [%s]: maybe you are downgraded Advanced Shipping Rates for WooCommerce?', $type, $method_id);
 					
 					break;
 
@@ -412,10 +422,10 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 					if ( isset($selectors[$method_id]) ) {
 						if ( $this->im_pro() || (!isset($selectors[$method_id]['onlypro']) || !$selectors[$method_id]['onlypro']) ) return true;
 						
-						return sprintf('Warning: The %s method [%s]: only is supported in the Fish and Ships Pro version', $type, $method_id);
+						return sprintf('Warning: The %s method [%s]: only is supported in the Advanced Shipping Rates for WooCommerce PRO version', $type, $method_id);
 					}
 					
-					return sprintf('Error: Unknown %s method [%s]: maybe you are downgroaded Fish n Ships?', $type, $method_id);
+					return sprintf('Error: Unknown %s method [%s]: maybe you are downgraded Advanced Shipping Rates for WooCommerce?', $type, $method_id);
 					
 					break;
 
@@ -426,10 +436,10 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 					if ( isset($selectors[$method_id]) ) {
 						if ( $this->im_pro() || !$selectors[$method_id]['onlypro'] ) return true;
 						
-						return sprintf('Warning: The %s method [%s]: only is supported in the Fish and Ships Pro version', $type, $method_id);
+						return sprintf('Warning: The %s method [%s]: only is supported in the Advanced Shipping Rates for WooCommerce PRO version', $type, $method_id);
 					}
 					
-					return sprintf('Error: Unknown %s method [%s]: maybe you are downgroaded Fish n Ships?', $type, $method_id);
+					return sprintf('Error: Unknown %s method [%s]: maybe you are downgraded Advanced Shipping Rates for WooCommerce?', $type, $method_id);
 					
 					break;
 
@@ -438,10 +448,10 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 					if ( in_array($method_id, array('or', 'and') ) ) {
 						if ( $this->im_pro() || $method_id == 'and' ) return true;
 						
-						return sprintf('Warning: The %s method [%s]: only is supported in the Fish and Ships Pro version', $type, $method_id);
+						return sprintf('Warning: The %s method [%s]: only is supported in the Advanced Shipping Rates for WooCommerce PRO version', $type, $method_id);
 					}
 					
-					return sprintf('Error: Unknown %s method [%s]: maybe you are downgroaded Fish n Ships?', $type, $method_id);
+					return sprintf('Error: Unknown %s method [%s]: maybe you are downgraded Advanced Shipping Rates for WooCommerce?', $type, $method_id);
 
 					break;
 			}
@@ -3177,14 +3187,14 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 			$screen->add_help_tab(
 				array(
 					'id'      => 'wc_fish_n_ships_support_tab',
-					'title'   => 'WC Fish and Ships',
+					'title'   => 'Advanced Shipping Rates for WC',
 					'content' =>
-						'<h2>Fish and Ships for WooCommerce</h2>' .
-						'<p>' . esc_html__('A WooCommerce shipping method. Easy to understand and easy to use, it gives you an incredible flexibility.', 'fish-and-ships') . '</p>' .
+						'<h2>Advanced Shipping Rates for WooCommerce</h2>' .
+						'<p>' . esc_html( $this->get_plugin_description() ) . '</p>' .
 						'<p>&gt; <a href="https://www.wp-centrics.com/help/fish-and-ships/" target="_blank">' . esc_html__('Go to online help documentation', 'fish-and-ships') . '</a></p>' .
 						'<p>&gt; <a href="https://wordpress.org/support/plugin/fish-and-ships/" target="_blank">' . esc_html__('Get support on WordPress repository', 'fish-and-ships') . '</a></p>' .
 						
-							'<p style="padding-top:1em;"><a href="' . admin_url('admin.php?page=wc-settings&tab=shipping&wc-fns-wizard=now') . '" class="button button-wc-fns-colors">' . esc_html__('Restart wizard', 'fish-and-ships') . '</a> &nbsp;<a href="https://www.wp-centrics.com/contact-support/" class="button" target="_blank">' . esc_html__('Get support about Fish and Ships Pro', 'fish-and-ships') . '</a></p>',
+							'<p style="padding-top:1em;"><a href="' . admin_url('admin.php?page=wc-settings&tab=shipping&wc-fns-wizard=now') . '" class="button button-wc-fns-colors">' . esc_html__('Restart wizard', 'fish-and-ships') . '</a> &nbsp;<a href="https://www.wp-centrics.com/contact-support/" class="button" target="_blank">' . esc_html__('Contact us', 'fish-and-ships') . '</a></p>',
 				)
 			);
 			}

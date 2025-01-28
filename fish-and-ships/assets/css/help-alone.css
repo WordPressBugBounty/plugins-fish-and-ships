@@ -222,6 +222,24 @@ p {
 
 
 /* from the Fish and Ships CSS */
+.fns-pro-icon {
+    display: inline-block;
+    font-size: 10px;
+    background: #aaa;
+    color: #fff;
+    border-radius: 4px;
+    line-height: 1.3em;
+    padding: 0 .25em;
+    vertical-align: 3px;
+    margin-left: 5px;
+    margin-right: 5px;
+    font-weight: 600
+}
+
+.fns-pro-icon.darker {
+    background: #888
+}
+
 .wc_fns_col_menu {
 	position:absolute;
 	width:180px;
@@ -601,8 +619,8 @@ table.free_pro .dashicons.purple {
 }
 #cookie_advisor_help_alone .button-rounded:hover,
 .wc_fns_col_content .fns_do_actions .button-rounded:hover {
-    background: #e5e5e5;
-    color: #666666;
+    background: #a36597;
+    color: #fff !important;
 }
 #cookie_advisor_help_alone .button-rounded.alt,
 .wc_fns_col_content .fns_do_actions .button-rounded.alt,
@@ -614,7 +632,7 @@ table.free_pro .dashicons.purple {
 }
 #cookie_advisor_help_alone .button-rounded.alt:hover,
 .wc_fns_col_content .fns_do_actions .button-rounded.alt:hover {
-    background: #a36597;
+    background: #000;
     cursor: pointer;
 }
 /* special tweaks for the alone help files */

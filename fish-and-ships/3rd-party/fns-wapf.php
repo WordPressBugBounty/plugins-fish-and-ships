@@ -2,7 +2,7 @@
 /**
  * Add on for StudioWombat Advanced Product Fields for WooCommerce (WAPF)
  *
- * @package Fish and Ships
+ * @package Advanced Shipping Rates for WC
  * @since 1.5.2
  */
 
@@ -25,13 +25,7 @@ if ( !class_exists( 'Fish_n_Ships_WAPF' ) ) {
 			add_filter( 'wc_fns_wizard_messages', array ( $this, 'add_message' ), 10, 2 );
 			
 			add_filter('wc_fns_get_selection_methods', array ( $this, 'wc_fns_get_selection_methods_fn' ) , 20, 1);
-			
-			/*
-			if ( isset($_GET['page'] ) && $_GET['page'] == 'wc-settings' ) {
-				add_action('admin_notices', array ( $this, 'admin_notices'), 20);
-			}
-			*/
-			
+						
 			add_filter('wc_fns_get_html_details_method', array ( $this, 'wc_fns_get_html_details_method_fn' ), 20, 6);
 
 			add_filter( 'wc-fns-groupable-selection-methods', array ($this, 'wc_fns_groupable_selection_methods_fn' ), 20, 1 );
@@ -194,30 +188,6 @@ if ( !class_exists( 'Fish_n_Ships_WAPF' ) ) {
 			return $methods;
 		}
 		
-		/**
-		 * Show compatibility with 3rd party
-		 *
-		 * @since 1.5.2
-		 *
-		 * @param $methods (array) maybe incomming  a pair method-id / method-name array
-		 *
-		 * @return $methods (array) a pair method-id / method-name array
-		 *
-		 */
-		function admin_notices() {
-			
-			global $Fish_n_Ships;
-
-			if ( $Fish_n_Ships->get_option('mpc-message') != '1' ) return;
-			
-			echo '<div class="notice wc-fns-wizard must">'
-				. '<h3>Fish and ships 3rd-party compatibility</h3>' 
-				. '<p>Now Fish and Ships gives compatibility for StudioWombat Advanced Product Fields for WooCommerce (WAPF).</p>'
-				. '<a href="' . esc_url( add_query_arg('wc-fns-wizard', 'off') ) . '" class="button" data-ajax="wizard" data-param="off">' . esc_html__('Thanks, don\'t show me again', 'fish-and-ships') . '</a></p>'
-				. '</div>';
-
-		}
-
 		/**
 		 * Filter to get the HTML selection fields for one method
 		 *

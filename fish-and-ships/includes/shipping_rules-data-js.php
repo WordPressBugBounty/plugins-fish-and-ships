@@ -2,8 +2,8 @@
 /**
  * The Javascript data object. 
  *
- * @package Fish and Ships
- * @version 1.5.3
+ * @package Advanced Shipping Rates for WC
+ * @version 2.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -91,7 +91,7 @@ $data = array(
 	'i18n_max_val_info_action' =>  _x('If the calculated rule cost is greater than this, it will be set to this value.', 'Max field tip', 'fish-and-ships'),
 	
 	'i18n_export_tit' => _x('Export shipping settings', 'Title', 'fish-and-ships'),
-	'i18n_export_ins' => _x('Copy this code, and paste on another Fish and Ships method:', 'Export instructions', 'fish-and-ships'),
+	'i18n_export_ins' => _x('Copy this code, and paste on another Advanced Shipping Rates for WooCommerce method:', 'Export instructions', 'fish-and-ships'),
 	'i18n_import_tit' => _x('Import shipping settings', 'Title', 'fish-and-ships'),
 	'i18n_import_ins' => _x('Paste the exported code here and click import button:', 'Import instructions', 'fish-and-ships'),
 	'i18n_import_att' => _x('Current settings will be overwritten', 'Import warning', 'fish-and-ships'),

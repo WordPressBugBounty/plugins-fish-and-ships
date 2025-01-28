@@ -1,8 +1,8 @@
 <?php
 /**
- * This is a sample for the Fish and Ships wizard
+ * This is a sample for the Advanced Shipping Rates for WC wizard
  *
- * @package Fish and Ships
+ * @package Advanced Shipping Rates for WC
  */
  
 $sample = array(

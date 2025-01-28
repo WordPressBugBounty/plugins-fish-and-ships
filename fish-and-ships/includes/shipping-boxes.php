@@ -4,8 +4,8 @@
  *
  * This add the pane on WooCommerce > Settings > Shipping > FnS Shipping Boxes
  *
- * @package Fish and Ships
- * @version 1.4.13
+ * @package Advanced Shipping Rates for WC
+ * @version 2.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -36,7 +36,7 @@ if ( !class_exists( 'Fish_n_Ships_SB' ) ) {
 
 		public function wc_sections ($sections) {
 			
-			$sections['fns-shipping-boxes'] = 'FnS Shipping Boxes';
+			$sections['fns-shipping-boxes'] = 'Shipping Boxes';
 			
 			return $sections;
 		}
@@ -48,7 +48,7 @@ if ( !class_exists( 'Fish_n_Ships_SB' ) ) {
 				$settings = array (
 				
 								array (
-									'title' => 'Fish and Ships Shipping Boxes',
+									'title' => 'Advanced Shipping Rates for WC: Shipping Boxes',
 									'type'  => 'title',
 									'id'    => 'fns-shipping-boxes'
 								),
@@ -70,7 +70,7 @@ if ( !class_exists( 'Fish_n_Ships_SB' ) ) {
 			
 			if ( !$Fish_n_Ships->im_pro() ) {
 				?>
-				<p><?php echo wp_kses( __('This feature is only available in <strong>Fish and Ships Pro</strong>.', 'fish-and-ships'),
+				<p><?php echo wp_kses( __('This feature is only available in <strong>Advanced Shipping Rates for WooCommerce PRO</strong>.', 'fish-and-ships'),
 					 array('strong'=>array())
 				); ?></p>
 				<p><a href="https://www.youtube.com/watch?v=y2EJFluXx9Q" target="_blank" class="fns-video-link" title="Watch shipping boxes video on YouTube"><img src="<?php echo WC_FNS_URL; ?>assets/img/shipping-boxes-video-preview.jpg" width="800" height="450" alt="Shipping boxes flat rate video" /></a></p>

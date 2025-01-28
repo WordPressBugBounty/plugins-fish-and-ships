@@ -5,7 +5,7 @@
  * An instance of this class will group elements from the cart to posterior comparison on selection rules.
  * It allow cached calculation and re-calculation when the group content has changed
  *
- * @package Fish and Ships
+ * @package Advanced Shipping Rates for WC
  * @since 1.0.0
  * @version 1.6.2
  */

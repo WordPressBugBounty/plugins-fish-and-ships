@@ -2,9 +2,9 @@
 /**
  * Wizard to guide new users, 5 star rating stuff and news/notices system
  *
- * @package Fish and Ships
+ * @package Advanced Shipping Rates for WC
  * @since 1.0.0
- * @version 1.6.1
+ * @version 2.0
  */
    
 defined( 'ABSPATH' ) || exit;
@@ -115,9 +115,10 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 		 * Then remove the dismissed & order it by priority
 		 *
 		 * @since 1.5.8
+		 * @version 2.0
 		 */
-		function load_all_messages() {
-			
+		function load_all_messages()
+		{
 			global $Fish_n_Ships;
 			
 			$wizard_on_method = false;
@@ -184,7 +185,7 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 					( ! isset( $data['where_not'] ) || ! in_array( $page, (array) $data['where_not'], TRUE ) )
 				){
 					// Set the defaults where there are missing
-					if( ! isset( $data['title'] ) ) 		$data['title'] 			= 'Fish and Ships';
+					if( ! isset( $data['title'] ) ) 		$data['title'] 			= 'Advanced Shipping Rates for WooCommerce';
 					if( ! isset( $data['edge'] ) )  		$data['edge']  			= 'left';
 					if( ! isset( $data['align'] ) ) 		$data['align'] 			= 'middle';
 					if( ! isset( $data['wrapper_class'] ) ) $data['wrapper_class']	= 'fns-pointer';
@@ -382,9 +383,9 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 
 			echo '<div class="notice wc-fns-wizard wc-fns-five-stars">'
 				//. '<a class="notice-dismiss" href="#">' . esc_html__('Dismiss') . '</a>'
-				. '<h3>'. esc_html__('Do you like Fish and Ships?', 'fish-and-ships') . '</h3>'
+				. '<h3>'. esc_html__('Do you like Advanced Shipping Rates for WooCommerce?', 'fish-and-ships') . '</h3>'
 				. '<p class="fns-space-up big">' . esc_html__('Thank you for your continued use of our plugin.', 'fish-and-ships') . '</p><p class="big">' . 
-				wp_kses( __('Please, rate <strong>Fish and Ships</strong> on the WordPress repository, it will help us a lot :)', 'fish-and-ships'),
+				wp_kses( __('Please, rate <strong>Advanced Shipping Rates for WooCommerce</strong> on the WordPress repository, it will help us a lot :)', 'fish-and-ships'),
 							 array('strong'=>array())
 				) . '</p>'
 				. '<p><a href="' . esc_url('https://wordpress.org/support/plugin/fish-and-ships/reviews/?rate=5#new-post') . '" class="button-primary" target="_blank" data-kind="five-stars" data-param="later">' . esc_html__('Rate the plugin', 'fish-and-ships') . '</a> &nbsp;'
@@ -438,8 +439,8 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 			) return;
 
 			echo '<div class="notice wc-fns-wizard must wc-fns-wizard-notice-0">'
-				. '<h3>'. esc_html__('Welcome to Fish and Ships:', 'fish-and-ships') . '</h3>'
-				. '<p class="fns-space-up big">' . esc_html__('A WooCommerce shipping method. Easy to understand and easy to use, it gives you an incredible flexibility.', 'fish-and-ships') . '</p>'
+				. '<h3>'. esc_html( sprintf(__('Welcome to %s:', 'fish-and-ships'), 'Advanced Shipping Rates for WooCommerce') ) . '</h3>'
+				. '<p class="fns-space-up big">' . esc_html( $Fish_n_Ships->get_plugin_description() ) . '</p>'
 			    . '<p><a href="' . admin_url('admin.php?page=wc-settings&tab=shipping&wc-fns-wizard=now') . '" class="button-primary">' . esc_html__('Start wizard', 'fish-and-ships') . '</a> &nbsp;'
 				. $this->safe_link_builder( esc_html__('Remind later', 'fish-and-ships'), 'wizard', '', 'later' ) . ' &nbsp;'
 				. $this->safe_link_builder( esc_html__('Thanks, I know how to use it', 'fish-and-ships'), 'wizard', '', 'off' ) . '</p>'
@@ -453,7 +454,7 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 		function woocommerce_fns_wizard_notice_1() {
 
 			echo '<div class="notice wc-fns-wizard must wc-fns-wizard-notice-1">'
-				. '<h3>' . esc_html__('Fish and Ships Wizard:', 'fish-and-ships') . '</h3>' 
+				. '<h3>' . esc_html( sprintf(__('%s Wizard:', 'fish-and-ships'), 'Advanced Shipping Rates for WooCommerce') ) . '</h3>' 
 				. '<p class="fns-space-up big">' . esc_html__('First, select one shipping zone, or create a new one:', 'fish-and-ships')
 				. '</p></div>';
 		}
@@ -461,9 +462,9 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 		function woocommerce_fns_wizard_notice_2() {
 
 			echo '<div class="notice wc-fns-wizard must wc-fns-wizard-notice-2">'
-				. '<h3>' . esc_html__('Fish and Ships Wizard:', 'fish-and-ships') . '</h3>' 
+				. '<h3>' . esc_html( sprintf(__('%s Wizard:', 'fish-and-ships'), 'Advanced Shipping Rates for WooCommerce') ) . '</h3>' 
 				. '<p class="fns-space-up big">' . esc_html__('Now add a new shipping method:', 'fish-and-ships') . ' ' .
-				wp_kses( __('add <strong>Fish and Ships</strong>, and edit it.', 'fish-and-ships'),
+				wp_kses( __('add <strong>Advanced Shipping Rates for WooCommerce</strong>, and edit it.', 'fish-and-ships'),
 						 array('strong'=>array())
 				) . '</p></div>';
 		}
@@ -471,9 +472,9 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 		function woocommerce_fns_wizard_notice_3() {
 
 			echo '<div class="notice wc-fns-wizard must wc-fns-wizard-notice-3">'
-				. '<h3>' . esc_html__('Fish and Ships Wizard:', 'fish-and-ships') . '</h3>' 
+				. '<h3>' . esc_html( sprintf(__('%s Wizard:', 'fish-and-ships'), 'Advanced Shipping Rates for WooCommerce') ) . '</h3>' 
 				. '<p>' . esc_html__('Configure the new zone, and then:', 'fish-and-ships') . ' ' .
-				wp_kses( __('add <strong>Fish and Ships</strong>, and edit it.', 'fish-and-ships'),
+				wp_kses( __('add <strong>Advanced Shipping Rates for WooCommerce</strong>, and edit it.', 'fish-and-ships'),
 						 array('strong'=>array())
 				) . '</p></div>';
 		}
@@ -481,7 +482,7 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 		function woocommerce_fns_wizard_notice_4()
 		{
 			echo '<div class="notice wc-fns-wizard must wc-fns-wizard-notice-4">'
-				. '<h3>' . esc_html__('Fish and Ships Wizard:', 'fish-and-ships') . '</h3>';
+				. '<h3>' . esc_html( sprintf(__('%s Wizard:', 'fish-and-ships'), 'Advanced Shipping Rates for WooCommerce') ) . '</h3>';
 			
 			if( ! isset($_POST['wc-fns-samples']) )
 			{
@@ -729,7 +730,7 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 							</div>
 							<div class="wc_fns_tab wc_fns_tab_fullsamples">
 								<div class="help_note" style="margin-top:2em;">
-									<p><strong>Full case examples are comprehensive configuration methods that assist you in understanding how Fish and Ships works.</strong></p>
+									<p><strong>Full case examples are comprehensive configuration methods that assist you in understanding how Advanced Shipping Rates for WooCommerce works.</strong></p>
 									<p>You can also search for one that suits your requirements and then customize it as needed.</p>
 								</div>
 								<div class="warning" style="margin-top:2em;">

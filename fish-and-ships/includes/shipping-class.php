@@ -4,8 +4,8 @@
  *
  * This is the shipping class that extends WC
  *
- * @package Fish and Ships
- * @version 1.6.2
+ * @package Advanced Shipping Rates for WC
+ * @version 2.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -46,7 +46,7 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 		$this->instance_id           = absint( $instance_id );
 		$this->option_name           = 'woocommerce_'. $Fish_n_Ships->id .'_'. $this->instance_id .'_settings';
 
-		$this->method_title          = $Fish_n_Ships->im_pro() ? 'Fish and Ships Pro' : 'Fish and Ships';
+		$this->method_title          = 'Advanced Shipping Rates for WooCommerce' . ( $Fish_n_Ships->im_pro() ? ' Pro' : '' );
 		$this->method_description    = $this->get_method_description();
 
 		$this->supports              = array(
@@ -112,12 +112,15 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 	 * Get default method description
 	 *
 	 * @since 1.6.2
+	 * @version 2.0
 	 */
-	public function get_default_method_description() {
+	public function get_default_method_description()
+	{	
+		global $Fish_n_Ships;
 		
 		// Since WC 8.4 the method type has been removed.
-		$default_method_description  = version_compare( WC()->version, '8.4.0', '<') ? '' : $this->method_title . '. ';
-		$default_method_description .= __('A WooCommerce shipping method. Easy to understand and easy to use, it gives you an incredible flexibility.', 'fish-and-ships');
+		// $default_method_description  = version_compare( WC()->version, '8.4.0', '<') ? '' : $this->method_title . '. ';
+		$default_method_description = $Fish_n_Ships->get_plugin_description();
 		
 		return $default_method_description;
 	}
@@ -281,9 +284,9 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 
 		if ($this->write_logs_boolean === true) {
 			
-			$this->debug_log('*Starting Fish and Ships ' . ($Fish_n_Ships->im_pro() ? 'Pro' : '(free)') . ' calculation, for method: [' . $this->title . ']. Instance_id: [' . $this->instance_id . '], Local time: [' . current_time( 'mysql' ) . ']', 0);
+			$this->debug_log('*Starting Advanced Shipping Rates for WC ' . ($Fish_n_Ships->im_pro() ? 'Pro' : '(free)') . ' calculation, for method: [' . $this->title . ']. Instance_id: [' . $this->instance_id . '], Local time: [' . current_time( 'mysql' ) . ']', 0);
 			
-			$this->debug_log('Fish and Ships version: [' . WC_FNS_VERSION . '], WP: [' . get_bloginfo('version') . '], WC: [' . WC()->version . '], Multilingual: ' . $Fish_n_Ships->get_multilingual_info() . ', Multicurrency: ' . $Fish_n_Ships->get_multicurrency_info($this), 0);
+			$this->debug_log('Advanced Shipping Rates for WC version: [' . WC_FNS_VERSION . '], WP: [' . get_bloginfo('version') . '], WC: [' . WC()->version . '], Multilingual: ' . $Fish_n_Ships->get_multilingual_info() . ', Multicurrency: ' . $Fish_n_Ships->get_multicurrency_info($this), 0);
 		
 			$this->log_totals['memory']      = memory_get_usage();
 			$this->log_totals['num_queries'] = $wpdb->num_queries;
@@ -573,7 +576,7 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 				if ($iterations > (defined('WC_FNS_MAX_ITERATIONS') ? WC_FNS_MAX_ITERATIONS : 10) ) {
 					
 					$this->debug_log('Too much iterations. Break to prevent timeout error' , 1);
-					trigger_error('WC Fish and Ships: Too much iterations. Break to prevent timeout error');
+					trigger_error('Advanced Shipping Rates for WC: Too much iterations. Break to prevent timeout error');
 					$repeat = false;
 				}
 

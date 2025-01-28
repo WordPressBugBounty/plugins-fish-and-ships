@@ -5,7 +5,7 @@
  *
  * Moved here the "Shipping boxes" special action (packer) stuff on 1.4.13
  *
- * @package Fish and Ships
+ * @package Advanced Shipping Rates for WC
  * @since 1.4.13
  */
 
