@@ -4,7 +4,7 @@
  *
  * @package Advanced Shipping Rates for WC
  * @since 1.0.0
- * @version 2.0
+ * @version 2.0.1
  */
  
 defined( 'ABSPATH' ) || exit;
@@ -388,5 +388,11 @@ $html .= '<div class="fns_fields_popup">
 						$html .= '<option value="' . esc_attr($key) . '">' . esc_html($caption) . '</option>';
 					}
 
-$html .= '</select></p></div><div class="fns-simulation-wrapper"><p><strong>Charge preview:</strong></p><div class="fns-simulation"></div></div></div>
+			$html .= '</select></p>';
+			
+			// Added DIM in range dialog (2.0.1)
+			$html .= '<p class="fns-dim-col"><label><strong>DIM (' . __( 'Volumetric Weight Factor', 'fish-and-ships' ) . ' ' . get_option('woocommerce_dimension_unit') . '<sup style="font-size:0.75em; vertical-align:0.25em">3</sup>/' . get_option('woocommerce_weight_unit') . ')</strong>:'
+					. '</label><input type="text" name="dialog-range_dim" value="0" class="wc_fns_input_positive_decimal fns-range_dim" autocomplete="off" size="4"></p>';
+			
+			$html .= '</div><div class="fns-simulation-wrapper"><p><strong>Charge preview:</strong></p><div class="fns-simulation"></div></div></div>
 </div></div>';

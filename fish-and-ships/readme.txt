@@ -6,7 +6,7 @@ Requires at least: 4.7
 Tested up to: 6.7
 WC requires at least: 3.0
 WC tested up to: 9.6
-Stable tag: 2.0
+Stable tag: 2.0.1
 Requires PHP: 7.0
 Requires Plugins: woocommerce 
 License: GPLv2 or later
@@ -274,7 +274,7 @@ Advanced Shipping Rates for WooCommerce has widely tested with older and latest;
 
 * PHP: from 7.0 to current release (tested up to 8.3).
 * WordPress: from 4.7, all posterior releases (tested up to 6.7).
-* WooCommerce: from 3.0, all posterior releases (tested up to 9.5).
+* WooCommerce: from 3.0, all posterior releases (tested up to 9.6).
 * WPML: Tested the contemporary releases with the WooCommerce / WP releases.
 
 = Wp-Centrics Advanced Shipping Rates for WooCommerce Free vs Pro? =
@@ -301,6 +301,9 @@ Advanced Shipping Rates for WooCommerce has widely tested with older and latest;
 15. Apply coupons automatically (Pro)
 
 == Changelog ==
+
+= 2.0.1 - 25/02/2024 =
+* Better compatibility with StudioWombat Advanced Product Fields (local fields & better interface)
 
 = 2.0 - 28/01/2024 =
 * Renamed. From "Fish and Ships" to "Advanced Shipping Rates for WooCoomerce" (https://www.wp-centrics.com/the-fish-and-ships-plugin-is-now-advanced-shipping-rates-for-woocommerce/)

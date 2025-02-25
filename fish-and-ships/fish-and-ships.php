@@ -3,7 +3,7 @@
  * Plugin Name: Advanced Shipping Rates for WooCommerce
  * Plugin URI: https://www.wp-centrics.com/
  * Description: The most flexible and all-in-one table rate shipping plugin. Previously named "Fish and Ships"
- * Version: 2.0
+ * Version: 2.0.1
  * Author: wpcentrics
  * Author URI: https://www.wp-centrics.com
  * Text Domain: fish-and-ships
@@ -42,7 +42,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 
 } else {
 
-	define ('WC_FNS_VERSION', '2.0' );
+	define ('WC_FNS_VERSION', '2.0.1' );
 	define ('WC_FNS_PATH', dirname(__FILE__) . '/' );
 	define ('WC_FNS_URL', plugin_dir_url( __FILE__ ) );
 
@@ -2371,7 +2371,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		 * @param $rule_nr (integer) rule ordinal (starting 0)
 		 * @param $sel_nr (integer) selector ordinal inside rule (starting 0)
 		 * @param $method_id (mixed) method id
-		 * @param $values for populate the field
+		 * @param $value for populate the field
 		 * @param $ambit_field (mixed) for class reference only
 		 * @param $tips (string) field related helper tip
 		 * @param $placeholder (string) placeholder text
@@ -3242,9 +3242,10 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 				require WC_FNS_PATH . '3rd-party/fns-measurement-pc.php';
 			}
 
-			// StudioWombat Advanced Product Fields for WooCommerce (WAPF), since 1.5.2
+			// StudioWombat Advanced Product Fields for WooCommerce (WAPF)
 			if ( function_exists( 'wapf' ) || function_exists( 'wapf_pro' ) ) {
-				require WC_FNS_PATH . '3rd-party/fns-wapf.php';
+				require WC_FNS_PATH . '3rd-party/fns-wapf-legacy.php'; // @since 1.5.2
+				require WC_FNS_PATH . '3rd-party/fns-wapf-new.php';    // @since 2.0.1
 			}
 					
 			// Plugin Republic's WooCommerce Product Add-Ons Ultimate (PR_PAU)

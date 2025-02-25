@@ -2,7 +2,7 @@
  * Javascript for the shipping method functionality.
  *
  * @package Advanced Shipping Rates for WC
- * @version 2.0
+ * @version 2.0.1
  */
 
 jQuery(document).ready(function($) {
@@ -533,17 +533,20 @@ jQuery(document).ready(function($) {
 				}
 			});
     });
-    $('#shipping-rules-table-fns option[data-legacy]').each(function ()
+	function remove_legacies()
 	{
-		// Remove unused
-		const $option = $(this);
-		const legacyValue = $option.data('legacy');
+		$('#shipping-rules-table-fns option[data-legacy]').each(function ()
+		{
+			// Remove unused
+			const $option = $(this);
+			const legacyValue = $option.data('legacy');
 
-		if (!selectedLegacy.includes(legacyValue)) {
-			$option.remove();
-		}
-    });
-
+			if (!selectedLegacy.includes(legacyValue)) {
+				$option.remove();
+			}
+		});
+	}
+	remove_legacies();
 
 	// Save radios
 	$("#shipping-rules-table-fns input:radio").each(function (index, element) {
@@ -859,6 +862,9 @@ jQuery(document).ready(function($) {
 		start_sliders();
 
 		apply_datepickers();
+		
+		// Remove unused legacies
+		remove_legacies();
 		
 		// Hide the select ancestors that has all childs hidden ( normal/extra rules)
 		$( "select.wc-fns-selection-method optgroup, select.wc-fns-actions optgroup" ).each( function( idx, optgroup )
@@ -2176,8 +2182,8 @@ jQuery(document).ready(function($) {
 				
 				$('body').append('<div id="fns_help"><div class="popup_scroll_control">' + parsed.find("#content").html() + '</div></div>');
 				
-				console.log(help_langs);
-				console.log($lang);
+				// console.log(help_langs);
+				// console.log($lang);
 
 				n_lang = 0;
 				for (x=0; x<help_langs.length; x++) {
@@ -2855,6 +2861,14 @@ jQuery(document).ready(function($) {
 				});
 				
 				refresh_range_wizard();
+
+				// version 1.6.3 DIM into each range popup. Copy value from external field if this is empty
+				if( 
+					( ! parseFloat( $('#fns_dialog input[name="dialog-range_dim"]').val() ) > 0 ) 
+					&&  parseFloat( $('#woocommerce_fish_n_ships_volumetric_weight_factor').val() ) > 0 
+				){
+					$('#fns_dialog input[name="dialog-range_dim"]').val( $('#woocommerce_fish_n_ships_volumetric_weight_factor').val() );
+				}
 			},
 			create: function () {
 				// style fix for WordPress admin
@@ -2905,12 +2919,21 @@ jQuery(document).ready(function($) {
 	});
 	
 	
-	function refresh_range_wizard() {
-		
+	function refresh_range_wizard()
+	{	
 		range_based    = $('#fns_dialog select[name="dialog-range_based"]').val();
 		range_based_n  = $('#fns_dialog select[name="dialog-range_based"]').prop('selectedIndex');
-		
-		groupbyel = $('#fns_dialog select[name="dialog-range_group_by"]');
+		groupbyel      = $('#fns_dialog select[name="dialog-range_group_by"]');
+
+		// version 2.0.1 DIM into each range popup show/hide & copy value to external field if is empty
+		show_dim       = range_based == 'volumetric' || range_based == 'volumetric-set';
+		$('#fns_dialog .fns-dim-col').toggle(show_dim);
+		if( 
+			( ! parseFloat( $('#woocommerce_fish_n_ships_volumetric_weight_factor').val() ) > 0 ) 
+			&&  parseFloat( $('#fns_dialog input[name="dialog-range_dim"]').val() ) > 0 
+		){
+			$('#woocommerce_fish_n_ships_volumetric_weight_factor').val( $('#fns_dialog input[name="dialog-range_dim"]').val() );
+		}
 
 		if( range_based == 'lwh-dimensions' || range_based == 'lgirth-dimensions' )
 		{

@@ -5,7 +5,7 @@
  * This is the shipping class that extends WC
  *
  * @package Advanced Shipping Rates for WC
- * @version 2.0
+ * @version 2.0.1
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -272,7 +272,7 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 	 * Calculate the shipping costs.
 	 *
 	 * @since 1.0.0
-	 * @version 1.6.2
+	 * @version 2.0.1
 	 *
 	 * @param array $package Package of items from cart.
 	 */
@@ -343,6 +343,17 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 				$this->debug_log('- #' . $Fish_n_Ships->get_prod_or_variation_id($product) . ' ' . $Fish_n_Ships->get_name($product) . ' ( non-shippable )', 0);
 			}
 		}
+		
+		// Set number of shippable products in the first shipping method (since 2.0.1):
+		if( $Fish_n_Ships->im_pro() && ( $Fish_n_Ships_PAH->first_method_id == 0 || $Fish_n_Ships_PAH->first_method_id == $this->get_instance_id() ) )
+		{
+			$Fish_n_Ships_PAH->products_shippable  = $n_shippable;
+			$Fish_n_Ships_PAH->first_method_id     = $this->get_instance_id();
+			$Fish_n_Ships_PAH->reset_cart_totals();
+			$Fish_n_Ships_PAH->initialize_coupons_on_session();
+			$Fish_n_Ships_PAH->reset_disabled_methods_on_session();
+		}
+		
 				$this->log_totals['cart_qty'] = ($n_shippable + $n_non_shippable) . ($n_non_shippable == 0 ? ' shippable prods.' : ' prods, ' . $n_shippable . ' shippable');
 
 		$rate = array(
