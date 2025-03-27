@@ -512,7 +512,7 @@ if ( !class_exists( 'Fish_n_Ships_PR_PAU' ) ) {
 										break 3;
 									}
 								}
-							}
+							} // if closure, not a closing loop!!!
 						}
 
 						if( ! $result ) {

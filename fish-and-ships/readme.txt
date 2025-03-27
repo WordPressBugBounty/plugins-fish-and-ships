@@ -5,8 +5,8 @@ Tags: shipping rates, table rate shipping, shipping method, table rate
 Requires at least: 4.7
 Tested up to: 6.7
 WC requires at least: 3.0
-WC tested up to: 9.6
-Stable tag: 2.0.1
+WC tested up to: 9.7
+Stable tag: 2.0.2
 Requires PHP: 7.0
 Requires Plugins: woocommerce 
 License: GPLv2 or later
@@ -23,6 +23,8 @@ The all-in-one table rate shipping solution for WooCommerce. Flexible and custom
 A **conditional table rate shipping method for WooCommerce**: It allows you to set up weight-based **shipping rates** or any other criteria such as price, volume, quantity, or category
 
 You can also configure conditional free shipping, conditional local pickup, conditional flat rate or any shipping rate.
+
+[Run live preview &rarr;](https://app.instawp.io/launch?t=advanced-shipping-rates-for-woocommerce-demo&d=v2)
 
 https://www.youtube.com/watch?v=wRsoUYiHQRY
 
@@ -284,9 +286,9 @@ Advanced Shipping Rates for WooCommerce has widely tested with older and latest;
 
 == Screenshots ==
 
-1. Shipping rules order diagram
-2. Shipping rules table
-3. The selection options (Free and Pro)
+1. The selection options (Free and Pro)
+2. Ranges based on Price, Weight, Quantity, Volume, Volumetric or Size (Pro only)
+3. Shipping rules logic diagram
 4. 25 Full case/samples ready-to-use and customise
 5. 38 Snippets that you can pick and mix
 6. Simple / composite price calculation
@@ -302,16 +304,20 @@ Advanced Shipping Rates for WooCommerce has widely tested with older and latest;
 
 == Changelog ==
 
-= 2.0.1 - 25/02/2024 =
+= 2.0.2 - 26/03/2025 =
+* Solved bug in the support of StudioWombat Advanced Product Fields (introduced in 2.0.1)
+* Checked for WC 9.7
+
+= 2.0.1 - 25/02/2025 =
 * Better compatibility with StudioWombat Advanced Product Fields (local fields & better interface)
 
-= 2.0 - 28/01/2024 =
+= 2.0 - 28/01/2025 =
 * Renamed. From "Fish and Ships" to "Advanced Shipping Rates for WooCoomerce" (https://www.wp-centrics.com/the-fish-and-ships-plugin-is-now-advanced-shipping-rates-for-woocommerce/)
 * Updated help docs for all languages
 * Added help docs for french and german
 * Checked for WC 9.6
 
-= 1.6.3 - 17/01/2024 =
+= 1.6.3 - 17/01/2025 =
 * Checked for WC 9.5
 * Requires WooCommerce declaration added
 

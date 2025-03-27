@@ -5,6 +5,7 @@
  *
  * @package Fish and Ships
  * @since 2.0.1
+ * @version 2.0.2
  */
  
 defined( 'ABSPATH' ) || exit;
@@ -314,6 +315,7 @@ if ( !class_exists( 'Fish_n_Ships_WAPF_NEW' ) ) {
 		 * Filter to check matching elements for selection method
 		 *
 		 * @since 2.0.1
+		 * @version 2.0.2
 		 *
 		 * @param $rule_groups (array) all the groups of current rule
 		 * @param $selector (array) the selector criterion
@@ -398,7 +400,7 @@ if ( !class_exists( 'Fish_n_Ships_WAPF_NEW' ) ) {
 					} else {
 						// Get the ID of the unique product, for logging:
 						$id = $Fish_n_Ships->get_prod_or_variation_id( $group->elements[ array_key_first($group->elements) ] );
-						$shipping_class->debug_log('WAPF info, method: [' . $selector['method'] . ']: the product #'.$id.'have not the field: \'' . $target . '\' / \''.$lookin_field . '\'.', 3);
+						$shipping_class->debug_log('WAPF info, method: [' . $selector['method'] . ']: the product #'.$id.' have not the field: \'' . $target . '\' / \''.$lookin_field . '\'.', 3);
 					}
 				}
 				
@@ -477,9 +479,7 @@ if ( !class_exists( 'Fish_n_Ships_WAPF_NEW' ) ) {
 							{
 								// Looping through WAPF fields
 								foreach( $product['wapf'] as $field )
-								{
-									$shipping_class->debug_log('WAPF DEV INFO, method: [' . $selector['method'] . '], ' . $target . ': ['.$lookin_field.'], value: [' . (isset($field['value']) ? $field['value'] : 'no value key' ) . '], lookin value: [' . $wapf_equals . ']', 2);
-
+								{									
 									$field_target = $field[$target];
 
 									// Not matching the lookin field? skip it
@@ -495,30 +495,32 @@ if ( !class_exists( 'Fish_n_Ships_WAPF_NEW' ) ) {
 										if( $field_target != $lookin_field )
 											continue;
 									}
+
+									$shipping_class->debug_log('WAPF DEV INFO, method: [' . $selector['method'] . '], ' . $target . ': ['.$lookin_field.'], value: [' . (isset($field['raw']) ? $field['raw'] : 'no raw key' ) . '], lookin value: [' . $wapf_equals . ']', 3);
 									
-									// The field haven't value key? Bump it
-									if( ! isset( $field['value'] ) )
+									// The field haven't raw key? Bump it
+									if( ! isset( $field['raw'] ) )
 									{
-										$shipping_class->debug_log('WAPF info, method: [' . $selector['method'] . ']: field \'value\' unset in field ID: ' . $lookin_field, 3);
-										$result = false;
-										break 3;
+										$shipping_class->debug_log('WAPF info, method: [' . $selector['method'] . ']: field \'raw\' unset in field ID: ' . $lookin_field, 3);
+										$results[] = false;
+										break 2;
 									}
 									
 									// Value is equal?
 									if( ( $selector['method'] == 'wapf-equal-value' || $selector['method'] == 'wapf-label-equal-value' ) )
 									{
 										// We will apply the same sanitization here that we're applied to the rules input field, to ensure matching
-										$results[] = $Fish_n_Ships->sanitize_html($field['value']) == $wapf_equals;
+										$results[] = $Fish_n_Ships->sanitize_html($field['raw']) == $wapf_equals;
 									}
 
 									// Value is NOT equal?
 									if( ( $selector['method'] == 'wapf-not-equal-value' || $selector['method'] == 'wapf-label-not-equal-value' ) )
 									{
 										// We will apply the same sanitization here that we're applied to the rules input field, to ensure matching
-										$results[] = $Fish_n_Ships->sanitize_html($field['value']) != $wapf_equals; // here the logic is reverse: not equal is true
+										$results[] = $Fish_n_Ships->sanitize_html($field['raw']) != $wapf_equals; // here the logic is reverse: not equal is true
 									}
 								}
-							}
+							} // if closure, not a closing loop!!!
 						}
 
 						// if is repeteable, can be more than one result value
