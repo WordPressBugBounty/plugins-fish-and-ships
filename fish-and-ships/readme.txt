@@ -3,11 +3,11 @@ Contributors: wpcentrics
 Donate link: https://www.wp-centrics.com/
 Tags: shipping rates, table rate shipping, shipping method, table rate
 Requires at least: 4.7
-Tested up to: 6.7
+Tested up to: 6.8
 WC requires at least: 3.0
-WC tested up to: 9.7
-Stable tag: 2.0.2
-Requires PHP: 7.0
+WC tested up to: 9.8
+Stable tag: 2.0.3
+Requires PHP: 7.4
 Requires Plugins: woocommerce 
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -16,143 +16,82 @@ The all-in-one table rate shipping solution for WooCommerce. Flexible and custom
 
 == Description ==
 
-###Conditional table rate shipping methods for WooCommerce: flexible shipping rates in the simplest way.
+###Conditional table rate shipping methods for WooCommerce: flexible shipping rates that give you effortless code-like flexibility and power
 
-*Previously known as **Fish and Ships**, this plugin continues to deliver powerful and flexible shipping rules tailored to your WooCommerce store.*
+###🚀 Key Features of Advanced Shipping Rates for WooCommerce
+- **Shipping rates** based on 38 selectors
+- **Conditional shipping:** shipping rates calculation, **free shipping** or **flat rate**
+- **Group products** on conditions as option
+- **Advanced table rate:** use any combination of selectors and groups
+- **Premium features:** Packer algorithm, conditional messages, hide other methods and much more [pro]
+- Work in **your measurement units**
+- Support for **multicurrency** and 3rd party product fields plugins
 
-A **conditional table rate shipping method for WooCommerce**: It allows you to set up weight-based **shipping rates** or any other criteria such as price, volume, quantity, or category
-
-You can also configure conditional free shipping, conditional local pickup, conditional flat rate or any shipping rate.
-
-[Run live preview &rarr;](https://app.instawp.io/launch?t=advanced-shipping-rates-for-woocommerce-demo&d=v2)
-
-https://www.youtube.com/watch?v=wRsoUYiHQRY
-
-###A WooCommerce shipping method easy as eat fish and *ships*
-
-NOW WITH +60 SAMPLES READY TO USE: Choose from 25 fullcases and 38 snippets, making it easy to select and customize according to your needs.
-
-= Exact fit shipping rates for your WooCommerce shop =
-Most online shops set generic shipping rates: too much for some products and too low for others... are you?
-
-###A flexible table rate shipping where anything can be set & combined
-
-- **Conditional shipping**
-- **Free shipping** 
-- **Weight-based shipping**
-- Volume-based shipping
-- Price-based shipping
-- Cart product quantity-based shipping
-- Cart totals-based shipping [PRO]
-- Dimensions-based shipping (width, height and/or length)
-- Conditional local pickup reduced rates or free
-- Any shipping rate parcels can be set manually (not API connected)
-- Shipping rates per shipping class
-- Shipping rates per product category or tag category [PRO]
-- Built-in packer algorithm [PRO]
-- Extra fees, handling, discounts after shipping rate calculation [PRO]
-- Per user role, ZIP/Postcode and much more [PRO]
-
-...any combination, nested as needed. Really!
-
-###Setup exact shipping rates through a table rate shipping
-
-Advanced Shipping Rates for WooCommerce is a **WooCommerce table rate shipping** based method that helps you to increase sales and avoid costs losses, through an easy-to-use table rate shipping cost, with multiple conditional options (as needed).
-
-You can set multiple conditional rules on the table rate: based on price, weight, product quantity on cart, dimensions, volume, shipping class, product tag, and product category.
-
-While there are other table rate shipping calculation plugins, only **Wp-Centrics Advanced Shipping Rates for WooCommerce** allows you to add multiple criteria selections to every rule:
-
-*(condition #1 AND condition #2 AND condition #3)*, or (condition #1 OR condition #2 OR condition #3)... as you needed, on every rule!
-
-...from the simplest to the most complex selection criteria, any need can be fulfilled!
-
-= Here is the list of all selection methods: =
-
-* Price
-* Weight
-* Volume
-* Cart items
-* Min/Mid/Max dimensions
-* In shipping class
-* NOT In shipping class
-* Volumetric [PRO]
-* Length+Width+Height total [PRO]
-* Length+Girth (Length + 2*Width + 2*Height) [PRO]
-* In category [PRO]
-* NOT In category [PRO]
-* Tagged as [PRO]
-* NOT Tagged as [PRO]
-* Cart total (subtotal cart - discounts) [PRO]
-* User role: customer, subscriber, etc. [PRO]
-* Date selectors: Weekday, Day of month, Month, Year, Full date, Day of year and Time. [PRO]
-
-...Everything can be combined with AND / OR logical operator, on every rule in the table rate. [OR only on PRO]
+###⚡ Discover the Best Table Rate Shipping Plugin Now!
+**Run demo now:** Experience everything Advanced Shipping Rates for WooCommerce can do with just one click—no installation required! We've set up a **WooCommerce demo site with sample products and shipping methods**, ready for you to test and customize:
+[Run the free version demo &rarr;](https://app.instawp.io/launch?t=advanced-shipping-rates-for-wc-free-demo&d=v2)
+[Run the premium/pro version demo &rarr;](https://app.instawp.io/launch?t=advanced-shipping-rates-for-woocommerce-demo&d=v2)
 
 
-= Group by =
+###❤️ A WooCommerce Shipping Method easy as eat Fish and *Ships* *
+- **+60 Ready-to-use Samples:** Choose from 25 full cases and 38 snippets, making it easy to select and customize according to your needs.
+- **Range assistant** by price, quantity, volume, volumetric or dimensions [pro]
+- **Built-in import / export tool:** easily duplicate or move between sites shipping method configuration
+- **Built-in contextual help** and well documented docs
+- **Built-in log system** to debug / understand / get support
 
-You can establish a grouping of items in the basket before analysing the table rate conditions by following one of these strategies:
+\* *Previously known as Fish and Ships, now rebranded as **Advanced Shipping Rates for WooCommerce**. This plugin continues to deliver powerful and flexible shipping rules tailored to your WooCommerce store.*
 
-* None (every item will be analyzed alone)
-* Per ID / SKU (same item will be grouped)
-* Per product (variations will be grouped)
-* Per shipping class grouping
-* All products grouped
+###🎯 38 Combinable Selectors on your Table Rate Shipping
+= Free version of Advanced Shipping Rates includes: =
+- **9 selectors based on product:** price, weight, dimensions or volume
+- **Product-kind selectors:** shipping class / not in shipping class
+- **Advanced selectors:** cart items and number of groups
+Create complex shipping rate rules by combining multiple selectors using the **AND** operator as needed: *WHERE [condition1] AND [condition2] AND [condition3] …*
 
-= shipping rate calculation =
+= The premium version expands on the free version by adding: =
+- **4 selectors based on product:** volumetrics, combined dimensions and L+Girth
+- **Product-kind selectors:** product category and product tag
+- **Advanced selectors:** per user role, cart totals and product-specific
+- **7 Date and time selectors:** day of the week, day month, year, full date & time 
+- **Regions:** Zone region and ZIP/postcode
+- **OR operator** on complex conditions
+Create complex shipping rate rules by combining multiple selectors as needed, using the **AND/OR** operator: *WHERE [condition1] OR [condition2] OR [condition3] …*
 
-You can **calculate shipping rates** per:
+###📦 Group Products as You Need for Shipping Rates Calculation
+Group the products (or not) before passing it to the rule selectors:
+- **No grouping** (same product doesn’t matter)
+- **Grouping per ID / SKU** (group same products)
+- **Group all variations** of the same product
+- **Shipping class** grouping
+- **Group all** products into a single group
 
-* Once
-* Per cart items
-* Per products weight
-* Per price products (percentage)
-* Per matching groups (groped under your group-by option)
-* Composite: all previous methods (or what you need) together
-* Custom shipping rates for different currencies (as option)
+###🚀 Extra Power Features in Your Table Rate Shipping Methods
+Unlock the power of custom-coded shipping rules—without writing a single line of code. These advanced features take your WooCommerce shipping to the next level… all fully combinable in every table rate rule:
 
-* Extra fees, handling, discounts after shipping rate calculation [PRO]
+= Free version of Advanced Shipping Rates includes: =
+- **Conditional Free shipping**
+- **Conditional Flat rate**
+- **Conditional shipping:** disable the shipping method using Abort
+- **Multicurrency:** let the exchange rate do the job or skip it setting your custom shipping rates on each currency
+- **Basic Flow control:** Stop (ignore below rules)
+- **Basic min/max:** global calculation shipping cost
 
-###Take the control and reduce abandoned carts
+= The premium version expands on the free version by adding: =
+- **Advanced Flow control:** Skip rules conditionally, skip products on subsequent rules
+- **Advanced min/max** calculations and reset previous
+- **Volumetric support:** on selectors and range calculations
+- **User role-based:** set distinct costs or free shipping
+- **Packer algorithm:** fit the products into your pre-defined shipping boxes
+- **Hide other shipping methods** (from this plugin, WC native and third party)
+- **Auto-apply coupons** conditionally (with custom messages and more)
+- **Rename shipping method** conditionally & and add subtitle / helper text
+- **Show your messages** as WooCommerce notices does
+- **Add order notes:** add conditionally order notes if the shipping method is used.
+- **Change the cart totals messages** (when no shipping options are available)
+- **Use math expressions** / formulas for shipping rate calculation
 
-= Special Actions =
-Powerful computer coding made easy as a piece of cake, this will take you to another level on your **WooCommerce shipping**
-
-Add custom messages, rename the woocommerce shipping method or add extra info on the fly when your conditions match! here is the list of all Special Actions:
-
-* Abort shipping method 
-* Stop (ignore below rules)
-* Skip N rules [PRO]
-* Reset previous costs [PRO]
-* Set min/max rule costs [PRO]
-* Matching products skip below rules [PRO]
-* Show notice message [PRO]
-* Rename method title [PRO]
-* Add subtitle (text under title) [PRO]
-* Auto-apply coupons (with custom messages and more) [PRO]
-* Math expressions parser to calculate shipping rates [PRO]
-* Shipping boxes packer algorithm [PRO]
-* Hide shipping methods (FnS, WC native and third party) [PRO]
-* Cart total messages (when there isn't shipping options available) [PRO]
-* NEW: Order notes [PRO]
-
-...all combinable on every table rate rule.
-
-= Other shipping method options =
-
-Apart of the table rate rules, you'll find this options on the method:
-
-* Method title
-* Tax status (apply tax or not over the calculated shipping rate)
-* Global / On every condition group-by option [PRO]
-* Group-by (explained over, the options are: none, per ID/SKU, per product, per shiping class, all as one)
-* Calculation type: charge all matching rules / only the most expensive
-* Min shipping price: (if the method applies, you can set a min value cost in any case)
-* Max shipping price: (if the method applies, you can set a max value cost in any case)
-
-= Multicurrency plugins supported =
-
+###🌍 Multicurrency Shipping Rates
 * Support for the official WooCommerce multi-currency plugin: [link](https://woocommerce.com/products/multi-currency/)
 * Support for WPML+WCML MultiCurrency: [link](https://wpml.org/documentation/related-projects/woocommerce-multilingual/)
 * Support for Aelia, premium multi-currency plugin: [link](https://aelia.co/shop/currency-switcher-woocommerce/)
@@ -160,36 +99,20 @@ Apart of the table rate rules, you'll find this options on the method:
 * Support for Multi Currency for WC, freemium plugin: [link](https://wordpress.org/plugins/woo-multi-currency/)
 * Support for WP Wham Currency Switcher, freemium plugin: [link](https://wordpress.org/plugins/currency-switcher-woocommerce/)
 
-= Other 3rd party plugins supported =
-
-* Support for Plugin Republic's WooCommerce Product Add-Ons Ultimate: [link](https://pluginrepublic.com/wordpress-plugins/woocommerce-product-add-ons-ultimate/)
-* Support for StudioWombat Advanced Product Fields for WooCommerce: [link](https://wordpress.org/plugins/advanced-product-fields-for-woocommerce/)
+###🔗 Advanced Shipping Rates & 3rd Party Plugins
+* Deep integration with Plugin Republic's WooCommerce Product Add-Ons Ultimate: 
+[read about integration  &rarr;](https://www.wp-centrics.com/shipping-rates-woocommerce-product-add-ons-ultimate/)
+* Deep integration with StudioWombat Advanced Product Fields for WooCommerce: 
+[read about integration  &rarr;](https://www.wp-centrics.com/shipping-rates-advanced-product-fields/)
 * Support for WPC Product Bundles: [link](https://wordpress.org/plugins/woo-product-bundle/)
 * Support for the Skyverge Measurement Price Calculator plugin: [link](https://woocommerce.com/products/measurement-price-calculator/) [PRO]
 * Support for the plugin Uni CPO: [link](https://wordpress.org/plugins/uni-woo-custom-product-options/) 
 
-= ...and much, much more: =
+###...last questions about Advanced Shipping Rates
 
-* Free shipping support: now you can take control over zero cost shipping rates
+[Here you can read the help files &rarr;](https://www.wp-centrics.com/help/advanced-shipping-rates-wc/)
 
-* Advanced Shipping Rates for WooCommerce comes with extensvie help files and context links to it
-
-* Intuitive wizard will guide you just activate the plugin, through WooCommerce screens
-
-* It will work in your currency and measurements set in WC settings
-
-* Multilingual support using the WPML plugin (soon we will support others)
-
-* Import / export settings added: duplicate the shipping method settings or move between stage/production site in one breath [NEW]
-
-*A built-in log system to help you to learn, understand or debug any complex table rate configuration
-
-Here you can get Wp-Centrics Advanced Shipping Rates for WooCommerce Pro, the [ *Best WooCommerce Shipping Plugin* ](https://www.wp-centrics.com/)
-
-[Here you can read the help files &rarr;](https://www.wp-centrics.com/help/fish-and-ships/)
-
-
-
+[Here you can compare Free and Premium versions &rarr;](https://www.wp-centrics.com/advanced-shipping-rates-woocommerce-free-vs-pro/)
 
 = Languages =
 
@@ -202,25 +125,23 @@ Here you can get Wp-Centrics Advanced Shipping Rates for WooCommerce Pro, the [ 
 * Catalan    (plugin and help files)
 * Finnish    (plugin and help files), thanks to [Ari Koivunen](https://www.arifonts.com/)
 
+**Do you want to translate this great table rate shipping plugin?**
 
-<blockquote>
-<h4>I want to translate Advanced Shipping Rates for WooCommerce</h4>
-<p>You’re welcomed! We offer a <strong>forever license</strong> of Wp-Centrics Advanced Shipping Rates for WooCommerce Pro in exchange for plugin and help translation.</p>
-<p><a href="https://www.wp-centrics.com/contact-support/">If you’re interested, please, contact us here &rarr;</a></p>
-</blockquote>
+You’re welcomed! We offer a **forever license** of our premium plugin in exchange for your translation. If you’re interested, please, [contact us here &rarr;](https://www.wp-centrics.com/contact-support/)
 
-
-== Installation	 ==
+= Installation of Advanced Shipping Rates for WooCommerce =
 
 Can be installed as usual:
 
-1. Manual: Download from wordpress.org, unzip and upload through FTP to the /wp-content/plugins/ directory. Then go to admin plugins page and activate it.
+1. From admin plugins > add new: search “Advanced Shipping Rates for WooCommerce” or “fish and ships” and click on install button, then activate and follow the wizard.
 
-2. From admin plugins>add new page: search “Advanced Shipping Rates for WooCommerce” or “fish and ships” and click on install button, then activate.
+or
 
-= How to configure the plugin? =
+2. Manual: Download from wordpress.org, unzip and upload through FTP to the /wp-content/plugins/ directory. Then go to admin plugins page and activate it.
 
-Simply activate it, and a wizard will appear. Follow it through WooCommerce screens and you’ll get your first Advanced Shipping Rates for WooCommerce shipping method to start configure the shipping rules.
+= How to configure the shipping rules? =
+
+**Simply activate it, and a setup wizard will appear.** Just follow the steps through the familiar WooCommerce screens and choose from over 60 pre-configured samples — or start fresh with your own custom table rules.
 
 == Frequently Asked Questions ==
 
@@ -232,7 +153,7 @@ Go to plugins admin page again, and look for the link “Start: run wizard” in
 
 Advanced Shipping Rates for WooCommerce comes with context help. You can open it on any help icon (?) on the shipping method screen.
 
-However, you can see also this help in [our website help docs &rarr;](https://www.wp-centrics.com/help/fish-and-ships/).
+However, you can see also this help in [our website help docs &rarr;](https://www.wp-centrics.com/help/advanced-shipping-rates-wc/).
 
 You’ll find this link also in the admin plugins page of your site.
 
@@ -254,13 +175,13 @@ Same as flat rate or free shipping, just below:
 
 = How I configure conditional flat rate shipping? =
 
-Create a shipping method with Advanced Shipping Rates for WooCommerce. Enter to edit it, and rename as you want: Flat rate or whathever.
+Create a shipping method with Advanced Shipping Rates for WooCommerce. Enter to edit it, and rename as you want: Flat rate or whatever.
 
 Then add an unique rule, put the conditions (nested more than one if you need) and set a price with the property "once".
 
 = How I configure conditional free shipping? =
 
-Create a shipping method with Advanced Shipping Rates for WooCommerce. Enter to edit it, and rename as you want: Free shipping or whathever.
+Create a shipping method with Advanced Shipping Rates for WooCommerce. Enter to edit it, and rename as you want: Free shipping or whatever.
 
 Then add an unique rule, put the conditions (nested more than one if you need) and set a price as 0 with the property "once".
 
@@ -276,7 +197,7 @@ Advanced Shipping Rates for WooCommerce has widely tested with older and latest;
 
 * PHP: from 7.0 to current release (tested up to 8.3).
 * WordPress: from 4.7, all posterior releases (tested up to 6.7).
-* WooCommerce: from 3.0, all posterior releases (tested up to 9.6).
+* WooCommerce: from 3.0, all posterior releases (tested up to 9.7).
 * WPML: Tested the contemporary releases with the WooCommerce / WP releases.
 
 = Wp-Centrics Advanced Shipping Rates for WooCommerce Free vs Pro? =
@@ -297,12 +218,22 @@ Advanced Shipping Rates for WooCommerce has widely tested with older and latest;
 9. Group-by options
 10. Custom shipping rates for different currencies
 11. Well-documented help
-12. You can activate logs calculation for easy debug & quick support
+12. You can activate log calculations for easy debug & quick support
 13. Setting custom messages on admin (Pro)
 14. Cart with the custom messages (Pro)
 15. Apply coupons automatically (Pro)
 
+== Upgrade Notice ==
+
+Please keep Advanced Shipping Rates updated to ensure compatibility with the latest versions of WooCommerce. This also guarantees access to the latest improvements we’ve introduced for shipping cost calculations.
+
+Thank you for keeping your store up to date!
+
 == Changelog ==
+
+= 2.0.3 - 23/04/2025 =
+* Checked for WP 6.8
+* Checked for WC 9.8
 
 = 2.0.2 - 26/03/2025 =
 * Solved bug in the support of StudioWombat Advanced Product Fields (introduced in 2.0.1)
@@ -380,7 +311,7 @@ Advanced Shipping Rates for WooCommerce has widely tested with older and latest;
 = 1.5 - 11/03/2024 =
 * New samples & snippets wizard: +60 cases/samples ready to use
 * Performance: CSS and JS are loaded minfied
-* Enharced welcome/wizard: dismiss notices per each wp-admin user. Added wp-pointers
+* Enhanced welcome/wizard: dismiss notices per each wp-admin user. Added wp-pointers
 * New method: volumetric-set. Will calculate the volumetric weight for all products together (global product volume vs global weight) [PRO]
 * Checked for WordPress 6.4.3
 * Checked for WooCommerce 8.6
@@ -391,7 +322,7 @@ Advanced Shipping Rates for WooCommerce has widely tested with older and latest;
 = 1.4.17 - 11/12/2023 =
 * Checked for WordPress 6.4.2
 * Checked for WooCommerce 8.3
-
+ 
 = 1.4.16 - 29/08/2023 =
 * Checked for WordPress 6.3
 * Checked for WooCommerce 8.0
