@@ -2,7 +2,7 @@
  * Javascript for the shipping method functionality.
  *
  * @package Advanced Shipping Rates for WC
- * @version 2.0.1
+ * @version 2.1.0
  */
 
 jQuery(document).ready(function($) {
@@ -241,7 +241,7 @@ jQuery(document).ready(function($) {
 	{	
 		var data = {'version' : wcfns_data.version, 'pro' : wcfns_data.im_pro };
 		var form = $(this).closest('form');
-		
+				
 		data = json_stringify_fields( data, form, false );
 
 		$('body').append('<div id="fns_dialog"><p class="fns-tabbed">'+wcfns_data.i18n_export_ins+'</p><div class="export_wrapper">...</div></div>');
@@ -602,8 +602,9 @@ jQuery(document).ready(function($) {
 		
 		wrapper = $( '#shipping-rules-table-fns .fns-ruletype-container-' + $type );
 		
-		//add new row
-		$(wrapper).append(wcfns_data.empty_row_html);
+		// add new row
+		new_row = $(wcfns_data.empty_row_html).appendTo(wrapper);
+		$('.selectors', new_row).append(wcfns_data.empty_selector_block_html);
 		
 		// Set the rule type
 		$('tr:last', wrapper).addClass( 'fns-ruletype-' + $type ).removeClass('fns-ruletype-unknown');
@@ -764,56 +765,78 @@ jQuery(document).ready(function($) {
 			});
 		});
 
-		$("#shipping-rules-table-fns > tbody > tr").each(function(index, element) {
+		$("#shipping-rules-table-fns > tbody > tr").each(function(rule_number, element) {
 			
-			// and/or logical operator
+			// and/or/and-or-and logical operator
+			/*
 			if ( $('selection_wrapper', element) < 2 ) {
 				$('.logical_operator_wrapper').hide();
 			} else {
 				$('.logical_operator_wrapper').show();
 			}
+			*/
 			
-			// refresh helpers
-			var and_or_label = $('.logical_operator_radio:checked', element).val() == 'or' ? wcfns_data.i18n_or :  wcfns_data.i18n_and;
-			$(".helper", element).each(function(idx, helper) {
-				$(helper).html(idx == 0 ? wcfns_data.i18n_where : and_or_label );
+			logical_operator = $('.logical_operator_radio:checked', element).val() || 'and';
+			
+			// refresh helpers (and-or-and falls well to AND here)
+			$('.block_selectors', element).each( function(blockidx, block_container) {
+				var and_or_label = logical_operator == 'or' ? wcfns_data.i18n_or :  wcfns_data.i18n_and;
+				$(".helper", block_container).each(function(idx, helper) {
+					$(helper).html(idx == 0 ? wcfns_data.i18n_where : and_or_label );
+				});
 			});
 			
 			// when there are only one selector on a rule, they can't be erased (only in the selection column!!)
 			$(".selection-rules-column .delete", element).css('display', $(".selection-rules-column .delete", element).length == 1 ? 'none' : 'block');
 
 			// the same criterion will show/hide the and/or logical operator)
-			$(".selection-rules-column .field-logical_operator", element).css('display', $(".selection-rules-column .delete", element).length == 1 ? 'none' : 'inline-block');
+			// for and/or, but always visible for and-or-and
+			show = logical_operator == 'and-or-and' || $(".selection-rules-column .delete", element).length > 1;
+			$(".selection-rules-column .field-logical_operator", element).css('display', show ? 'inline-block' : 'none' );
 			
 			// rename the fields (rule number, first occurrence)
 			$('input, select, textarea', element).each(function(idx, field) {
 				var fieldname = $(field).attr('name');
 				// select2 create fields without name!
 				if (typeof(fieldname) != 'undefined') {
-					$(field).attr('name', fieldname.replace(/\[[0-9]+\]/, '['+index+']'));
+					$(field).attr('name', fieldname.replace(/\[[0-9]+\]/, '['+rule_number+']'));
 				}
 			});
+			
 
 			// second match for selections
-			//$(".selection_details", element).each(function(index_det, element_det) {
-			$(".selection_wrapper", element).each(function(index_det, element_det) {
+			$(".fns-selector-block", element).each(function(block_number, block_wrapper) // on and/or rules, there is only one selector block
+			{
+				$(".selection_wrapper", block_wrapper).each(function(sel_number, selector_wrapper)
+				{
+					// rename the fields (selection number, the second occurrence)
+					$('input, select, textarea', selector_wrapper).each(function(idx_det, field_det) {
+						var fieldname = $(field_det).attr('name');
+						
+						// select2 create fields without name!
+						if (typeof(fieldname) != 'undefined') {
 
-				// rename the fields (selection number, the second occurrence)
-				$('input, select, textarea', element_det).each(function(idx_det, field_det) {
-					var fieldname = $(field_det).attr('name');
-					
-					// select2 create fields without name!
-					if (typeof(fieldname) != 'undefined') {
-						t=0;
-						$(field_det).attr('name', fieldname.replace(/\[[0-9]*\]/g, function (match) {
-							t++;
-							if (t==2) return '['+index_det+']'
-							//if (t!=1) console.log('Fish n Ships: error on replacement key number (selection)');
-							return match;
-						}));
-					}
+							// Remove the block selector index (if it is there):
+							fieldname = fieldname.replace(/\[sel\]\[\d+\](?=\[)/, '[sel]');
+
+							t=0;
+							fieldname = fieldname.replace(/\[[0-9]*\]/g, function (match) {
+								t++;
+								console.log('posareeeem: ' + sel_number);
+								if (t==2) return '['+sel_number+']'
+								return match;
+							});
+							
+							// Add the block selector index (if needed)
+							if( logical_operator == 'and-or-and' )
+								fieldname = fieldname.replace('[sel]', '[sel]['+block_number+']');
+
+							$(field_det).attr( 'name', fieldname );
+						}
+					});
 				});
 			});
+			
 			// second match for actions
 			//$(".action_details", element).each(function(index_det, element_det) {
 			$(".action_wrapper", element).each(function(index_det, element_det) {
@@ -973,16 +996,33 @@ jQuery(document).ready(function($) {
 	
 	/* Add new selection condition */
 	$('#shipping-rules-table-fns > tbody').on('click', '.add-selector .button', function () {
+		
 		var cont = $(this).closest('td');
-		$('.selectors', cont).append(wcfns_data.new_selection_method_html);
+
+		// Add OR block
+		if( $(this).hasClass('add_selector_or_block_bt') )
+		{
+			$(wcfns_data.empty_selector_block_html).appendTo( $('.selectors', cont) );
+			target = $('.block_selectors:last', cont);
+		}
+		// Add AND inside the OR block
+		else if( $(this).hasClass('add_selector_and_block_bt') )
+		{
+			target = $('.block_selectors:first', $(this).closest('.fns-selector-block') );
+		}
+		// ADD selector inside unique block_selectors (AND/OR mode)
+		else
+		{
+			target = $('.block_selectors:last', cont);
+		}
+		
+		hi = $(wcfns_data.new_selection_method_html).appendTo( target );
 		
 		//Mark background in yellow and fadeout
-		$('.selection_wrapper:last', cont)
-			.addClass('animate-bg');
+		$(hi).addClass('animate-bg');
 		setTimeout(function() {
-			$('.selection_wrapper:last', cont).removeClass('animate-bg');
+			$(hi).removeClass('animate-bg');
 		}, 50);
-
 
 		unsaved = true;
 		refresh_rules();
@@ -993,14 +1033,22 @@ jQuery(document).ready(function($) {
 	/* Delete selection condition */
 	$('#shipping-rules-table-fns > tbody').on('click', '.selection_wrapper .delete', function () {
 		
-		//$(this).closest('.selection_wrapper').remove();
+		cont = $(this).closest('.fns-selector-block');
+		if( $('.selection_wrapper', cont).length == 1 )
+		{
+			target = cont; // delete the entire block
+		}
+		else
+		{
+			target = $(this).closest('.selection_wrapper'); // delete only this selection wrapper
+		}
 
 		// Mark red, fadeout and then remove and refresh
-		$(this).closest('.selection_wrapper')
+		$(target)
 		
 			.css('background', '#c91010')
-			.fadeOut(function () {
-
+			.fadeOut(function ()
+			{
 				$(this).remove();
 				refresh_rules();
 			});
@@ -1322,14 +1370,62 @@ jQuery(document).ready(function($) {
 		// $('.wc_fns_input_tip', field_container).attr('data-wc-fns-tip', 'i18n_' + input_field + '_val_info_' + what)
 	}
 	
-	// AND / OR radio control: referesh saved value and call refresh_rules()
-	$('#shipping-rules-table-fns').on('click', '.logical_operator_radio', function() {
+	// logical operator switching control:
+	// store new value, refactor the selector blocks if needed and call refresh_rules() 
+	$('#shipping-rules-table-fns').on('click', '.logical_operator_radio', function()
+	{
+		new_value  = $(this).attr('value');
+		old_value  = 'unknown';
+		
 		var wrap = $(this).closest('.logical_operator_wrapper');
-		$('input:radio', wrap).each(function(index, element) {
+		$('input:radio', wrap).each(function(index, element)
+		{
+			if( $(element).attr('data-save') == '1' ) 
+				old_value = $(element).attr('value');
+			
 			$(element).attr('data-save', $(element).is(':checked') ? '1' : '0');
 		});
+		
+		if( old_value == 'and-or-and' && ( new_value == 'and' || new_value == 'or' ) )
+		{
+			sel_wrapper = $(this).closest('td');
+			if( $('.fns-selector-block', sel_wrapper ).length > 1 )
+			{
+				first   = $('.block_selectors:first', sel_wrapper ).first();
+				others  = $('.block_selectors', sel_wrapper ).not(first);
+				
+				$(others).children().appendTo(first);
+				$(others).remove();
+				
+				// Only the last pair of elements will remain:
+				$('.fns-selector-block', sel_wrapper).not(':first').remove();
+			}
+		}
+		
+		if( old_value == 'or' && new_value == 'and-or-and' )
+		{
+			sel_wrapper = $('.selectors', $(this).closest('td') );
+			if( $('.selection_wrapper', sel_wrapper ).length > 1 )
+			{
+				$('.selection_wrapper', sel_wrapper ).not(':first').each( function(idx, to_move)
+				{
+					// Add an empty selector block
+					cont   = $(wcfns_data.empty_selector_block_html).appendTo( sel_wrapper );
+					target = $('.block_selectors:last', cont);
+					
+					$(to_move).appendTo( target );
+				});
+			}
+		}
+		
+		// Update class in TR wrapper
+		$(this).closest('tr')
+			.removeClass('fns-logic_and-or-and fns-logic_and fns-logic_or')
+			.addClass('fns-logic_' + new_value);
+		
 		refresh_rules();
 	});
+	
 	$('#shipping-rules-table-fns').on('mousedown', '.logical_operator_radio', function() {
 		if ($(this).attr('readonly') == 'readonly') {
 			show_help( 'pro', false, wcfns_data['admin_lang'] );

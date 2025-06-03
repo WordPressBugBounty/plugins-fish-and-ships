@@ -5,7 +5,7 @@
  *
  * @package Fish and Ships
  * @since 2.0.1
- * @version 2.0.2
+ * @version 2.1.0
  */
  
 defined( 'ABSPATH' ) || exit;
@@ -652,19 +652,36 @@ if ( !class_exists( 'Fish_n_Ships_WAPF_NEW' ) ) {
 							// Check for supported types for min-max methods based on value (all types can be used to min/max price)
 							$supported_types = array( 'number', 'calc' );
 							
-							if( ( $what == 'wapf-min-max-value' || $what == 'wapf-label-min-max-value' ) && ! in_array( $field['type'], $supported_types ) )
+							// 2.1.0 patch: not always the field type is here!
+							if( isset( $field['type'] ) )
 							{
-								$external = array(
-												'value'       => 0,
-												'item_value'  => 'WAPF ERROR: unsupported type: [' . $field['type'] . ']: 0'
-								);
-								return $external;
+								if( ( $what == 'wapf-min-max-value' || $what == 'wapf-label-min-max-value' ) && ! in_array( $field['type'], $supported_types ) )
+								{
+									$external = array(
+													'value'       => 0,
+													'item_value'  => 'WAPF ERROR: unsupported type: [' . $field['type'] . ']: 0'
+									);
+									return $external;
+								}
+							}
+							
+							// 2.1.0 patch: not always $field contains a values array!
+							if( isset($field['values']) && isset($field['values'][0]) )
+							{
+								$unique_field = $field['values'][0]; // Unique way before 2.1.0
+							}
+							else
+							{
+								$unique_field = array(
+													'type'          => ! empty( $field['type'] ) ? $field['type'] : 'Unknown',
+													$looking_index  => ! empty( $field['raw']  ) ? $field['raw']  : 0,
+												);
 							}
 															
-							if( isset( $field['values'][0][$looking_index] ) )
+							if( ! empty( $unique_field[$looking_index] ) )
 							{
-								$values[]       = $field['values'][0][$looking_index];
-								$item_values[]  = 'field found [' . $field['type'] . '], value: ' . $field['values'][0][$looking_index];
+								$values[]       = $unique_field[$looking_index];
+								$item_values[]  = 'field found [' . $unique_field['type'] . '], value: ' . $unique_field[$looking_index];
 								$clone_type     = isset( $field['clone_type'] ) ? $field['clone_type'] : '';
 							}
 							else
@@ -689,7 +706,7 @@ if ( !class_exists( 'Fish_n_Ships_WAPF_NEW' ) ) {
 					else if( count($values) == 1 )
 					{
 						$external = array(
-										'value'       => $values[0] * $qty,
+										'value'       => floatval($values[0]) * $qty,
 										'item_value'  => $item_values[0]
 						);
 					}

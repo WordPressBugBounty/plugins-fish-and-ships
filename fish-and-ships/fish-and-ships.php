@@ -3,7 +3,7 @@
  * Plugin Name: Advanced Shipping Rates for WooCommerce
  * Plugin URI: https://www.wp-centrics.com/
  * Description: The most flexible and all-in-one table rate shipping plugin. Previously named "Fish and Ships"
- * Version: 2.0.3
+ * Version: 2.1.0
  * Author: wpcentrics
  * Author URI: https://www.wp-centrics.com
  * Text Domain: fish-and-ships
@@ -12,7 +12,7 @@
  * Tested up to: 6.8
  * WC requires at least: 3.0
  * WC tested up to: 9.8
- * Requires PHP: 7.4
+ * Requires PHP: 7.0
  * Requires Plugins: woocommerce 
  * License: GPLv2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -42,7 +42,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 
 } else {
 
-	define ('WC_FNS_VERSION', '2.0.3' );
+	define ('WC_FNS_VERSION', '2.1.0' );
 	define ('WC_FNS_PATH', dirname(__FILE__) . '/' );
 	define ('WC_FNS_URL', plugin_dir_url( __FILE__ ) );
 
@@ -386,7 +386,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		 * Check if method is known
 		 *
 		 * @since 1.0.0
-		 * @version 1.1.9
+		 * @version 2.1.0
 		 *
 		 * @param $type (string)
 		 * @param $method_id (string)
@@ -445,7 +445,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 
 				case 'logical operator' :
 
-					if ( in_array($method_id, array('or', 'and') ) ) {
+					if ( in_array($method_id, array('or', 'and', 'and-or-and') ) ) {
 						if ( $this->im_pro() || $method_id == 'and' ) return true;
 						
 						return sprintf('Warning: The %s method [%s]: only is supported in the Advanced Shipping Rates for WooCommerce PRO version', $type, $method_id);
@@ -464,7 +464,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		 * Gives the columns for a rule table row
 		 *
 		 * @since 1.0.0
-		 * @version 1.4.0
+		 * @version 2.1.0
 		 *
 		 * return an array with the indexes: 
 		 
@@ -483,7 +483,10 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 			$cells['special-actions-column'] = array('class' => 'special-actions-column');
 			$cells['column-handle'] = array('class' => 'handle column-handle', 'content');
 		
-			$cells['selection-rules-column']['content'] = '<div class="selectors">[selectors]</div><div class="add-selector"><a href="#" class="button button-small add_selector_bt"><span class="dashicons dashicons-plus"></span> ' . esc_html__('Add a selector', 'fish-and-ships') . '</a>[logical_operators]</div>';
+			$cells['selection-rules-column']['content']  = '<div class="selectors">[selectors]</div><div class="add-selector">'
+														 . '<a href="#" class="button button-small add_selector_bt"><span class="dashicons dashicons-plus"></span> ' . esc_html__('Add a selector', 'fish-and-ships') . '</a>'
+														 . '<a href="#" class="button button-small add_selector_or_block_bt"><span class="dashicons dashicons-plus"></span> ' . _x('OR', 'VERY shorted, logic operator (maybe better leave in english)', 'fish-and-ships') . '</a>'
+														 . '[logical_operators]</div>';
 
 			$cells['shipping-costs-column']['content'] = '<p class="fns-extra-rule-helper">' . esc_html__('Extra Rule, will be parsed after shipping rate calculation. It does not use cost fields, please use the special actions', 'fish-and-ships') . '&nbsp;<span class="dashicons dashicons-arrow-right-alt"></span></p>' . 
 														  '[cost_input_fields] [cost_method_field]';
@@ -1359,7 +1362,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		 * Sanitize the shipping rules from the admin options form (save)
 		 *
 		 * @since 1.0.0
-		 * @version 1.5.8
+		 * @version 2.1.0
 		 *
 		 * @param $raw_shipping_rules raw stuff from the $_POST object
 		 *
@@ -1401,42 +1404,45 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 						$rule_type = $this->sanitize_allowed( $raw_rule['type'], array('normal', 'extra') );
 					}
 
+					$logical_operator = 'and'; // fallback
+					if( isset( $raw_rule['sel']['logical_operator'] ) ) {
+						$logical_operator = $this->sanitize_allowed( $raw_rule['sel']['logical_operator'][0], array('and', 'or', 'and-or-and') );
+					}
+
 					/*************** Selection rules ****************/
-					$rule_sel  = array();
-					$sel_nr    = 0;
 
-					foreach ($raw_rule['sel'] as $key=>$sel) {
+					if( $logical_operator == 'and' || $logical_operator == 'or' )
+					{
+						$rule_sel = $this->sanitize_selection_block( $raw_rule['sel'], 1 );
+					}
+
+					if( $logical_operator == 'and-or-and' )
+					{
+						$rule_sel  = array();
 						
-						$values = array();
+						foreach ($raw_rule['sel'] as $key=>$selection_block) 
+						{
 
-						// Only key numbers are really selectors
-						if ($key === intval($key)) {
+							// Only key numbers are really selectors
+							if ($key === intval($key))
+							{
 							
-							$sel = sanitize_key( $sel );
-							
-							if (isset($raw_rule['sel'][$sel]) && is_array($raw_rule['sel'][$sel])) {
-								foreach ($raw_rule['sel'][$sel] as $field=>$array_val) {
-
-									$field = sanitize_key( $field );
-									
-									if (isset($array_val[$sel_nr])) $values[$field] = $array_val[$sel_nr];
+								$block_sanitized = $this->sanitize_selection_block( $selection_block, 2 );
+						
+								$rule_sel[] = array(
+												'method'  => 'and-or-and-advice', // Just for deprecated advice on previous 2.1 releases
+												'values'  => array('legacy' => 'prevent php warning'),
+												'block'   => $block_sanitized
+											  );
+							} else {
+						
+								// Also the new logical_operator field is valid (since 1.1.9)
+								$key = sanitize_key( $key );
+								$sanitized = apply_filters('wc_fns_sanitize_selection_operators', array('method' => $key, 'values' => $selection_block), 1 );
+								if (false !== $sanitized) {
+									if ( !isset($rule_sel['operators']) ) $rule_sel['operators'] = array();
+									$rule_sel['operators'][] = $sanitized;
 								}
-							}
-							
-							//Sanitize the selector auxiliary fields
-							$sanitized = apply_filters('wc_fns_sanitize_selection_fields', array('method' => $sel, 'values' => $values) );
-							if (false !== $sanitized) $rule_sel[] = $sanitized;
-
-							$sel_nr++; //Start counting in 0
-						
-						} else {
-						
-							// Also the new logical_operator field is valid (since 1.1.9)
-							$key = sanitize_key( $key );
-							$sanitized = apply_filters('wc_fns_sanitize_selection_operators', array('method' => $key, 'values' => $sel) );
-							if (false !== $sanitized) {
-								if ( !isset($rule_sel['operators']) ) $rule_sel['operators'] = array();
-								$rule_sel['operators'][] = $sanitized;
 							}
 						}
 					}
@@ -1554,6 +1560,61 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 			return $result;
 		}
 
+
+		/**
+		 * Sanitize selection block (save). 
+		 * The new and-or-and selector structure needs recursive sanitization, here is:
+		 *
+		 * @since 2.1.0
+		 *
+		 * @param $selection_block raw selection block from the $_POST object
+		 *
+		 * @return sanitizied info (array)
+		 */
+
+		function sanitize_selection_block( $selection_block, $deep )
+		{
+			$sel_nr     = 0;
+			$block_sel  = array();
+			
+			foreach( $selection_block as $key=>$sel )
+			{	
+				$values = array();
+
+				// Only key numbers are really selectors
+				if ($key === intval($key)) {
+					
+					$sel = sanitize_key( $sel );
+					
+					if (isset($selection_block[$sel]) && is_array($selection_block[$sel])) {
+						foreach ($selection_block[$sel] as $field=>$array_val) {
+
+							$field = sanitize_key( $field );
+							
+							if (isset($array_val[$sel_nr])) $values[$field] = $array_val[$sel_nr];
+						}
+					}
+					
+					//Sanitize the selector auxiliary fields
+					$sanitized = apply_filters('wc_fns_sanitize_selection_fields', array('method' => $sel, 'values' => $values) );
+					if (false !== $sanitized) $block_sel[] = $sanitized;
+
+					$sel_nr++; //Start counting in 0
+				
+				} else {
+				
+					// Also the new logical_operator field is valid (since 1.1.9)
+					$key = sanitize_key( $key );
+					$sanitized = apply_filters('wc_fns_sanitize_selection_operators', array('method' => $key, 'values' => $sel), $deep );
+					if (false !== $sanitized) {
+						if ( !isset($block_sel['operators']) ) $block_sel['operators'] = array();
+						$block_sel['operators'][] = $sanitized;
+					}
+				}
+			}
+			return $block_sel;
+		}
+		
 		/**
 		 * Sanitize the field, should be in the array of allowed values
 		 *
@@ -2559,23 +2620,48 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		}
 
 		/**
-		 * Get the logical operator AND / OR.
+		 * Get selection wrapper, needed for the new and-or-and structure
 		 *
-		 * The operator can be AND or OR. AND for legacy before 1.1.9
+		 * @since 2.1.0
+		 *
+		 * @return html
+		 */
+		function get_empty_selector_block_html()
+		{
+			$html	= '<div class="fns-selector-block"><div class="block_selectors">'
+					. '[selector_block]'
+					. '</div><div class="add-selector"><a href="#" class="button button-small add_selector_and_block_bt"><span class="dashicons dashicons-plus"></span> AND</a></div>'
+					. '<div class="or-info"><span>' . _x('OR', 'VERY shorted, logic operator (maybe better leave in english)', 'fish-and-ships') . '</span></div>'
+					. '</div>';
+
+			return $html;
+		}
+
+		/**
+		 * Get the logical operator AND / OR / AND-OR-AND.
+		 *
+		 * Before 2.1 the operator can be AND or OR. 
+		 * Before 1.1.9 the operatpr can be only AND, so it will be AND for legacy
 		 *
 		 * @since 1.1.9
+		 * @version 2.1.0
 		 *
 		 * @param array $shipping rule
 		 *
-		 * @return and | or
+		 * @return and | or | and-or-and
 		 */
 		public function get_logical_operator($shipping_rule) {
 			$logical_operator = 'and';
 			if ( isset($shipping_rule['sel']['operators']) && is_array($shipping_rule['sel']['operators']) ) {
 				foreach ($shipping_rule['sel']['operators'] as $operator) {
-					if ( isset($operator['method']) && $operator['method'] == 'logical_operator' ) {
+					if ( isset($operator['method']) && $operator['method'] == 'logical_operator' )
+					{
 						if ( isset($operator['values']) && $operator['values'] === array('or') ) {
 							$logical_operator = 'or';
+							break;
+						}
+						if ( isset($operator['values']) && $operator['values'] === array('and-or-and') ) {
+							$logical_operator = 'and-or-and';
 							break;
 						}
 					}
@@ -2588,9 +2674,10 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		 * Get the logical operator HTML interface
 		 *
 		 * @since 1.1.9
+		 * @version 2.1.0
 		 *
 		 * @param $rule_nr (integer) rule ordinal (starting 0)
-		 * @param $values expected and | or
+		 * @param $values expected and | or | and-or-and
 		 * @param $shipping_method_class (class)
 		 *
 		 * @return $html (HTML code) form code for the selector
@@ -2604,7 +2691,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 			// Since 1.1.9, the operator can be AND or OR. AND for legacy
 			$logical_operator = $this->get_logical_operator($shipping_rule);
 
-			// For legacy: before 1.1.9, always be AND
+			// For legacy: before 1.1.9, always be AND, since 2.1 can be and-or-and also
 			//$value = $values === array('or') ? 'or' : 'and';
 
 			$html =   '<span class="field field-logical_operator selection-logical_operator">' . esc_html_x('Logic:', 'shorted, label for logical operator AND/OR', 'fish-and-ships') . ' <a class="woocommerce-help-tip" data-tip="' . esc_attr__('Logical operator: Products on cart that match with all (AND logic) or at least one (OR logic) criteria.', 'fish-and-ships') . ' "></a> <span class="logical_operator_wrapper">'
@@ -2613,6 +2700,10 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 
 					. '<input type="radio" name="shipping_rules[' . $rule_nr . '][sel][logical_operator][]" value="or" data-save=' . ($logical_operator == 'or' ? '"1" checked' : '"0"') . ' class="logical_operator_radio ' . ( !$this->im_pro() ? ' disabled' : '') . '"' . ( !$this->im_pro() ? ' readonly' : '') . '> ' 
 					. _x('OR', 'VERY shorted, logic operator (maybe better leave in english)', 'fish-and-ships') . ( !$this->im_pro() ? ' [PRO]' : '')
+
+					. '<input type="radio" name="shipping_rules[' . $rule_nr . '][sel][logical_operator][]" value="and-or-and" data-save=' . ($logical_operator == 'and-or-and' ? '"1" checked' : '"0"') . ' class="logical_operator_radio ' . ( !$this->im_pro() ? ' disabled' : '') . '"' . ( !$this->im_pro() ? ' readonly' : '') . '> ' 
+					. _x('(AND) OR (AND)...', 'VERY shorted, logic operator (maybe better leave in english)', 'fish-and-ships') . ( !$this->im_pro() ? ' [PRO]' : '')
+
 					. '</span></span>';
 					
 			return $html;

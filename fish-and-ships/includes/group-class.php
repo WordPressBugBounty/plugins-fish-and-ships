@@ -7,7 +7,7 @@
  *
  * @package Advanced Shipping Rates for WC
  * @since 1.0.0
- * @version 2.0.1
+ * @version 2.1.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -94,6 +94,26 @@ class Fish_n_Ships_group {
 		}
 		$this->reset_totals();
 		if ($is_change) $this->changed = true;
+	}
+
+	// Function used for group merging (in and-or-and selection)
+	public function merge_elements_list($elements_list, $is_change = true) {
+		
+		foreach( $elements_list as $key => $element )
+		{
+			if( ! isset( $this->elements[$key] ) )
+			{
+				$this->elements[$key] = $element;
+				if ($is_change) $this->changed = true;
+				$this->reset_totals();
+			}
+			elseif( $this->elements[$key]['to_ship'] < $element['to_ship'] )
+			{
+				$this->elements[$key]['to_ship'] = $element['to_ship'];
+				if ($is_change) $this->changed = true;
+				$this->reset_totals();
+			}
+		}
 	}
 	
 	/**

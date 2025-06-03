@@ -3,7 +3,7 @@
  * The Javascript data object. 
  *
  * @package Advanced Shipping Rates for WC
- * @version 2.0
+ * @version 2.1.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -39,7 +39,7 @@ $actions = apply_filters('wc_fns_get_actions', array());
 								$empty_row['shipping-costs-column']['content']);
 
 
-	$wrapper = array ( 'class' => 'fns-ruletype-unknown' );
+	$wrapper = array ( 'class' => 'fns-ruletype-unknown fns-logic_and' ); // AND logic by default
 
 	//...and parse it as HTML
 	$empty_row = apply_filters('wc_fns_shipping_rules_table_row_html', array( 'wrapper' => $wrapper, 'cells' => $empty_row ) ); 
@@ -52,6 +52,7 @@ $data = array(
 	'version' => WC_FNS_VERSION,
 	'im_pro' => $Fish_n_Ships->im_pro(),
 	'empty_row_html' => $empty_row,
+	'empty_selector_block_html' => str_replace('[selector_block]', '', $Fish_n_Ships->get_empty_selector_block_html() ),
 	'decimal_separator' => wc_get_price_decimal_separator(),
 	'new_selection_method_html' => str_replace('[selection_details]', '', $Fish_n_Ships->get_selector_method_html(0, $selection_methods)),
 	'new_action_html' => str_replace('[action_details]', '', $Fish_n_Ships->get_action_method_html(0, $actions)),

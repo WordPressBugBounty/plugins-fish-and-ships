@@ -1,24 +1,29 @@
-﻿=== Wp-Centrics Advanced Shipping Rates for WooCommerce - Previously "Fish and Ships" ===
+﻿=== Advanced Shipping Rates for WooCommerce: Flexible Table Rate Shipping Rules ===
+
 Contributors: wpcentrics
 Donate link: https://www.wp-centrics.com/
-Tags: shipping rates, table rate shipping, shipping method, table rate
+Tags: shipping rates, table rate shipping, table rate, shipping rules
 Requires at least: 4.7
 Tested up to: 6.8
 WC requires at least: 3.0
 WC tested up to: 9.8
-Stable tag: 2.0.3
-Requires PHP: 7.4
+Stable tag: 2.1.0
+Requires PHP: 7.0
 Requires Plugins: woocommerce 
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The all-in-one table rate shipping solution for WooCommerce. Flexible and customisable shipping rates for any store's shipping needs.
+All-in-one Table Rate Shipping: set flexible rules, offer conditional free shipping, define rates by weight, size, volume, volumetric calculations...
 
 == Description ==
 
-###Conditional table rate shipping methods for WooCommerce: flexible shipping rates that give you effortless code-like flexibility and power
+###Build advanced Table Rate Shipping rules based on weight, size, volume, or custom conditions – set up your exact shipping rates without coding.
 
-###🚀 Key Features of Advanced Shipping Rates for WooCommerce
+https://www.youtube.com/watch?v=wRsoUYiHQRY
+
+\* *Previously known as *Fish and Ships*, now rebranded as **Advanced Shipping Rates for WooCommerce**. This plugin continues to deliver powerful and flexible shipping rules tailored to your WooCommerce store.*
+
+###🚀 Key Features
 - **Shipping rates** based on 38 selectors
 - **Conditional shipping:** shipping rates calculation, **free shipping** or **flat rate**
 - **Group products** on conditions as option
@@ -32,15 +37,12 @@ The all-in-one table rate shipping solution for WooCommerce. Flexible and custom
 [Run the free version demo &rarr;](https://app.instawp.io/launch?t=advanced-shipping-rates-for-wc-free-demo&d=v2)
 [Run the premium/pro version demo &rarr;](https://app.instawp.io/launch?t=advanced-shipping-rates-for-woocommerce-demo&d=v2)
 
-
 ###❤️ A WooCommerce Shipping Method easy as eat Fish and *Ships* *
 - **+60 Ready-to-use Samples:** Choose from 25 full cases and 38 snippets, making it easy to select and customize according to your needs.
 - **Range assistant** by price, quantity, volume, volumetric or dimensions [pro]
 - **Built-in import / export tool:** easily duplicate or move between sites shipping method configuration
 - **Built-in contextual help** and well documented docs
 - **Built-in log system** to debug / understand / get support
-
-\* *Previously known as Fish and Ships, now rebranded as **Advanced Shipping Rates for WooCommerce**. This plugin continues to deliver powerful and flexible shipping rules tailored to your WooCommerce store.*
 
 ###🎯 38 Combinable Selectors on your Table Rate Shipping
 = Free version of Advanced Shipping Rates includes: =
@@ -230,6 +232,10 @@ Please keep Advanced Shipping Rates updated to ensure compatibility with the lat
 Thank you for keeping your store up to date!
 
 == Changelog ==
+
+= 2.1.0 - 02/06/2025 =
+* Better support for the free version of StudioWombat Advanced Product Fields
+* Complex selections with (AND) OR (AND) structures (pro version)
 
 = 2.0.3 - 23/04/2025 =
 * Checked for WP 6.8

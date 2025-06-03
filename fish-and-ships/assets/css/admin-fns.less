@@ -3,7 +3,7 @@
  *
  * @package Advanced Shipping Rates for WC
  * @since 1.1.12
- * @version 2.0
+ * @version 2.1.0
  */
 
 /*************************************************
@@ -389,11 +389,65 @@ div.add-action {
 	display: none;
 }
 .css-conditions-table-fns .logical_operator_radio {
-	margin-left: 10px;
-	margin-right: 0;
+	margin: -0.25rem 0 0 12px !important;
 }
 .css-conditions-table-fns input.disabled {
 	opacity:0.5;
+}
+
+/* and/or | and-or-and stuff: hide/show buttons, etc */
+
+.fns-logic_and-or-and .add_selector_bt {
+	display: none;
+}
+.fns-logic_or,
+.fns-logic_and {
+	.or-info,
+	.add_selector_or_block_bt,
+	.fns-selector-block .add-selector {
+		display: none;
+	}
+}
+
+.or-info {
+	
+	position: relative;
+	text-align: center;
+	
+	span {
+		color: #0173a7;
+		font-weight: bold;
+	}
+	&:after,
+	&:before {
+		position: absolute;
+		left: -35px;
+		width: ~"calc(50% + 15px)";
+		height: 1px;
+		content: '';
+		display: block;
+		overflow: hidden;
+		background: #0173a7;
+		top: 10px;
+	}
+	&:after {
+		left: auto;
+		right: -10px;
+		width: ~"calc(50% - 10px)";
+	}
+}
+
+.fns-selector-block:last-child .or-info {
+	span {
+		opacity: 0;
+	}
+	&:after {
+		display: none;
+	}
+	&:before {
+		width: auto;
+		right: -10px;
+	}
 }
 
 /* costs */
@@ -543,12 +597,19 @@ a.button.wc-fns-export {
 .css-conditions-table-fns .order-number {
 	line-height:3em;
 }
-.css-conditions-table-fns .selection_wrapper .delete,
-.css-conditions-table-fns .action_wrapper .delete {
-	position:absolute;
-	right:0;
-	top:0;
-	line-height:18px;
+.css-conditions-table-fns {
+	.selection_wrapper .delete,
+	.action_wrapper .delete {
+		position:absolute;
+		right:0;
+		top:0;
+		line-height:18px;
+		color: #aaa;
+	}
+	.selection_wrapper .delete:hover,
+	.action_wrapper .delete:hover {
+		color: #d00;
+	}
 }
 .css-conditions-table-fns .field-group_by {
 	display:none;

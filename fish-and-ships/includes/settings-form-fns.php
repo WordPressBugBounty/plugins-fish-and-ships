@@ -3,7 +3,7 @@
  * The Pluggable table rules stuff 
  *
  * @package Advanced Shipping Rates for WC
- * @version 2.0.1
+ * @version 2.1.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -332,16 +332,18 @@ function wc_fns_sanitize_selection_fields_fn($rule_sel) {
  * Filter to sanitize the selection operators
  *
  * @since 1.1.9
+ * @version 2.1.0
  *
  * @param $rule_sel (array) 
+ * @param $deep (integer) added in 2.1.0
  *
  * @return $rule_sel sanitized (array) or false
  *
  */
 
-add_filter('wc_fns_sanitize_selection_operators', 'wc_fns_sanitize_selection_operators_fn', 10, 1);
+add_filter('wc_fns_sanitize_selection_operators', 'wc_fns_sanitize_selection_operators_fn', 10, 2);
 
-function wc_fns_sanitize_selection_operators_fn($rule_sel) {
+function wc_fns_sanitize_selection_operators_fn( $rule_sel, $deep=1 ) {
 
 	//Prior failed?
 	if (!is_array($rule_sel)) return $rule_sel;
@@ -355,8 +357,12 @@ function wc_fns_sanitize_selection_operators_fn($rule_sel) {
 		case 'logical_operator':
 			
 			// Only one AND or OR is allowed, and we will give legacy support (always AND before 1.1.9)
-			if ( $rule_sel['values'] !== array('or') )  $rule_sel['values'] = array('and');
-			break;
+			if( $rule_sel['values'] !== array('or') && $rule_sel['values'] !== array('and-or-and') ) 
+				$rule_sel['values'] = array('and');
+			
+			// In nested conditions (by now, only and-or-and) only AND are allowed in 2nd level
+			if( $deep > 1 ) $rule_sel['values'] = array('and');
+						break;
 	}
 
 	return $rule_sel;

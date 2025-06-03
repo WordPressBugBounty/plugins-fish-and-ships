@@ -1,21 +1,20 @@
 <?php
 /**
  * The Shipping rules table. 
+ * This file runs inside the shipping class, generate_shipping_rules_table_html()
  *
  * @package Advanced Shipping Rates for WC
  * @since 1.0.0
- * @version 2.0.1
+ * @version 2.1.0
  */
  
 defined( 'ABSPATH' ) || exit;
 
 global $Fish_n_Ships, $Fish_n_Ships_Wizard;
 
-$errors = array();
-
 // Global Group by is a must in the free version
 if ( $this->global_group_by == 'no' && !$Fish_n_Ships->im_pro()  ) {
-	$errors['global-group-by'] = 'Error: Only the Pro version allow distinct grouping criteria on every selection condition';
+	$this->config_errors['global-group-by'] = 'Error: Only the Pro version allow distinct grouping criteria on every selection condition';
 }
 
 // Table header, used also on footer
@@ -53,7 +52,7 @@ $html .= '<table class="widefat striped css-conditions-table-fns ltr-text-direct
 ';
 
 // Let's load once the selection methods and actions
-$selection_methods = apply_filters('wc_fns_get_selection_methods', array());
+$this->selection_methods = apply_filters('wc_fns_get_selection_methods', array());
 $all_actions = apply_filters('wc_fns_get_actions', array());
 
 // There is no rules yet? Let's put empty one
@@ -91,49 +90,55 @@ foreach ($this->shipping_rules as $shipping_rule) {
 	
 	// The selection rules cell
 	$sel_html = '';
-	if (isset($shipping_rule['sel'])) {
-		$sel_nr = 0;
-		foreach ($shipping_rule['sel'] as $n_key => $sel) {
+	if( isset($shipping_rule['sel']) )
+	{
+		$logical_operator = $Fish_n_Ships->get_logical_operator($shipping_rule);
+		
+		if( $logical_operator == 'and' || $logical_operator == 'or' )
+		{
+			$block_html = $Fish_n_Ships->get_empty_selector_block_html();
+			$sel_html .= str_replace( '[selector_block]', $this->generate_selector_block_html( $shipping_rule['sel'], $rule_nr, false ), $block_html );
+		}
 
-			// Only key numbers are really selectors
-			if ($n_key !== intval($n_key)) continue;
-
-			if (is_array($sel) && isset($sel['method'])) {
+		if( $logical_operator == 'and-or-and' )
+		{
+			$n_block = 0; // Inner AND blocks counter
+			
+			foreach( $shipping_rule['sel'] as $n_key => $selector_block )
+			{
+				// Only key numbers are really selectors
+				if ($n_key !== intval($n_key)) continue;
 				
-				// Unknown method? Let's advice about it! (once)
-				$idx = 'selection-' . $sel['method'];
-				if ( !isset( $errors[$idx] ) ) {
-					$known = $Fish_n_Ships->is_known('selection', $sel['method']);
-					if ($known !== true) $errors[$idx] = $known;
+				// Error on format
+				if( !isset($selector_block['block']) )
+				{
+					$idx = 'and-or-and-block';
+					if ( !isset( $this->config_errors[$idx] ) ) {
+						$this->config_errors[$idx] = 'Bad format in and-or-and selector: conditional block expected';
+					}
+					continue;
 				}
-				
-				// The selector
-				$this_sel_html = $Fish_n_Ships->get_selector_method_html(0, $selection_methods, $sel['method']);
 
-				// His auxiliary fields
-				$selection_details = '';
-				if (isset($sel['values']) && is_array($sel['values'])) {
-					$selection_details = apply_filters('wc_fns_get_html_details_method', '', $rule_nr, $sel_nr, $sel['method'], $sel['values'], false);
-				}
+				$block_html = $Fish_n_Ships->get_empty_selector_block_html();
+				$sel_html .= str_replace( '[selector_block]', $this->generate_selector_block_html( $selector_block['block'], $rule_nr, $n_block ), $block_html );
 				
-				$sel_html .= str_replace('[selection_details]', $selection_details, $this_sel_html);
-	
-				$sel_nr++;
+				$n_block++;
 			}
 		}
+
 		// There is only one logical operator pair of fields for every rule selection
 		$new_row['selection-rules-column']['content'] = str_replace('[logical_operators]', $Fish_n_Ships->get_logical_operator_html( $rule_nr, $shipping_rule ), $new_row['selection-rules-column']['content'] );
 		// Unknown method? Let's advice about it! (once)
 		$idx = 'logical-operator-' . $Fish_n_Ships->get_logical_operator( $shipping_rule );
-		if ( !isset( $errors[$idx] ) ) {
+		if ( !isset( $this->config_errors[$idx] ) ) {
 			$known = $Fish_n_Ships->is_known('logical operator', $Fish_n_Ships->get_logical_operator( $shipping_rule ) );
-			if ($known !== true) $errors[$idx] = $known;
+			if ($known !== true) $this->config_errors[$idx] = $known;
 		}
 	}
 	
 	// There is not any selection method? put an empty one
 	if ($sel_html=='') {
-		$sel_html = $Fish_n_Ships->get_selector_method_html(0, $selection_methods);
+		$sel_html = $Fish_n_Ships->get_selector_method_html(0, $this->selection_methods);
 		$sel_html = str_replace('[selection_details]', '', $sel_html);
 		$new_row['selection-rules-column']['content'] = str_replace('[logical_operators]', $Fish_n_Ships->get_logical_operator_html( $rule_nr, array() ), $new_row['selection-rules-column']['content'] );
 	}
@@ -152,9 +157,9 @@ foreach ($this->shipping_rules as $shipping_rule) {
 
 				// Unknown method? Let's advice about it! (once)
 				$idx = 'cost-' . $cost['method'];
-				if ( !isset( $errors[$idx] ) ) {
+				if ( !isset( $this->config_errors[$idx] ) ) {
 					$known = $Fish_n_Ships->is_known('cost', $cost['method']);
-					if ($known !== true) $errors[$idx] = $known;
+					if ($known !== true) $this->config_errors[$idx] = $known;
 				}
 
 				$cost_method = $cost['method'];
@@ -185,9 +190,9 @@ foreach ($this->shipping_rules as $shipping_rule) {
 
 				// Unknown method? Let's advice about it! (once)
 				$idx = 'action-' . $action['method'];
-				if ( !isset( $errors[$idx] ) ) {
+				if ( !isset( $this->config_errors[$idx] ) ) {
 					$known = $Fish_n_Ships->is_known('action', $action['method']);
-					if ($known !== true) $errors[$idx] = $known;
+					if ($known !== true) $this->config_errors[$idx] = $known;
 				}
 				
 				// The selector
@@ -208,7 +213,7 @@ foreach ($this->shipping_rules as $shipping_rule) {
 	$new_row['special-actions-column']['content'] = str_replace('[actions]', $actions_html, $new_row['special-actions-column']['content']);
 
 	// ...and parse it as HTML
-	$wrapper = array ( 'class' => 'fns-ruletype-' . $rule_type );
+	$wrapper = array ( 'class' => 'fns-ruletype-' . $rule_type . '  fns-logic_' . $logical_operator);
 	$html .= apply_filters('wc_fns_shipping_rules_table_row_html', array( 'wrapper' => $wrapper, 'cells' => $new_row ) );
 	
 	$rule_nr++;
@@ -228,7 +233,7 @@ if ($rule_nr == 0) {
 	
 	$new_row['order-number']['content'] = '#1';
 	
-	$selector = $Fish_n_Ships->get_selector_method_html(0, $selection_methods);
+	$selector = $Fish_n_Ships->get_selector_method_html(0, $this->selection_methods);
 	$selector = str_replace('[selection_details]', '', $selector);
 
 	$new_row['selection-rules-column']['content'] = str_replace('[selectors]', $selector, $new_row['selection-rules-column']['content']);
@@ -247,7 +252,7 @@ if ($rule_nr == 0) {
 	$new_row['special-actions-column']['content'] = str_replace('[actions]', '', $new_row['special-actions-column']['content']);
 
 	// ...and parse it as HTML
-	$wrapper = array ( 'class' => 'fns-ruletype-normal' );
+	$wrapper = array ( 'class' => 'fns-ruletype-normal fns-logic_and' );
 	$html .= apply_filters('wc_fns_shipping_rules_table_row_html', array( 'wrapper' => $wrapper, 'cells' => $new_row ) );
 
 	// Close tbody normal, add the extra header and open the type extra
@@ -290,12 +295,12 @@ $html .= '<p class="wc-fns-export-buttons">
 </p>';
 
 // Errors? put it before
-if (count($errors) > 0) {
+if (count($this->config_errors) > 0) {
 	
 	$err_message  = '<div class="error inline"><h3>Warning! Errors found!</h3>';
 	$err_message .= '<p><strong>Please, solve this issues before save this method options, otherwise you will lose your configuration.</strong></p>';
 	
-	foreach ($errors as $error) {
+	foreach ($this->config_errors as $error) {
 	
 		$error = esc_html($error);
 		$error = str_replace('Error:', '<span class="wc-fns-error-text">Error:</span>', $error);

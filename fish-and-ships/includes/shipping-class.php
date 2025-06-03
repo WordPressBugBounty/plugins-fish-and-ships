@@ -5,7 +5,7 @@
  * This is the shipping class that extends WC
  *
  * @package Advanced Shipping Rates for WC
- * @version 2.0.1
+ * @version 2.1.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -32,6 +32,11 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 
 	public $used_boxes     = array();
 	public $extra_boxes    = array();
+
+	private $calculating_errors  = array();
+	private $config_errors       = array();
+	private $selection_methods   = array();
+	private $groupable_sm        = array();
 
 	/**
 	 * Constructor.
@@ -214,6 +219,61 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 	}
 
 	/**
+	 * Generate a simple AND/OR condition block
+	 *
+	 * @since 2.1.0
+	 * @param array $condition_block The conditions to print
+	 * @param integer $rule_nr The rule number, starting by 0
+	 * @param false | integer The block count in case of and-or-and, false otherwise (not nested)
+	 * @return html $block_html The conditions block for the table rules HTML
+	 */
+	private function generate_selector_block_html( $condition_block, $rule_nr, $n_block )
+	{
+		global $Fish_n_Ships;
+		
+		$sel_nr = 0;
+		$block_html = '';
+
+		foreach( $condition_block as $n_key => $sel )
+		{
+			// Only key numbers are really selectors
+			if ($n_key !== intval($n_key)) continue;
+
+			if (is_array($sel) && isset($sel['method'])) {
+				
+				// Unknown method? Let's advice about it! (once)
+				$idx = 'selection-' . $sel['method'];
+				if ( !isset( $this->config_errors[$idx] ) ) {
+					$known = $Fish_n_Ships->is_known('selection', $sel['method']);
+					if ($known !== true) $this->config_errors[$idx] = $known;
+				}
+				
+				// The selector
+				$this_sel_html = $Fish_n_Ships->get_selector_method_html(0, $this->selection_methods, $sel['method']);
+
+				// His auxiliary fields
+				$selection_details = '';
+				if (isset($sel['values']) && is_array($sel['values'])) {
+					$selection_details = apply_filters('wc_fns_get_html_details_method', '', $rule_nr, $sel_nr, $sel['method'], $sel['values'], false);
+				}
+				
+				$this_sel_html = str_replace('[selection_details]', $selection_details, $this_sel_html);
+				$block_html   .= $this_sel_html;
+	
+				$sel_nr++;
+			}
+		}
+
+		// Maybe nested
+		if( $n_block !== false )
+		{
+			$block_html = str_replace( '[sel]', '[sel]['.intval($n_block).']', $block_html );
+		}
+
+		return $block_html;
+	}
+
+	/**
 	* It generates the logs panel HTML.
 	*
 	* @since 1.0.0
@@ -280,8 +340,6 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 
 		global $Fish_n_Ships, $wpdb;
 		
-		$errors = array();
-
 		if ($this->write_logs_boolean === true) {
 			
 			$this->debug_log('*Starting Advanced Shipping Rates for WC ' . ($Fish_n_Ships->im_pro() ? 'Pro' : '(free)') . ' calculation, for method: [' . $this->title . ']. Instance_id: [' . $this->instance_id . '], Local time: [' . current_time( 'mysql' ) . ']', 0);
@@ -368,15 +426,15 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 		
 		// Global Group by is a must in the free version
 		if ( $this->global_group_by == 'no' && !$Fish_n_Ships->im_pro()  ) {
-			$errors['global-group-by'] = '1';
-			$this->debug_log('*Error: Only the Pro version allow distinct grouping criteria on every selection condition');
+				$this->calculating_errors['global-group-by'] = '1';
+						$this->debug_log('*Error: Only the Pro version allow distinct grouping criteria on every selection condition');
 		}
 
 		// Backup all shippable contents for extra fees selection conditions
 		$all_shippable_contents = $shippable_contents;
 
 		// Get the selection methods that have group capabilities
-		$groupable_sm = apply_filters('wc-fns-groupable-selection-methods', array('by-weight', 'by-price', 'by-volume', 'volumetric', 'volumetric-set', 'quantity', 'n-groups', 'any-this-prod', 'none-this-prod') );
+		$this->groupable_sm = apply_filters('wc-fns-groupable-selection-methods', array('by-weight', 'by-price', 'by-volume', 'volumetric', 'volumetric-set', 'quantity', 'n-groups', 'any-this-prod', 'none-this-prod') );
 
 		// Since 1.4.13 the foreach is replaced by for, to give support to jump-up, but still experimental
 		// The variable $rule has been renamed as $virtual_count
@@ -424,184 +482,41 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 
 			// Unknown method? Let's advice about it! (once)
 			$idx = 'logical-operator-' . $logical_operator;
-			if ( $this->write_logs_boolean === true && !isset( $errors[$idx] ) ) {
+			if ( $this->write_logs_boolean === true && !isset( $this->calculating_errors[$idx] ) ) {
 				$known = $Fish_n_Ships->is_known('logical operator', $logical_operator );
 				if ($known !== true) {
-					$errors[$idx] = '1';
+					$this->calculating_errors[$idx] = '1';
 					$this->debug_log('*'.$known, 1);
 				}
 			}
 
-			// Extra fees selectors will use all products in any case (take no effect the special action "ignore matching prods")
-			$shippable_contents_rule = $rule_type == 'extra' ? $all_shippable_contents : $shippable_contents;
-			
-			// Reference to all group objects will be stored here
-			$rule_groups = array();	
 
-			// if some group has been changed, we should repeat the iterations
-			$iterations = 0;
-
-			do {
-				$iterations++;
-
-				// On first iteration it's superfluous
-				$this->unset_groups($rule_groups);
+			$shippable_contents_rule  = array();
+			$rule_groups              = array();
 				
-				/************************* Check if selection meets *************************/
+			if (isset($shipping_rule['sel']))
+			{	
+				if( $logical_operator == 'and' || $logical_operator == 'or' )
+				{
+					$log_pointer              = 'rule #' . $virtual_count;
 				
-				$selection_match = false;
-				
-				if (isset($shipping_rule['sel'])) {
-					foreach ($shipping_rule['sel'] as $n_key=>$selector) {
-						
-						// Only key numbers are really selectors
-						if ($n_key !== intval($n_key)) continue;
-							
-						if (is_array($selector) && isset($selector['method'])) {
-							
-							// Unknown method? Let's advice about it! (only if should write logs and once)
-							$idx = 'selection-' . $selector['method'];
-							if ( $this->write_logs_boolean === true && !isset( $errors[$idx] ) ) {
-								$known = $Fish_n_Ships->is_known('selection', $selector['method']);
-								if ($known !== true) {
-									$errors[$idx] = '1';
-									$this->debug_log('*'.$known, 1);
-								}
-							}
-							
-							// This default values cover the 1.1.4 prior releases legacy
-							if ( isset($selector['values']['min']) && !isset($selector['values']['min_comp']) ) {
-								$selector['values']['min_comp'] = 'ge';
-							}
-							if ( isset($selector['values']['max']) && !isset($selector['values']['max_comp']) ) {
-								$selector['values']['max_comp'] = 'less';
-							}
-							
-							/************************* Let's group elements *************************/
-							$group_by = 'none';
-							
-							// The auxiliary fields method will be listed in log (if there is anyone)
-							$aux_fields_log = '';
-							foreach ($selector['values'] as $field=>$value) {
-								if ($field != 'group_by') {
-									$aux_fields_log .= ', ' . $field . ': [' . (is_array($value) ? implode(', ', $value) : $value) . ']';
-								}
-							}
-							
-							// Have this selection method group capabilities?
-							if ( in_array($selector['method'], $groupable_sm) ) {
-								
-								if ('yes' === $this->global_group_by) {
-									// The global group-by option is enabled
-									$group_by = $this->global_group_by_method;
-								} else {
-									// The selection has his own group_by option
-									if (isset($selector['values']['group_by'])) $group_by = $selector['values']['group_by'];
-								}
-								$this->debug_log('Check matching selection. Method: [' . $selector['method'] . '], Group-by: [' . $group_by . ']' . $aux_fields_log, 2);
-							} else {
-								
-								$this->debug_log('Check matching selection. Method: [' . $selector['method'] . '], Group-by: [none] (This method can\'t be grouped)' . $aux_fields_log, 2);
-							}
-
-							//$this->debug_log('[start-collapsable]', 2);
-
-							$subindex = '';
-
-							foreach ($shippable_contents_rule as $key=>$product) {
-								
-								switch ($group_by) {
-									case 'id_sku' :
-										$subindex = $Fish_n_Ships->get_sku_safe($product);
-										break;
-	
-									case 'product_id' :
-										$subindex = $Fish_n_Ships->get_real_id($product);
-										break;
-	
-									case 'class' :
-										$subindex = $product['data']->get_shipping_class_id();
-										break;
-	
-									case 'all' :
-										$subindex = '';
-										break;
-	
-									case 'none' :
-									default :
-										$group_by = 'none';
-										// Compatibility with Uni CPO plugin
-										$subindex = 'unique-' . $key;
-										break;
-								}
-
-								// if the group isn't created, let's create it
-								if (!isset($rule_groups[$group_by])) $rule_groups[$group_by] = array();
-								if (!isset($rule_groups[$group_by][$subindex])) {
-									$rule_groups[$group_by][$subindex] = new Fish_n_Ships_group($group_by, $this);
-
-									//$this->debug_log('creating new group: ' . $group_by . ' > ' . $subindex);
-								}
-								
-								// We will add the product in the right group
-								$rule_groups[$group_by][$subindex]->add_element($key, $product, false);
-							}
-
-							// no matching products? let's create it empty
-							if (!isset($rule_groups[$group_by])) $rule_groups[$group_by] = array();
-							if (!isset($rule_groups[$group_by][$subindex])) {
-								$rule_groups[$group_by][$subindex] = new Fish_n_Ships_group($group_by, $this);
-								
-								//$this->debug_log('creating new group: ' . $group_by . ' > ' . $subindex);
-							}
-													
-							// Be aware! On 1.4.13 a 6th parameter ($package) has been added
-							$rule_groups = apply_filters('wc_fns_check_matching_selection_method', $rule_groups, $selector, $group_by, $this, $logical_operator, $package);
-							
-							// Only matching contents must be evaluated on the next selection or iteration (if needed)
-							// ...in the AND logic, not in the OR logic 
-							if ( $logical_operator== 'and') {
-
-								$this->debug_log('*Currently matching products (accumulated checkings result):', 2);
-								$shippable_contents_rule = $Fish_n_Ships->get_selected_contents($rule_groups, $this, 'and');
-							
-							} else if ( $this->write_logs_boolean ) {
-
-								$this->debug_log('*Currently matching products (accumulated checkings result):', 2);
-								// Only for log purposes: 
-								$foo = $Fish_n_Ships->get_selected_contents($rule_groups, $this, 'or');
-							}
-						}
-					} // end rule sel loop
-				}
-
-				// If some group has been changed, we should repeat the iterations
-				if ( $repeat = $Fish_n_Ships->somegroup_changed($rule_groups) ) {
-
-					$this->debug_log('All match checking must be reevaluated for rule #' . $virtual_count , 2);
-
-					$Fish_n_Ships->reset_groups($rule_groups);
-				}
-
-				// Prevent infinite loop on error
-				if ($iterations > (defined('WC_FNS_MAX_ITERATIONS') ? WC_FNS_MAX_ITERATIONS : 10) ) {
+					list(
+							$rule_groups, 
+							$shippable_contents_rule
 					
-					$this->debug_log('Too much iterations. Break to prevent timeout error' , 1);
-					trigger_error('Advanced Shipping Rates for WC: Too much iterations. Break to prevent timeout error');
-					$repeat = false;
+					)= $this->evaluate_simple_condition_block
+					(
+							$shipping_rule['sel'], 
+							$rule_type == 'extra' ? $all_shippable_contents : $shippable_contents,
+							$logical_operator, 
+							$package, 
+							$log_pointer
+					);
 				}
 
-			} while ($repeat);
-			
-			
-			// Let's to collect how many products matches at least one (OR logic) selector
-			if ( $logical_operator == 'or') {
-				// Mute log, last select report has printed the same!
-				$shippable_contents_rule = $Fish_n_Ships->get_selected_contents($rule_groups, $this, 'or', true);
 			}
-
+						
 			// No products match selectors? Skip this rule
-			// (crec que es pot aprofitar) if (!$Fish_n_Ships->somegroup_matching($rule_groups) ) {
 			if (count($shippable_contents_rule) == 0) {
 			
 				$this->debug_log('- No product matches for this rule', 1);
@@ -621,10 +536,11 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 
 						// Unknown method? Let's advice about it! (only if should write logs and once)
 						$idx = 'cost-' . $cost['method'];
-						if ( $this->write_logs_boolean === true && !isset( $errors[$idx] ) ) {
+						if ( $this->write_logs_boolean === true && !isset( $this->calculating_errors[$idx] ) )
+						{
 							$known = $Fish_n_Ships->is_known('cost', $cost['method']);
 							if ($known !== true) {
-								$errors[$idx] = '1';
+								$this->calculating_errors[$idx] = '1';
 								$this->debug_log('*'.$known, 1);
 							}
 						}
@@ -642,10 +558,11 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 
 						// Unknown method? Let's advice about it! (only if should write logs and once)
 						$idx = 'action-' . $action['method'];
-						if ( $this->write_logs_boolean === true && !isset( $errors[$idx] ) ) {
+						if ( $this->write_logs_boolean === true && !isset( $this->calculating_errors[$idx] ) )
+						{
 							$known = $Fish_n_Ships->is_known('action', $action['method']);
 							if ($known !== true) {
-								$errors[$idx] = '1';
+								$this->calculating_errors[$idx] = '1';
 								$this->debug_log('*'.$known, 1);
 							}
 						}
@@ -822,7 +739,7 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 		if ($this->write_logs_boolean === true) {
 
 			// There is some error? Let's advice it on summary log
-			if ( count($errors) > 0 ) $this->log_totals['final_cost'] = '<strong>[ERROR]</strong> ' . $this->log_totals['final_cost'];
+			if ( count($this->calculating_errors) > 0 ) $this->log_totals['final_cost'] = '<strong>[ERROR]</strong> ' . $this->log_totals['final_cost'];
 			
 			// Calculate total resources used
 			$kb = floor((memory_get_usage() - $this->log_totals['memory']) / 100) / 10;
@@ -834,6 +751,205 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 		}
 
 	}
+
+
+
+
+
+
+	/**
+	 * Evaluate a simple AND/OR condition block
+	 *
+	 * @since 2.1.0
+	 * @param array $shipping_rule The shipping rule containing the conditions
+	 * @param array $shippable_contents_block The contents to evaluate
+	 * @param string $logical_operator The operator (AND/OR) to use
+	 * @param string $package The shipping WC package
+	 * @param string $log_pointer The human pointer to rule/block, just for log
+	 *
+	 * @return array Array containing block_groups and matching_contents_block
+	 */
+	private function evaluate_simple_condition_block($condition_block, $shippable_contents_block, $logical_operator, $package, $log_pointer) {
+
+		global $Fish_n_Ships;
+		
+		$block_groups          	  = array(); // Reference to all group objects will be stored here
+		$matching_contents_block  = array(); // Matching products
+		$iterations 			  = 0;       // Infinite loop prevention
+
+		// if some group has been changed, we must iterate again
+		do {
+
+			$iterations++;
+
+			// On first iteration it's superfluous
+			$this->unset_groups($block_groups);
+			
+			/************************* Check if selection meets *************************/
+			
+			$selection_match = false;
+			
+			// if (isset($shipping_rule['sel'])) {
+				//foreach ($shipping_rule['sel'] as $n_key=>$selector) {
+				foreach ($condition_block as $n_key=>$selector) {
+
+					// Only key numbers are really selectors
+					if ($n_key !== intval($n_key)) continue;
+						
+					if (is_array($selector) && isset($selector['method'])) {
+						
+						// Unknown method? Let's advice about it! (only if should write logs and once)
+						$idx = 'selection-' . $selector['method'];
+						if ( $this->write_logs_boolean === true && !isset( $this->calculating_errors[$idx] ) ) {
+							$known = $Fish_n_Ships->is_known('selection', $selector['method']);
+							if ($known !== true) {
+								$this->calculating_errors[$idx] = '1';
+								$this->debug_log('*'.$known, 1);
+							}
+						}
+						
+						// This default values cover the 1.1.4 prior releases legacy
+						if ( isset($selector['values']['min']) && !isset($selector['values']['min_comp']) ) {
+							$selector['values']['min_comp'] = 'ge';
+						}
+						if ( isset($selector['values']['max']) && !isset($selector['values']['max_comp']) ) {
+							$selector['values']['max_comp'] = 'less';
+						}
+						
+						/************************* Let's group elements *************************/
+						$group_by = 'none';
+						
+						// The auxiliary fields method will be listed in log (if there is anyone)
+						$aux_fields_log = '';
+						foreach ($selector['values'] as $field=>$value) {
+							if ($field != 'group_by') {
+								$aux_fields_log .= ', ' . $field . ': [' . (is_array($value) ? implode(', ', $value) : $value) . ']';
+							}
+						}
+						
+						// Have this selection method group capabilities?
+						if ( in_array($selector['method'], $this->groupable_sm) ) {
+							
+							if ('yes' === $this->global_group_by) {
+								// The global group-by option is enabled
+								$group_by = $this->global_group_by_method;
+							} else {
+								// The selection has his own group_by option
+								if (isset($selector['values']['group_by'])) $group_by = $selector['values']['group_by'];
+							}
+							$this->debug_log('Check matching selection. Method: [' . $selector['method'] . '], Group-by: [' . $group_by . ']' . $aux_fields_log, 2);
+						} else {
+							
+							$this->debug_log('Check matching selection. Method: [' . $selector['method'] . '], Group-by: [none] (This method can\'t be grouped)' . $aux_fields_log, 2);
+						}
+
+						//$this->debug_log('[start-collapsable]', 2);
+
+						$subindex = '';
+
+						foreach ($shippable_contents_block as $key=>$product) {
+							
+							switch ($group_by) {
+								case 'id_sku' :
+									$subindex = $Fish_n_Ships->get_sku_safe($product);
+									break;
+
+								case 'product_id' :
+									$subindex = $Fish_n_Ships->get_real_id($product);
+									break;
+
+								case 'class' :
+									$subindex = $product['data']->get_shipping_class_id();
+									break;
+
+								case 'all' :
+									$subindex = '';
+									break;
+
+								case 'none' :
+								default :
+									$group_by = 'none';
+									// Compatibility with Uni CPO plugin
+									$subindex = 'unique-' . $key;
+									break;
+							}
+
+							// if the group isn't created, let's create it
+							if (!isset($block_groups[$group_by])) $block_groups[$group_by] = array();
+							if (!isset($block_groups[$group_by][$subindex])) {
+								$block_groups[$group_by][$subindex] = new Fish_n_Ships_group($group_by, $this);
+
+								//$this->debug_log('creating new group: ' . $group_by . ' > ' . $subindex);
+							}
+							
+							// We will add the product in the right group
+							$block_groups[$group_by][$subindex]->add_element($key, $product, false);
+						}
+
+						// no matching products? let's create it empty
+						if (!isset($block_groups[$group_by])) $block_groups[$group_by] = array();
+						if (!isset($block_groups[$group_by][$subindex])) {
+							$block_groups[$group_by][$subindex] = new Fish_n_Ships_group($group_by, $this);
+
+							//$this->debug_log('creating new group: ' . $group_by . ' > ' . $subindex);
+						}
+						
+						// Be aware! On 1.4.13 a 6th parameter ($package) has been added
+						$block_groups = apply_filters('wc_fns_check_matching_selection_method', $block_groups, $selector, $group_by, $this, $logical_operator, $package);
+						
+						// Only matching contents must be evaluated on the next selection or iteration (if needed)
+						// ...in the AND logic, not in the OR logic 
+						if ( $logical_operator == 'and') {
+
+							$this->debug_log('*Currently matching products (accumulated checkings result / AND):', 2);
+							$matching_contents_block = $Fish_n_Ships->get_selected_contents($block_groups, $this, 'and');
+							
+							// Next condition in the same AND block must evaluate only the current matching products 
+							$shippable_contents_block = $matching_contents_block;
+						
+						} else if ( $this->write_logs_boolean ) {
+
+							$this->debug_log('*Currently matching products (accumulated checkings result / OR):', 2);
+							// Only for log purposes: 
+							$foo = $Fish_n_Ships->get_selected_contents($block_groups, $this, 'or');
+						}
+					}
+				} // end rule sel loop
+			//}
+
+			// If some group has been changed, we should repeat the iterations
+			if ( $repeat = $Fish_n_Ships->somegroup_changed($block_groups) ) {
+
+				$this->debug_log('All match checking must be reevaluated for ' . $log_pointer , 2);
+
+				$Fish_n_Ships->reset_groups($block_groups);
+			}
+
+			// Prevent infinite loop on error
+			if ($iterations > (defined('WC_FNS_MAX_ITERATIONS') ? WC_FNS_MAX_ITERATIONS : 10) ) {
+				
+				$this->debug_log('Too much iterations. Break to prevent timeout error' , 1);
+				trigger_error('Advanced Shipping Rates for WC: Too much iterations. Break to prevent timeout error');
+				$repeat = false;
+			}
+
+		} while ($repeat);
+		
+		
+		// Let's to collect how many products matches at least one (OR logic) selector
+		if ( $logical_operator == 'or') {
+			// Mute log, last select report has printed the same!
+			$matching_contents_block = $Fish_n_Ships->get_selected_contents($block_groups, $this, 'or', true);
+		}
+		
+		return array( $block_groups, $matching_contents_block );
+	} // Fi de la funció pel càlcul simple d'una condició AND o OR
+
+
+
+
+
+		
 
 	/**
 	 * Get the global cost. Temporary, in the middle of the parsing rules process
