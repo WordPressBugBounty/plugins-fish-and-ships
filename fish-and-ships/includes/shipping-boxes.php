@@ -259,6 +259,6 @@ if ( !class_exists( 'Fish_n_Ships_SB' ) ) {
 		
 		
 	} // End Fish_n_Ships_SB class.
-
+	global $Fish_n_Ships_SB;
 	$Fish_n_Ships_SB = new Fish_n_Ships_SB();
 }

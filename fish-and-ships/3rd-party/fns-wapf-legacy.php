@@ -5,7 +5,7 @@
  *
  * @package Fish and Ships
  * @since 1.5
- * @version 2.0.1
+ * @version 2.1.1
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -263,8 +263,15 @@ if ( !class_exists( 'Fish_n_Ships_WAPF' ) ) {
 						//$allowed = array('min', 'max', 'min_comp', 'max_comp' );
 						$allowed = array('min', 'max', 'min_comp', 'max_comp', 'group_by' );
 					
+						// Remove not allowed values
 						foreach ($rule_sel['values'] as $field => $val) {
 							if (!in_array($field, $allowed)) unset($rule_sel['values'][$field]);
+						}
+
+						// Add null for missing values (will be turned to default after)
+						foreach ($allowed as $field) {
+							if ( ! isset($rule_sel['values'][$field]) )
+								$rule_sel['values'][$field] = null;
 						}
 
 						$rule_sel['values']['group_by'] = $Fish_n_Ships->sanitize_allowed($rule_sel['values']['group_by'],

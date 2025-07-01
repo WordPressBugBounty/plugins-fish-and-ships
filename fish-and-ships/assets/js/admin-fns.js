@@ -661,7 +661,7 @@ jQuery(document).ready(function($) {
 			
 			// Remove select 2 stuff (if there are any)
 			$(cloned).find('.select2-container').remove();
-			$(cloned).find('select.chosen_select').removeClass('select2-hidden-accessible enhanced').removeAttr('aria-hidden');
+			$(cloned).find('select.chosen_select, select.wc-product-search').removeClass('select2-hidden-accessible enhanced').removeAttr('aria-hidden');
 
 			// Remove ui-slider stuff (if there are any)
 			$(cloned).find('.slider.ui-slider').attr('class', 'slider').html('');
@@ -687,9 +687,11 @@ jQuery(document).ready(function($) {
 		});
 
 		/* refresh select2 fields */
-		if ($('.selection_details select.chosen_select').length != 0) {
+		if ($('.selection_details select.chosen_select, .selection_details select.wc-product-search').length != 0) {
 			
+			// We need to refresh the select2 selects:
 			$( document.body ).trigger('wc-enhanced-select-init');
+			init_all_product_select2();
 		}
 		
 		$("#shipping-rules-table-fns .check-column input").prop( "checked", false );
@@ -822,7 +824,6 @@ jQuery(document).ready(function($) {
 							t=0;
 							fieldname = fieldname.replace(/\[[0-9]*\]/g, function (match) {
 								t++;
-								console.log('posareeeem: ' + sel_number);
 								if (t==2) return '['+sel_number+']'
 								return match;
 							});
@@ -1101,7 +1102,7 @@ jQuery(document).ready(function($) {
 
 						check_global_group_by();
 						if ($('.selection_details select.chosen_select', cont).length != 0) {
-							/* enharce select if there is one on it */
+							/* enhance select if there is one on it */
 							$( document.body ).trigger('wc-enhanced-select-init');
 						}
 						refresh_rules();
@@ -1115,8 +1116,8 @@ jQuery(document).ready(function($) {
 
 				check_global_group_by();
 				
-				if ($('.selection_details select.chosen_select', cont).length != 0) {
-					/* enharce select if there is one on it */
+				if ($('.selection_details select.chosen_select, .selection_details select.wc-product-search', cont).length != 0) {
+					/* enhance select if there is one on it */
 					$( document.body ).trigger('wc-enhanced-select-init');
 				}
 				refresh_rules();
@@ -1130,7 +1131,40 @@ jQuery(document).ready(function($) {
 		//return false;
 	});
 
+	function init_all_product_select2()
+	{
+		$('select.wc-product-search').each(function() {
+			const $select = $(this);
+			init_product_select2( $select );
+		});
+	}
+	
+	function init_product_select2( $select )
+	{
+		/*if( $select.hasClass('enhanced') )
+			return;*/
 
+		var opcionsRecollides = [];
+
+		// 1) Recollir id/text sense tocar el DOM
+		$select.find('option').each(function(){
+		  opcionsRecollides.push({
+			id:   this.value,
+			text: this.textContent
+		  });
+		});
+
+		// 2) Netejar tot el select
+		$select.empty();
+
+		// 3) Reafegir cada opció com a seleccionada
+		opcionsRecollides.forEach(function(item){
+		  var newOpt = new Option(item.text, item.id, true, true);
+		  $select.append(newOpt);
+		});
+
+		$select.trigger('change');
+	}
 
 	/* AJAX info if needed */
 	let timeoutAjaxInfoId;
@@ -1519,7 +1553,8 @@ jQuery(document).ready(function($) {
 		}
 	} // end apply_datepickers()
 		
-		
+	init_all_product_select2();
+	
 	/*******************************************************
 	    2.2. Shipping costs column
 	 *******************************************************/

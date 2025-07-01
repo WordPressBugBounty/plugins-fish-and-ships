@@ -3,7 +3,7 @@
  * Add on for Plugin Republic's WooCommerce Product Add-Ons Ultimate (PR_PAU)
  *
  * @package Advanced Shipping Rates for WC
- * @since 1.6.2
+ * @since 2.1.1
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -238,8 +238,15 @@ if ( !class_exists( 'Fish_n_Ships_PR_PAU' ) ) {
 			// A PR_PAU method? Let's unset not allowed fields
 			if (is_array($allowed))
 			{
+				// Remove not allowed values
 				foreach ($rule_sel['values'] as $field => $val) {
 					if (!in_array($field, $allowed)) unset($rule_sel['values'][$field]);
+				}
+
+				// Add null for missing values (will be turned to default after)
+				foreach ($allowed as $field) {
+					if ( ! isset($rule_sel['values'][$field]) )
+						$rule_sel['values'][$field] = null;
 				}
 			}
 			

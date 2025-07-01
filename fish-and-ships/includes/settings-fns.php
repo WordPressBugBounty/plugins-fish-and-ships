@@ -3,7 +3,7 @@
  * The WC-way form for the shipping method options.
  *
  * @package Advanced Shipping Rates for WC
- * @version 2.0
+ * @version 2.1.1
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -29,6 +29,7 @@ $settings = array(
 
 	// The freemium panel
 	'freemium' => array(
+		'title'         => 'Freemium panel',
 		'type'          => 'freemium_panel',
 		'default'       => ''
 	),
@@ -115,6 +116,7 @@ $settings = array(
 
 	// The shipping rules table
 	'shipping_rules' => array(
+		'title'         => 'Shipping rules table',
 		'type'		    => 'shipping_rules_table',
 		'default'       => ''
 	),
@@ -216,6 +218,7 @@ $settings['write_logs'] = array(
 
 // The logs panel
 $settings['the_logs'] = array(
+		'title'         	=> 'Logs panel',
 		'type'		        => 'logs_panel',
 		'default'           => ''
 );

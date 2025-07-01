@@ -3,7 +3,7 @@
  * The Pluggable table rules stuff 
  *
  * @package Advanced Shipping Rates for WC
- * @version 2.1.0
+ * @version 2.1.1
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -56,6 +56,8 @@ function wc_fns_get_selection_methods_fn($methods = array()) {
 
 	$methods['any-this-prod']      = array('onlypro' => true,  'group' => 'Advanced',     'scope' => $scope_all,   'label' => _x('Any of this products', 'shorted, select-by conditional', 'fish-and-ships'));
 	$methods['none-this-prod']     = array('onlypro' => true,  'group' => 'Advanced',     'scope' => $scope_all,   'label' => _x('None of this products', 'shorted, select-by conditional', 'fish-and-ships'));
+	$methods['any-sku']            = array('onlypro' => true,  'group' => 'Advanced',     'scope' => $scope_all,   'label' => _x('Any of this (by SKU)', 'shorted, select-by conditional', 'fish-and-ships'));
+	$methods['none-sku']           = array('onlypro' => true,  'group' => 'Advanced',     'scope' => $scope_all,   'label' => _x('None of this (by SKU)', 'shorted, select-by conditional', 'fish-and-ships'));
 
 	$methods['quantity']           = array('onlypro' => false, 'group' => 'Advanced', 'scope' => $scope_all,   'label' => _x('Cart items', 'shorted, select-by conditional', 'fish-and-ships'));
 	$methods['cart-total']         = array('onlypro' => true,  'group' => 'Advanced',     'scope' => $scope_all,   'label' => _x('Cart total (excl. tax)', 'shorted, select-by conditional', 'fish-and-ships'));
@@ -246,8 +248,15 @@ function wc_fns_sanitize_selection_fields_fn($rule_sel) {
 			}
 		}
 
+		// Remove not allowed values
 		foreach ($rule_sel['values'] as $field => $val) {
 			if (!in_array($field, $allowed)) unset($rule_sel['values'][$field]);
+		}
+
+		// Add null for missing values (will be turned to default after)
+		foreach ($allowed as $field) {
+			if ( ! isset($rule_sel['values'][$field]) )
+				$rule_sel['values'][$field] = null;
 		}
 
 		// sanitize expected values
@@ -356,12 +365,13 @@ function wc_fns_sanitize_selection_operators_fn( $rule_sel, $deep=1 ) {
 
 		case 'logical_operator':
 			
-			// Only one AND or OR is allowed, and we will give legacy support (always AND before 1.1.9)
-			if( $rule_sel['values'] !== array('or') && $rule_sel['values'] !== array('and-or-and') ) 
+			// Only one AND, OR or AND-OR-AND is allowed, and we will give legacy support (always AND before 1.1.9)
+			if( ! isset($rule_sel['values']) || ( $rule_sel['values'] !== array('or') && $rule_sel['values'] !== array('and-or-and') ) )
 				$rule_sel['values'] = array('and');
 			
 			// In nested conditions (by now, only and-or-and) only AND are allowed in 2nd level
 			if( $deep > 1 ) $rule_sel['values'] = array('and');
+			
 						break;
 	}
 
@@ -806,9 +816,17 @@ function wc_fns_sanitize_cost_fn($rule_cost) {
 			}
 		}
 
+		// Remove not allowed values
 		foreach ($rule_cost['values'] as $field => $val) {
 			if (!in_array($field, $allowed)) unset($rule_cost['values'][$field]);
 		}
+
+		// Add null for missing values (will be turned to default after)
+		foreach ($allowed as $field) {
+			if ( ! isset($rule_cost['values'][$field]) )
+				$rule_cost['values'][$field] = null;
+		}
+
 
 		// sanitize expected values
 		foreach ($allowed as $field) {
@@ -1172,7 +1190,7 @@ function wc_fns_get_html_details_action_fn($html, $rule_nr, $action_nr, $action_
  * Filter to sanitize one action and his auxiliary fields prior to save in the database (centralised for all methods)
  *
  * @since 1.0.0
- * @version 1.1.6
+ * @version 2.1.1
  *
  * @param $rule_sel (array) 
  *
@@ -1219,8 +1237,15 @@ function wc_fns_sanitize_action_fn($rule_action) {
 			}
 		}
 
+		// Remove not allowed values
 		foreach ($rule_action['values'] as $field => $val) {
 			if (!in_array($field, $allowed)) unset($rule_action['values'][$field]);
+		}
+
+		// Add null for missing values (will be turned to default after)
+		foreach ($allowed as $field) {
+			if ( ! isset($rule_action['values'][$field]) )
+				$rule_action['values'][$field] = null;
 		}
 
 	}

@@ -4,6 +4,7 @@
  *
  * @package Advanced Shipping Rates for WC
  * @since 1.4.13
+ * @version 2.1.1
  */
  
 defined( 'ABSPATH' ) || exit;
@@ -41,6 +42,8 @@ if ( !class_exists( 'Fish_n_Ships_Shipping' ) ) {
 			$methods['not-in-regions']       = array('onlypro' => true, 'group' => 'Shipping address', 'scope' => $scope_all, 'label' =>  _x('NOT In zone regions', 'shorted, select-by conditional', 'fish-and-ships'));
 			$methods['in-postal-codes']      = array('onlypro' => true, 'group' => 'Shipping address', 'scope' => $scope_all, 'label' =>  _x('In ZIP/postcodes', 'shorted, select-by conditional', 'fish-and-ships'));
 			$methods['not-in-postal-codes']  = array('onlypro' => true, 'group' => 'Shipping address', 'scope' => $scope_all, 'label' =>  _x('NOT In ZIP/postcodes', 'shorted, select-by conditional', 'fish-and-ships'));
+			$methods['in-cities']            = array('onlypro' => true, 'group' => 'Shipping address', 'scope' => $scope_all, 'label' =>  _x('Any of this cities', 'shorted, select-by conditional', 'fish-and-ships'));
+			$methods['not-in-cities']        = array('onlypro' => true, 'group' => 'Shipping address', 'scope' => $scope_all, 'label' =>  _x('None of this cities', 'shorted, select-by conditional', 'fish-and-ships'));
 
 			return $methods;
 		}

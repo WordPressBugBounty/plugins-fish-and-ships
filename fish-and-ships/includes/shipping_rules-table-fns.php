@@ -5,7 +5,7 @@
  *
  * @package Advanced Shipping Rates for WC
  * @since 1.0.0
- * @version 2.1.0
+ * @version 2.1.1
  */
  
 defined( 'ABSPATH' ) || exit;
@@ -97,7 +97,7 @@ foreach ($this->shipping_rules as $shipping_rule) {
 		if( $logical_operator == 'and' || $logical_operator == 'or' )
 		{
 			$block_html = $Fish_n_Ships->get_empty_selector_block_html();
-			$sel_html .= str_replace( '[selector_block]', $this->generate_selector_block_html( $shipping_rule['sel'], $rule_nr, false ), $block_html );
+			$sel_html .= str_replace( '[selector_block]', $this->generate_selector_block_html( $shipping_rule['sel'], $rule_nr, false, $rule_type ), $block_html );
 		}
 
 		if( $logical_operator == 'and-or-and' )
@@ -120,7 +120,7 @@ foreach ($this->shipping_rules as $shipping_rule) {
 				}
 
 				$block_html = $Fish_n_Ships->get_empty_selector_block_html();
-				$sel_html .= str_replace( '[selector_block]', $this->generate_selector_block_html( $selector_block['block'], $rule_nr, $n_block ), $block_html );
+				$sel_html .= str_replace( '[selector_block]', $this->generate_selector_block_html( $selector_block['block'], $rule_nr, $n_block, $rule_type ), $block_html );
 				
 				$n_block++;
 			}
@@ -131,7 +131,7 @@ foreach ($this->shipping_rules as $shipping_rule) {
 		// Unknown method? Let's advice about it! (once)
 		$idx = 'logical-operator-' . $Fish_n_Ships->get_logical_operator( $shipping_rule );
 		if ( !isset( $this->config_errors[$idx] ) ) {
-			$known = $Fish_n_Ships->is_known('logical operator', $Fish_n_Ships->get_logical_operator( $shipping_rule ) );
+			$known = $Fish_n_Ships->is_known('logical_operator', $Fish_n_Ships->get_logical_operator( $shipping_rule ), $rule_type );
 			if ($known !== true) $this->config_errors[$idx] = $known;
 		}
 	}
@@ -158,7 +158,7 @@ foreach ($this->shipping_rules as $shipping_rule) {
 				// Unknown method? Let's advice about it! (once)
 				$idx = 'cost-' . $cost['method'];
 				if ( !isset( $this->config_errors[$idx] ) ) {
-					$known = $Fish_n_Ships->is_known('cost', $cost['method']);
+					$known = $Fish_n_Ships->is_known('cost', $cost['method'], $rule_type);
 					if ($known !== true) $this->config_errors[$idx] = $known;
 				}
 
@@ -191,7 +191,7 @@ foreach ($this->shipping_rules as $shipping_rule) {
 				// Unknown method? Let's advice about it! (once)
 				$idx = 'action-' . $action['method'];
 				if ( !isset( $this->config_errors[$idx] ) ) {
-					$known = $Fish_n_Ships->is_known('action', $action['method']);
+					$known = $Fish_n_Ships->is_known('action', $action['method'], $rule_type);
 					if ($known !== true) $this->config_errors[$idx] = $known;
 				}
 				
@@ -252,7 +252,7 @@ if ($rule_nr == 0) {
 	$new_row['special-actions-column']['content'] = str_replace('[actions]', '', $new_row['special-actions-column']['content']);
 
 	// ...and parse it as HTML
-	$wrapper = array ( 'class' => 'fns-ruletype-normal fns-logic_and' );
+	$wrapper = array ( 'class' => 'fns-ruletype-normal fns-logic_and' );  // AND logic by default
 	$html .= apply_filters('wc_fns_shipping_rules_table_row_html', array( 'wrapper' => $wrapper, 'cells' => $new_row ) );
 
 	// Close tbody normal, add the extra header and open the type extra

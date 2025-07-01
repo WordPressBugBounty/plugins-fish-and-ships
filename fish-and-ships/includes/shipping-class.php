@@ -5,7 +5,7 @@
  * This is the shipping class that extends WC
  *
  * @package Advanced Shipping Rates for WC
- * @version 2.1.0
+ * @version 2.1.1
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -33,6 +33,8 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 	public $used_boxes     = array();
 	public $extra_boxes    = array();
 
+	// Since 2.1.0 this arrays has been moved here, outside functions:
+	// Errors has been divided into calculating and config errors
 	private $calculating_errors  = array();
 	private $config_errors       = array();
 	private $selection_methods   = array();
@@ -222,12 +224,14 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 	 * Generate a simple AND/OR condition block
 	 *
 	 * @since 2.1.0
+	 * @version 2.1.1
+	 *
 	 * @param array $condition_block The conditions to print
 	 * @param integer $rule_nr The rule number, starting by 0
 	 * @param false | integer The block count in case of and-or-and, false otherwise (not nested)
 	 * @return html $block_html The conditions block for the table rules HTML
 	 */
-	private function generate_selector_block_html( $condition_block, $rule_nr, $n_block )
+	private function generate_selector_block_html( $condition_block, $rule_nr, $n_block, $rule_type = null )
 	{
 		global $Fish_n_Ships;
 		
@@ -244,7 +248,7 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 				// Unknown method? Let's advice about it! (once)
 				$idx = 'selection-' . $sel['method'];
 				if ( !isset( $this->config_errors[$idx] ) ) {
-					$known = $Fish_n_Ships->is_known('selection', $sel['method']);
+					$known = $Fish_n_Ships->is_known('selection', $sel['method'], $rule_type);
 					if ($known !== true) $this->config_errors[$idx] = $known;
 				}
 				
@@ -332,7 +336,7 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 	 * Calculate the shipping costs.
 	 *
 	 * @since 1.0.0
-	 * @version 2.0.1
+	 * @version 2.1.1
 	 *
 	 * @param array $package Package of items from cart.
 	 */
@@ -434,7 +438,11 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 		$all_shippable_contents = $shippable_contents;
 
 		// Get the selection methods that have group capabilities
-		$this->groupable_sm = apply_filters('wc-fns-groupable-selection-methods', array('by-weight', 'by-price', 'by-volume', 'volumetric', 'volumetric-set', 'quantity', 'n-groups', 'any-this-prod', 'none-this-prod') );
+		// Here the groupable methods found in settings-form-fns.php:
+		$basic_gm = array(	'by-weight', 'by-price', 'by-volume', 'volumetric', 'volumetric-set', 
+							'quantity', 'n-groups', 'any-this-prod', 'none-this-prod', 'any-sku', 'none-sku');
+							
+		$this->groupable_sm = apply_filters('wc-fns-groupable-selection-methods', $basic_gm );
 
 		// Since 1.4.13 the foreach is replaced by for, to give support to jump-up, but still experimental
 		// The variable $rule has been renamed as $virtual_count
@@ -482,8 +490,9 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 
 			// Unknown method? Let's advice about it! (once)
 			$idx = 'logical-operator-' . $logical_operator;
-			if ( $this->write_logs_boolean === true && !isset( $this->calculating_errors[$idx] ) ) {
-				$known = $Fish_n_Ships->is_known('logical operator', $logical_operator );
+			if ( $this->write_logs_boolean === true && !isset( $this->calculating_errors[$idx] ) )
+			{
+				$known = $Fish_n_Ships->is_known('logical_operator', $logical_operator, $rule_type );
 				if ($known !== true) {
 					$this->calculating_errors[$idx] = '1';
 					$this->debug_log('*'.$known, 1);
@@ -510,7 +519,8 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 							$rule_type == 'extra' ? $all_shippable_contents : $shippable_contents,
 							$logical_operator, 
 							$package, 
-							$log_pointer
+							$log_pointer,
+							$rule_type
 					);
 				}
 
@@ -538,7 +548,7 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 						$idx = 'cost-' . $cost['method'];
 						if ( $this->write_logs_boolean === true && !isset( $this->calculating_errors[$idx] ) )
 						{
-							$known = $Fish_n_Ships->is_known('cost', $cost['method']);
+							$known = $Fish_n_Ships->is_known('cost', $cost['method'], $rule_type);
 							if ($known !== true) {
 								$this->calculating_errors[$idx] = '1';
 								$this->debug_log('*'.$known, 1);
@@ -560,7 +570,7 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 						$idx = 'action-' . $action['method'];
 						if ( $this->write_logs_boolean === true && !isset( $this->calculating_errors[$idx] ) )
 						{
-							$known = $Fish_n_Ships->is_known('action', $action['method']);
+							$known = $Fish_n_Ships->is_known('action', $action['method'], $rule_type);
 							if ($known !== true) {
 								$this->calculating_errors[$idx] = '1';
 								$this->debug_log('*'.$known, 1);
@@ -761,15 +771,18 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 	 * Evaluate a simple AND/OR condition block
 	 *
 	 * @since 2.1.0
+	 * @version 2.1.1
+	 *
 	 * @param array $shipping_rule The shipping rule containing the conditions
 	 * @param array $shippable_contents_block The contents to evaluate
 	 * @param string $logical_operator The operator (AND/OR) to use
 	 * @param string $package The shipping WC package
 	 * @param string $log_pointer The human pointer to rule/block, just for log
+	 * @param string $rule_type normal | extra
 	 *
 	 * @return array Array containing block_groups and matching_contents_block
 	 */
-	private function evaluate_simple_condition_block($condition_block, $shippable_contents_block, $logical_operator, $package, $log_pointer) {
+	private function evaluate_simple_condition_block($condition_block, $shippable_contents_block, $logical_operator, $package, $log_pointer, $rule_type) {
 
 		global $Fish_n_Ships;
 		
@@ -801,7 +814,7 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 						// Unknown method? Let's advice about it! (only if should write logs and once)
 						$idx = 'selection-' . $selector['method'];
 						if ( $this->write_logs_boolean === true && !isset( $this->calculating_errors[$idx] ) ) {
-							$known = $Fish_n_Ships->is_known('selection', $selector['method']);
+							$known = $Fish_n_Ships->is_known('selection', $selector['method'], $rule_type);
 							if ($known !== true) {
 								$this->calculating_errors[$idx] = '1';
 								$this->debug_log('*'.$known, 1);

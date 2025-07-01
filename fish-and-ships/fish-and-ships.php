@@ -3,15 +3,15 @@
  * Plugin Name: Advanced Shipping Rates for WooCommerce
  * Plugin URI: https://www.wp-centrics.com/
  * Description: The most flexible and all-in-one table rate shipping plugin. Previously named "Fish and Ships"
- * Version: 2.1.0
+ * Version: 2.1.1
  * Author: wpcentrics
  * Author URI: https://www.wp-centrics.com
  * Text Domain: fish-and-ships
  * Domain Path: /languages
  * Requires at least: 4.7
- * Tested up to: 6.8
+ * Tested up to: 6.8.1
  * WC requires at least: 3.0
- * WC tested up to: 9.8
+ * WC tested up to: 9.9.5
  * Requires PHP: 7.0
  * Requires Plugins: woocommerce 
  * License: GPLv2
@@ -42,7 +42,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 
 } else {
 
-	define ('WC_FNS_VERSION', '2.1.0' );
+	define ('WC_FNS_VERSION', '2.1.1' );
 	define ('WC_FNS_PATH', dirname(__FILE__) . '/' );
 	define ('WC_FNS_URL', plugin_dir_url( __FILE__ ) );
 
@@ -386,10 +386,11 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		 * Check if method is known
 		 *
 		 * @since 1.0.0
-		 * @version 2.1.0
+		 * @version 2.1.1
 		 *
 		 * @param $type (string)
 		 * @param $method_id (string)
+		 * @param $rule_type (string) optional
 		 *
 		 * return: 
 		 
@@ -397,15 +398,30 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 				or
 				error text message
 		 */
-		public function is_known($type, $method_id) {
+		public function is_known($type, $method_id, $rule_type = null)
+		{
+			// Sanitize input data:
+			$type       = sanitize_key( $type );
+			$method_id  = sanitize_key( $method_id );
+			$rule_type  = is_null($rule_type) ? null : sanitize_key( $rule_type );
 
-			switch ($type) {
-
+			switch ($type)
+			{
 				case 'selection' :
 					// Get selectors
 					$selectors = apply_filters( 'wc_fns_get_selection_methods', array () );
 					
-					if ( isset($selectors[$method_id]) ) {
+					// First we will check if the selector exists
+					if ( isset($selectors[$method_id]) )
+					{
+						// Now maybe we must check the scope
+						$scope = isset( $selectors[$method_id]['scope'] ) ? $selectors[$method_id]['scope'] : array($rule_type);
+						if( ! is_null( $rule_type ) && ! in_array( $rule_type, $scope ) )
+						{
+							return sprintf('Warning: The %s method [%s]: aren\'t allowed on rules of type: %s', $type, $method_id, $rule_type);
+						}
+						
+						// Now we check it is Pro and we aren't	
 						if ( $this->im_pro() || !$selectors[$method_id]['onlypro'] ) return true;
 						
 						return sprintf('Warning: The %s method [%s]: only is supported in the Advanced Shipping Rates for WooCommerce PRO version', $type, $method_id);
@@ -417,10 +433,20 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 
 				case 'cost' :
 					// Get costs
-					$selectors = apply_filters( 'wc_fns_get_cost_methods', array () );
+					$costs = apply_filters( 'wc_fns_get_cost_methods', array () );
 					
-					if ( isset($selectors[$method_id]) ) {
-						if ( $this->im_pro() || (!isset($selectors[$method_id]['onlypro']) || !$selectors[$method_id]['onlypro']) ) return true;
+					// First we will check if the cost method exists
+					if ( isset($costs[$method_id]) )
+					{
+						// Now maybe we must check the scope
+						$scope = isset( $costs[$method_id]['scope'] ) ? $costs[$method_id]['scope'] : array($rule_type);
+						if( ! is_null( $rule_type ) && ! in_array( $rule_type, $scope ) )
+						{
+							return sprintf('Warning: The %s method [%s]: aren\'t allowed on rules of type: %s', $type, $method_id, $rule_type);
+						}
+
+						// Now we check it is Pro and we aren't					
+						if ( $this->im_pro() || (!isset($costs[$method_id]['onlypro']) || !$costs[$method_id]['onlypro']) ) return true;
 						
 						return sprintf('Warning: The %s method [%s]: only is supported in the Advanced Shipping Rates for WooCommerce PRO version', $type, $method_id);
 					}
@@ -431,10 +457,20 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 
 				case 'action' :
 					// Get actions
-					$selectors = apply_filters( 'wc_fns_get_actions', array () );
+					$actions = apply_filters( 'wc_fns_get_actions', array () );
 					
-					if ( isset($selectors[$method_id]) ) {
-						if ( $this->im_pro() || !$selectors[$method_id]['onlypro'] ) return true;
+					// First we will check if the action exists
+					if ( isset($actions[$method_id]) )
+					{
+						// Now maybe we must check the scope
+						$scope = isset( $actions[$method_id]['scope'] ) ? $actions[$method_id]['scope'] : array($rule_type);
+						if( ! is_null( $rule_type ) && ! in_array( $rule_type, $scope ) )
+						{
+							return sprintf('Warning: The %s method [%s]: aren\'t allowed on rules of type: %s', $type, $method_id, $rule_type);
+						}
+
+						// Now we check it is Pro and we aren't
+						if ( $this->im_pro() || !$actions[$method_id]['onlypro'] ) return true;
 						
 						return sprintf('Warning: The %s method [%s]: only is supported in the Advanced Shipping Rates for WooCommerce PRO version', $type, $method_id);
 					}
@@ -443,7 +479,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 					
 					break;
 
-				case 'logical operator' :
+				case 'logical_operator' :
 
 					if ( in_array($method_id, array('or', 'and', 'and-or-and') ) ) {
 						if ( $this->im_pro() || $method_id == 'and' ) return true;
@@ -1350,12 +1386,11 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		/**
 		 * Check if the method selector is valid
 		 *
+		 * @version 2.1.1
 		 */
-		public function is_valid_selector($method_id) {
-			
-			$method_id = sanitize_key($method_id);
-			
-			return $this->is_known('selection', $method_id) === true;
+		public function is_valid_selector($method_id, $rule_type = null)
+		{	
+			return $this->is_known('selection', $method_id, $rule_type) === true;
 		}
 
 		/**
@@ -1568,6 +1603,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		 * @since 2.1.0
 		 *
 		 * @param $selection_block raw selection block from the $_POST object
+		 * @param $deep integer deep/indentation
 		 *
 		 * @return sanitizied info (array)
 		 */
@@ -2455,12 +2491,12 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		 * Get a multiple selector field
 		 *
 		 * @since 1.0.0
-		 * @version 1.6.2
+		 * @version 2.1.1
 		 *
 		 * @param $rule_nr (integer) rule ordinal (starting 0)
 		 * @param $sel_nr (integer) selector ordinal inside rule (starting 0)
 		 * @param $method_id (mixed) method id
-		 * @param $datatype (mixed) the data type which we will offer values ( user_roles or taxonomy )
+		 * @param $datatype (mixed) the data type which we will offer values ( user_roles or taxonomy or null for empty)
 		 * @param $values (array) for populate fields
 		 * @param $field_name (mixed) select name field
 		 * @param $ambit_field (mixed) for class reference only
@@ -2509,9 +2545,9 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 				
 				$options = array( 'SUM all values', 'Multiply all', 'Average value', 'Get first value', 'Get last value', 'Evaluate false' );
 
-			} elseif ( $datatype == 'product_list' && $this->im_pro() ) {
+			} elseif ( is_null($datatype) ) {
 								
-				$options = $this->get_product_list();
+				$options = array(); // empty select
 
 			} else {
 				
