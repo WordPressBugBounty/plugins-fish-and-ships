@@ -3,15 +3,15 @@
  * Plugin Name: Advanced Shipping Rates for WooCommerce
  * Plugin URI: https://www.wp-centrics.com/
  * Description: The most flexible and all-in-one table rate shipping plugin. Previously named "Fish and Ships"
- * Version: 2.1.1
+ * Version: 2.1.2
  * Author: wpcentrics
  * Author URI: https://www.wp-centrics.com
  * Text Domain: fish-and-ships
  * Domain Path: /languages
  * Requires at least: 4.7
- * Tested up to: 6.8.1
+ * Tested up to: 6.8.2
  * WC requires at least: 3.0
- * WC tested up to: 9.9.5
+ * WC tested up to: 10.1.2
  * Requires PHP: 7.0
  * Requires Plugins: woocommerce 
  * License: GPLv2
@@ -42,7 +42,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 
 } else {
 
-	define ('WC_FNS_VERSION', '2.1.1' );
+	define ('WC_FNS_VERSION', '2.1.2' );
 	define ('WC_FNS_PATH', dirname(__FILE__) . '/' );
 	define ('WC_FNS_URL', plugin_dir_url( __FILE__ ) );
 
@@ -703,13 +703,14 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		 * Check 3rd party multi-currency plugins
 		 *
 		 * @since 1.1.0
-		 * @version 1.2.5
+		 * @version 2.1.2
 		 *
 		 */
 		function check_multicurrency() {
 
 			global $woocommerce_wpml;
-			if ($this->is_wpml && $woocommerce_wpml->settings['enable_multi_currency'] == WCML_MULTI_CURRENCIES_INDEPENDENT) {
+			if ($this->is_wpml && !empty($woocommerce_wpml->settings['enable_multi_currency']) 
+				&& $woocommerce_wpml->settings['enable_multi_currency'] == WCML_MULTI_CURRENCIES_INDEPENDENT) {
 
 				$this->is_wpml_mc = true;
 				return;
@@ -883,7 +884,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		 * Check if a product (maybe a variation) are in a term (any taxonomy)
 		 *
 		 * @since 1.0.0
-		 * @version 1.4.14
+		 * @version 2.1.2
 		 *
 		 * @param $product (array, info from the cart, language info aded by FnS)
 		 * @param $taxonomy the taxonomy terms to look in for
@@ -897,34 +898,37 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 			global $Fish_n_Ships;
 			
 			$product_terms_id = array();
+
+			// Variations can be assigned to distinct shipping class than his parent
+			// The rest of taxonomies are assigned to parent products on variations
+			if ( $taxonomy == 'product_shipping_class' )
+			{				
+				$product_id = $Fish_n_Ships->get_prod_or_variation_id($product);
+			}
+			else
+			{
+				$product_id = $Fish_n_Ships->get_real_id($product);
+			}
+			
 			
 			if ( $taxonomy == 'product_shipping_class' ) {
 				
-				// Variations can be assigned to distinct shipping class than his parent
-				// We will initialise the product object to get his shipping class trough WC
-				// And store the only one ID into array in the same way as the other taxonomies
-				$product_id = $Fish_n_Ships->get_prod_or_variation_id($product);
 				$prod_object = wc_get_product($product_id);
+				// Store the only one ID into array in the same way as the other taxonomies
 				$product_terms_id = array($prod_object->get_shipping_class_id());
 
 			} elseif ( $taxonomy == 'product_cat' ) {
 
-				// The category taxonomies are assigned to parent products on variations
-				$product_id = $Fish_n_Ships->get_real_id($product);
 				$prod_object = wc_get_product($product_id);
 				$product_terms_id = $prod_object->get_category_ids();
 
 			} elseif ( $taxonomy == 'product_tag' ) {
 
-				// The tag taxonomies are assigned to parent products on variations
-				$product_id = $Fish_n_Ships->get_real_id($product);
 				$prod_object = wc_get_product($product_id);
 				$product_terms_id = $prod_object->get_tag_ids();
 
-			// Fallback, unused after HPOS compatibility
 			} else {
-				// The other taxonomies are assigned to parent products on variations
-				$product_id = $Fish_n_Ships->get_real_id($product);
+				// Fallback, unused after HPOS compatibility
 				$product_terms = get_the_terms($product_id, $taxonomy);
 				if ( is_array( $product_terms ) ) {
 					foreach ($product_terms as $t) {
@@ -933,22 +937,39 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 				}
 			}
 			
+			if( ! is_array($product_terms_id) ) $product_terms_id = array();
+			
 			// We will work with lang codes: (en, es, de) etc. NOT locale codes (en_US, es_ES, de_DE) etc.
 			if ( $Fish_n_Ships->is_wpml() ) {
 				
-				// Let's translate (if they are'nt) the product terms into the product language
-				$product_terms_id = $this->translate_terms($product_terms_id, $taxonomy, $product['lang']['language_code']);
-
-				// The product isn't on the main lang? Let's translate (if they aren't) the terms to seek
+				// The product isn't on the main lang? Let's try to get the main lang product
 				if ( $product['lang']['language_code'] != $this->get_main_lang() ) {
 
-					$terms = $this->translate_terms($terms, $taxonomy, $product['lang']['language_code']);
-				
-					$shipping_class->debug_log('. &gt; Untranslated product: #' . $product['data']->get_id() . ' ' . $Fish_n_Ships->get_name($product) . ', language: [' . $product['lang']['display_name'] . ']' , 3 );
-					$shipping_class->debug_log('. &gt; so we will turn this terms into ' . $product['lang']['display_name'] . ' to match with it: [' . implode(', ', $terms) . ']', 3);
-													
-					$shipping_class->debug_log('. &gt; product terms turned to ' . $product['lang']['display_name'] . ': [' . implode(', ', $product_terms_id) . ']', 3);
+					$shipping_class->debug_log('. &gt; Product in language: [' . $product['lang']['display_name'] . '], not main language: #' . $product['data']->get_id() . ' ' . $Fish_n_Ships->get_name($product), 3 );
+					
+					$translated_id = apply_filters( 'wpml_object_id', $product_id, get_post_type( $product_id ), false, $this->get_main_lang() );
+					
+					if( $translated_id )
+					{
+						$shipping_class->debug_log('. &gt; Main lang product successfully found. ID: #' . $translated_id, 3 );
+
+						$product_terms_id = $this->raw_get_the_terms_ids($translated_id, $taxonomy);
+
+						$shipping_class->debug_log('. &gt; Product terms IDs, in main lang: [#' . implode(', #', $product_terms_id) . ']', 3 );
+					}
+					else
+					{
+						$shipping_class->debug_log('. &gt; WARNING: Main lang product NOT FOUND found. Maybe simply not exist.', 3 );
+
+						// The product isn't on the main lang? Let's translate (if they aren't) the terms to seek into the product lang
+						$terms = $this->translate_terms($terms, $taxonomy, $product['lang']['language_code']);
+						$shipping_class->debug_log('. &gt; Translated terms IDs to lookin for: [#' . implode(', #', $terms) . ']', 3 );
+					}
 				}
+			}
+			else
+			{
+				$shipping_class->debug_log('. &gt; Product terms IDs: [#' . implode(', #', $product_terms_id) . ']', 3 );
 			}
 			
 			foreach ($terms as $term_id) {
@@ -957,7 +978,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 			
 			return false;
 		}
-			
+
 		/**
 		 * Get language info of product
 		 *
@@ -983,7 +1004,36 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 			}
 			return $terms;
 		}
+		
+		/**
+		 * Prevent issues with WPML, get the terms IDs skipping all filters, by direct $wpdb query
+		 * The original WP get_the_terms() function return array of Term objects, but we don't need it.
+		 *
+		 * @since 2.1.2
+		 *
+		 */
+		function raw_get_the_terms_ids($post_id, $taxonomy) {
+			
+			global $wpdb;
 
+			$post_id  = intval($post_id);
+			$taxonomy = esc_sql($taxonomy);
+
+			$query = $wpdb->prepare("
+				SELECT t.term_id
+				FROM $wpdb->terms AS t
+				INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
+				INNER JOIN $wpdb->term_relationships AS tr ON tr.term_taxonomy_id = tt.term_taxonomy_id
+				WHERE tr.object_id = %d
+				  AND tt.taxonomy = %s
+				ORDER BY t.name ASC
+			", $post_id, $taxonomy);
+
+			$ids = $wpdb->get_col($query); // get an array of IDs
+
+			return $ids ?: [];
+		}
+		
 		/**
 		 * Currency exchange rate abstraction, will convert a price on multicurrency sites,
 		 * if needed: from main/cart currency to needed: main/cart currency.
@@ -1303,6 +1353,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		 * (for 3rd party plugins)
 		 *
 		 * @since 1.2.5
+		 * @version 2.1.2
 		 *
 		 * - compatible with WPC Product Bundles 
 		 *
@@ -1344,6 +1395,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 				$price = $this->currency_abstraction('main-currency', $price);
 			}
 
+			$price = apply_filters('wc_fns_get_product_price', $price, $product );
 			
 			return $price;
 		}
@@ -3379,6 +3431,11 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 			// @since 1.6.2
 			if ( defined( 'PEWC_PLUGIN_VERSION' ) && version_compare(PEWC_PLUGIN_VERSION, '3.0') >= 0 && pewc_has_migrated() ) {
 				require WC_FNS_PATH . '3rd-party/fns-pr_pau.php';
+			}
+
+			// Compatibility with WOO Discount Rules @since 2.1.2
+			if( defined( 'WDR_VERSION' ) || defined( 'WDR_PRO_VERSION' ) ) {
+				require WC_FNS_PATH . '3rd-party/fns-woo-discount-rules.php';
 			}
 
 			// Register plugin text domain for translations files

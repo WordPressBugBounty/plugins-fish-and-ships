@@ -4,10 +4,10 @@ Contributors: wpcentrics
 Donate link: https://www.wp-centrics.com/
 Tags: shipping rates, table rate shipping, table rate, shipping rules
 Requires at least: 4.7
-Tested up to: 6.8.1
+Tested up to: 6.8.2
 WC requires at least: 3.0
-WC tested up to: 9.9.5
-Stable tag: 2.1.1
+WC tested up to: 10.1.2
+Stable tag: 2.1.2
 Requires PHP: 7.0
 Requires Plugins: woocommerce 
 License: GPLv2 or later
@@ -109,6 +109,7 @@ Unlock the power of custom-coded shipping rules—without writing a single line 
 * Support for WPC Product Bundles: [link](https://wordpress.org/plugins/woo-product-bundle/)
 * Support for the Skyverge Measurement Price Calculator plugin: [link](https://woocommerce.com/products/measurement-price-calculator/) [PRO]
 * Support for the plugin Uni CPO: [link](https://wordpress.org/plugins/uni-woo-custom-product-options/) 
+* Support for WOO Discount Rules: [link](https://wordpress.org/plugins/woo-discount-rules/)
 
 ###...last questions about Advanced Shipping Rates
 
@@ -233,7 +234,13 @@ Thank you for keeping your store up to date!
 
 == Changelog ==
 
-= 2.1.1 - 01/07/2025 =
+= 2.1.2 - 16/09/2025 =
+* Checked for WP 6.8.2
+* Checked for WC 10.1.2
+* Better support for WPML: Solved bug on shipping class/category/tag on second language
+* Compatibility added for WOO Discount Rules
+
+= 2.1.1 - 30/06/2025 =
 * Checked for WP 6.8.1
 * Checked for WC 9.9.5
 * New selectors product by SKU / non SKU added (pro)
