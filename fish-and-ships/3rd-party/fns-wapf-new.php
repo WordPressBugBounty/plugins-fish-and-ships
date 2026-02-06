@@ -5,7 +5,7 @@
  *
  * @package Fish and Ships
  * @since 2.0.1
- * @version 2.1.1
+ * @version 2.1.3
  */
  
 defined( 'ABSPATH' ) || exit;
@@ -322,7 +322,7 @@ if ( !class_exists( 'Fish_n_Ships_WAPF_NEW' ) ) {
 		 * Filter to check matching elements for selection method
 		 *
 		 * @since 2.0.1
-		 * @version 2.0.2
+		 * @version 2.1.3
 		 *
 		 * @param $rule_groups (array) all the groups of current rule
 		 * @param $selector (array) the selector criterion
@@ -502,7 +502,8 @@ if ( !class_exists( 'Fish_n_Ships_WAPF_NEW' ) ) {
 										if( $field_target != $lookin_field )
 											continue;
 									}
-
+									
+									/*
 									$shipping_class->debug_log('WAPF DEV INFO, method: [' . $selector['method'] . '], ' . $target . ': ['.$lookin_field.'], value: [' . (isset($field['raw']) ? $field['raw'] : 'no raw key' ) . '], lookin value: [' . $wapf_equals . ']', 3);
 									
 									// The field haven't raw key? Bump it
@@ -512,19 +513,53 @@ if ( !class_exists( 'Fish_n_Ships_WAPF_NEW' ) ) {
 										$results[] = false;
 										break 2;
 									}
-									
+									*/
+
 									// Value is equal?
 									if( ( $selector['method'] == 'wapf-equal-value' || $selector['method'] == 'wapf-label-equal-value' ) )
 									{
+										/*
 										// We will apply the same sanitization here that we're applied to the rules input field, to ensure matching
-										$results[] = $Fish_n_Ships->sanitize_html($field['raw']) == $wapf_equals;
+										// Debug for Slawomir
+									    if ( is_array( $field['raw'] ) ) {
+											error_log('FnS: unexpected array! lookin for: ' . $wapf_equals);
+											error_log(print_r($field, true));
+											$results[]=false;
+										}
+										else
+										{
+											error_log(print_r($field, true));
+											$results[] = $Fish_n_Ships->sanitize_html($field['raw']) == $wapf_equals;
+										}
+										*/
+										$result = $this->deep_seek_value( $field, 'label', $wapf_equals );
+										$results[] = $result;
+
+										$shipping_class->debug_log('WAPF DEV INFO, method: [' . $selector['method'] . '], ' . $target . ': ['.$lookin_field.'], lookin value: [' . $wapf_equals . '], result: [' . ($result ? 'TRUE' : 'FALSE' ) . ']', 3);
 									}
 
 									// Value is NOT equal?
 									if( ( $selector['method'] == 'wapf-not-equal-value' || $selector['method'] == 'wapf-label-not-equal-value' ) )
 									{
+										/*
 										// We will apply the same sanitization here that we're applied to the rules input field, to ensure matching
-										$results[] = $Fish_n_Ships->sanitize_html($field['raw']) != $wapf_equals; // here the logic is reverse: not equal is true
+										// Debug for Slawomir
+									    if ( is_array( $field['raw'] ) ) {
+											error_log('FnS: unexpected array! lookin for: ' . $wapf_equals);
+											error_log(print_r($field, true));
+											$results[]=true;
+										}
+										else
+										{
+											error_log(print_r($field, true));
+											$results[] = $Fish_n_Ships->sanitize_html($field['raw']) != $wapf_equals; // here the logic is reverse: not equal is true
+										}
+										*/
+										// Reversed here:
+										$result = ! $this->deep_seek_value( $field, 'label', $wapf_equals );
+										$results[] = $result;
+
+										$shipping_class->debug_log('WAPF DEV INFO, method: [' . $selector['method'] . '], ' . $target . ': ['.$lookin_field.'], lookin value: [' . $wapf_equals . '], result: [' . ($result ? 'TRUE' : 'FALSE' ) . ']', 3);
 									}
 								}
 							} // if closure, not a closing loop!!!
@@ -573,6 +608,80 @@ if ( !class_exists( 'Fish_n_Ships_WAPF_NEW' ) ) {
 			
 			return $rule_groups;
 		}
+		
+		/**
+		 *  deep_seek_value()
+		 *
+		 *  In some cases, the sought value is included in the "values" array
+		 *  instead of "raw". We will check in both.
+		 * 
+		 *  Example input:
+		 *
+		 *  [raw] => Array
+		 *		(
+		 *			[0] => fhc7a
+		 *		)
+		 *
+		 *	[values] => Array
+		 *		(
+		 *			[0] => Array
+		 *				(
+		 *					[label] => the_value
+		 *					[price] => 199
+		 *					[price_type] => fixed
+		 *					[slug] => fhc7a
+		 *					[calc_price] => 199
+		 *					[pricing_hint] => (<span class="wapf-addon-price">+164,46&nbsp;&#36;</span>)
+		 *				)
+		 *
+		 *		)
+		 *
+		 *
+		 *  Instead of:
+		 *
+		 *  [raw] => the_value
+		 *
+		 * @since 2.1.3
+		 */
+		function deep_seek_value( $field, $key, $seek_value )
+		{
+			// NOTE: We will apply the same sanitization through $Fish_n_Ships->sanitize_html()
+			// that we're applied to the rules input field, to ensure matching
+			global $Fish_n_Ships;
+			
+			// Let's look into values first:
+			if( isset( $field['values'] ) )
+			{
+				if( is_array( $field['values'] ) )
+				{
+					foreach( $field['values'] as $seek )
+					{
+						if( is_array($seek) && isset($seek[$key]) && $Fish_n_Ships->sanitize_html($seek[$key]) == $seek_value )
+							return true;
+					}
+				}
+			}
+			// Let's look into raw as fallback:
+			elseif( isset( $field['raw'] ) )
+			{
+				// Comes into array?
+				if( is_array( $field['raw'] ) )
+				{
+					foreach( $field['raw'] as $seek )
+					{
+						if( $Fish_n_Ships->sanitize_html($seek) == $seek_value )
+							return true;
+					}
+				}
+				else
+				{
+					return $Fish_n_Ships->sanitize_html($field['raw']) == $seek_value;
+				}
+			}
+			
+			return false;
+		}
+		
 
 		/**
 		 * calculate one total

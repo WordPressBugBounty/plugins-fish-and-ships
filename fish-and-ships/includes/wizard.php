@@ -381,7 +381,7 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 				! $Fish_n_Ships->is_wc() 
 			) return;
 
-			echo '<div class="notice wc-fns-wizard wc-fns-five-stars">'
+			echo '<div class="notice wc-fns-wizard wc-fns-five-stars must">'
 				//. '<a class="notice-dismiss" href="#">' . esc_html__('Dismiss') . '</a>'
 				. '<h3>'. esc_html__('Do you like Advanced Shipping Rates for WooCommerce?', 'fish-and-ships') . '</h3>'
 				. '<p class="fns-space-up big">' . esc_html__('Thank you for your continued use of our plugin.', 'fish-and-ships') . '</p><p class="big">' . 
@@ -445,9 +445,9 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 				. $this->safe_link_builder( esc_html__('Remind later', 'fish-and-ships'), 'wizard', '', 'later' ) . ' &nbsp;'
 				. $this->safe_link_builder( esc_html__('Thanks, I know how to use it', 'fish-and-ships'), 'wizard', '', 'off' ) . '</p>'
 				. '<p class="fns-space-up"><a href="#" class="fns-show-videos">' . esc_html__('...or maybe you prefer to see one of our introductory videos before:', 'fish-and-ships') . '</a></p>'
-				. '<div class="fns-hidden-videos"><p><a href="https://www.youtube.com/watch?v=wRsoUYiHQRY&ab_channel=WpCentricsFishAndShips" target="_blank" alt="See video on YouTube" class="fns-video-link"><img src="' . WC_FNS_URL . 'assets/img/video-1.png" width="232" height="130" /><span>General overview</span></a>'
-				. '<a href="https://www.youtube.com/watch?v=sjQKbt2Nn7k&ab_channel=WpCentricsFishAndShips" target="_blank" alt="See video on YouTube" class="fns-video-link"><img src="' . WC_FNS_URL . 'assets/img/video-2.png" width="232" height="130" /><span>Short tutorial</span></a>'
-				. '<a href="https://www.youtube.com/watch?v=y2EJFluXx9Q&ab_channel=WpCentricsFishAndShips" target="_blank" alt="See video on YouTube" class="fns-video-link"><img src="' . WC_FNS_URL . 'assets/img/video-3.png" width="232" height="130" /><span>Shipping boxes</span></a></p></div>'
+				. '<div class="fns-hidden-videos"><p><a href="https://www.youtube.com/watch?v=HM8sSz9xsbg&ab_channel=wp-centrics" target="_blank" alt="See video on YouTube" class="fns-video-link"><img src="' . WC_FNS_URL . 'assets/img/video-1b.png" width="232" height="130" /><span>General overview</span></a>'
+				. '<a href="https://www.youtube.com/watch?v=sjQKbt2Nn7k&ab_channel=wpcentrics" target="_blank" alt="See video on YouTube" class="fns-video-link"><img src="' . WC_FNS_URL . 'assets/img/video-2.png" width="232" height="130" /><span>Short tutorial</span></a>'
+				. '<a href="https://www.youtube.com/watch?v=myhFc-NmMO8&ab_channel=wp-centrics" target="_blank" alt="See video on YouTube" class="fns-video-link"><img src="' . WC_FNS_URL . 'assets/img/video-3b.png" width="232" height="130" /><span>Shipping boxes</span></a></p></div>'
 			  . '</div>';
 		}
 
@@ -487,7 +487,7 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 			if( ! isset($_POST['wc-fns-samples']) )
 			{
 				echo '<p class="fns-space-up big"><strong>A quick way to get started</strong>...is by selecting a pre-solved full case example that closely matches the configuration you need. Or you can continue the wizard:</p>'
-					. '<p><a href="#" class="button button-wc-fns-colors woocommerce-fns-case">Load a full example</a> &nbsp; <a href="' . esc_url( add_query_arg('wc-fns-wizard', 'off') ) . '" class="button wc-fns-continue-wizard button-wc-fns-colors" data-kind="wizard" data-param="off">Continue wizard</a> &nbsp; '
+					. '<p><a href="#" class="button button-primary woocommerce-fns-case">Load a full example</a> &nbsp; <a href="' . esc_url( add_query_arg('wc-fns-wizard', 'off') ) . '" class="button wc-fns-continue-wizard button-primary" data-kind="wizard" data-param="off">Continue wizard</a> &nbsp; '
 					. '<a href="' . esc_url( add_query_arg('wc-fns-wizard', 'later') ) . '" class="button" data-kind="wizard" data-param="later">' . esc_html__('Remind later', 'fish-and-ships') . '</a> &nbsp; '
 					. '<a href="' . esc_url( add_query_arg('wc-fns-wizard', 'off') ) . '" class="button" data-kind="wizard" data-param="off">' . esc_html__('Thanks, I know how to use it', 'fish-and-ships') . '</a></p>';
 			}
@@ -495,7 +495,7 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 			{
 				echo '<p class="fns-space-up big"><strong>Your choosen examples has been added.</strong> Let\'s fine-tune it and finish the tour:</p>'
 			
-					. '<p><a href="' . esc_url( add_query_arg('wc-fns-wizard', 'off') ) . '" class="button wc-fns-continue-wizard button-wc-fns-colors" data-kind-OFF="wizard__" data-param-OFF="off__">Continue</a></p>';
+					. '<p><a href="' . esc_url( add_query_arg('wc-fns-wizard', 'off') ) . '" class="button wc-fns-continue-wizard button-primary" data-kind-OFF="wizard__" data-param-OFF="off__">Continue</a></p>';
 			}
 			
 			echo '</div>';
@@ -726,7 +726,7 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 									<p>Typically, any combination of snippets is compatible with each other and with your current rule configuration. All the snippets you choose will be inserted at the top of your rules. Maybe you need to reorder it after that.</p>
 								</div>
 								<p class="snippets-ajax-loading"><span class="wc-fns-spinner"></p>
-								<p class="fns-add-sel-p"><button class="button button-wc-fns-colors disabled fns-add-sel-snippets">Add selected snippets</button></p>
+								<p class="fns-add-sel-p"><button class="button button-primary disabled fns-add-sel-snippets">Add selected snippets</button></p>
 							</div>
 							<div class="wc_fns_tab wc_fns_tab_fullsamples">
 								<div class="help_note" style="margin-top:2em;">
@@ -869,7 +869,7 @@ if ( !class_exists( 'Fish_n_Ships_Wizard' ) ) {
 
 			if( $sample['tab'] == 'fullsamples' )
 			{
-				$html .= '<p><button class="button button-wc-fns-colors ' . ( $ban_pro || $disabled ? ' disabled' : '' ) . '" value="' . sanitize_key( $key ) . '"' . ( $ban_pro || $disabled ? ' disabled' : '' ) . '>Add this case</button></p>';
+				$html .= '<p><button class="button button-primary ' . ( $ban_pro || $disabled ? ' disabled' : '' ) . '" value="' . sanitize_key( $key ) . '"' . ( $ban_pro || $disabled ? ' disabled' : '' ) . '>Add this case</button></p>';
 			}
 			$html .= '</div></li>' . PHP_EOL;
 			

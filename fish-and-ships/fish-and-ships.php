@@ -3,15 +3,15 @@
  * Plugin Name: Advanced Shipping Rates for WooCommerce
  * Plugin URI: https://www.wp-centrics.com/
  * Description: The most flexible and all-in-one table rate shipping plugin. Previously named "Fish and Ships"
- * Version: 2.1.2
+ * Version: 2.1.6
  * Author: wpcentrics
  * Author URI: https://www.wp-centrics.com
  * Text Domain: fish-and-ships
  * Domain Path: /languages
  * Requires at least: 4.7
- * Tested up to: 6.8.2
+ * Tested up to: 6.9
  * WC requires at least: 3.0
- * WC tested up to: 10.1.2
+ * WC tested up to: 10.4.3
  * Requires PHP: 7.0
  * Requires Plugins: woocommerce 
  * License: GPLv2
@@ -42,7 +42,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 
 } else {
 
-	define ('WC_FNS_VERSION', '2.1.2' );
+	define ('WC_FNS_VERSION', '2.1.6' );
 	define ('WC_FNS_PATH', dirname(__FILE__) . '/' );
 	define ('WC_FNS_URL', plugin_dir_url( __FILE__ ) );
 
@@ -3321,7 +3321,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 		
 			$start_link = array(
 				'<a href="'. admin_url( 'admin.php?page=wc-settings&tab=shipping&wc-fns-wizard=restart' )
-				 .'" style="color: #a16696; font-weight: bold;">'. esc_html__( 'Start: run wizard', 'fish-and-ships') .'</a>',
+				 .'" style="color: #038bdf; font-weight: bold;">'. esc_html__( 'Start: run wizard', 'fish-and-ships') .'</a>',
 			);
 		
 			return array_merge( $start_link, $links );
@@ -3340,8 +3340,8 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 			}*/
 
 			if ( strpos( $file, 'fish-and-ships' ) !== false ) {
-				$links[] = '<a href="https://www.wp-centrics.com/help/fish-and-ships/" target="_blank">
-							<strong style="color:#a16696;">'. esc_html__( 'Plugin help' ) .'</strong></a>';
+				$links[] = '<a href="https://www.wp-centrics.com/help/advanced-shipping-rates-" target="_blank">
+							<strong style="color:#038bdf;">'. esc_html__( 'Plugin help' ) .'</strong></a>';
 				
 				$links[] = '<a href="https://www.youtube.com/watch?v=sjQKbt2Nn7k" target="_blank" title="' . esc_html__('Watch 7 minutes video introduction on YouTube', 'fish-and-ships') . '" target="_blank">
 							<span class="dashicons-before dashicons-video-alt3" style="color:#ff0000;"></span> <strong>' . esc_html__('Introduction', 'fish-and-ships') . '</strong></a>';
@@ -3373,7 +3373,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 						'<p>&gt; <a href="https://www.wp-centrics.com/help/fish-and-ships/" target="_blank">' . esc_html__('Go to online help documentation', 'fish-and-ships') . '</a></p>' .
 						'<p>&gt; <a href="https://wordpress.org/support/plugin/fish-and-ships/" target="_blank">' . esc_html__('Get support on WordPress repository', 'fish-and-ships') . '</a></p>' .
 						
-							'<p style="padding-top:1em;"><a href="' . admin_url('admin.php?page=wc-settings&tab=shipping&wc-fns-wizard=now') . '" class="button button-wc-fns-colors">' . esc_html__('Restart wizard', 'fish-and-ships') . '</a> &nbsp;<a href="https://www.wp-centrics.com/contact-support/" class="button" target="_blank">' . esc_html__('Contact us', 'fish-and-ships') . '</a></p>',
+							'<p style="padding-top:1em;"><a href="' . admin_url('admin.php?page=wc-settings&tab=shipping&wc-fns-wizard=now') . '" class="button button-primary">' . esc_html__('Restart wizard', 'fish-and-ships') . '</a> &nbsp;<a href="https://www.wp-centrics.com/contact-support/" class="button" target="_blank">' . esc_html__('Contact us', 'fish-and-ships') . '</a></p>',
 				)
 			);
 			}

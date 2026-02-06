@@ -2,7 +2,7 @@
  * Javascript for the shipping method functionality.
  *
  * @package Advanced Shipping Rates for WC
- * @version 2.1.0
+ * @version 2.1.6
  */
 
 jQuery(document).ready(function($) {
@@ -587,7 +587,6 @@ jQuery(document).ready(function($) {
 		update: function( event, ui ) {
 
 			fix_cell_colors('#shipping-rules-table-fns > tbody tr');
-
 			refresh_rules();
 		}
 	});
@@ -645,7 +644,7 @@ jQuery(document).ready(function($) {
 		}
 		return false;
 	});
-		
+
 	/* Duplicate selected rules */
 	$('#shipping-rules-table-fns a.duplicate-rules').click(function () {
 
@@ -779,7 +778,11 @@ jQuery(document).ready(function($) {
 			*/
 			
 			logical_operator = $('.logical_operator_radio:checked', element).val() || 'and';
-			
+
+			// v.2.1.6 fix: the radio buttons will be restored later, so logical operator must be get using saved value!
+			$right_radio = $('.logical_operator_radio[data-save="1"]', element);
+			if ($right_radio.length) logical_operator = $($right_radio).val();
+						
 			// refresh helpers (and-or-and falls well to AND here)
 			$('.block_selectors', element).each( function(blockidx, block_container) {
 				var and_or_label = logical_operator == 'or' ? wcfns_data.i18n_or :  wcfns_data.i18n_and;

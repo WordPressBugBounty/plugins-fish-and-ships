@@ -336,7 +336,7 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 	 * Calculate the shipping costs.
 	 *
 	 * @since 1.0.0
-	 * @version 2.1.1
+	 * @version 2.1.5
 	 *
 	 * @param array $package Package of items from cart.
 	 */
@@ -397,12 +397,12 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 				
 				$n_shippable += $Fish_n_Ships->get_quantity($product);
 			
-				$this->debug_log('- #' . $Fish_n_Ships->get_prod_or_variation_id($product) . ' ' . $Fish_n_Ships->get_name($product) . ' (' . $Fish_n_Ships->get_quantity($product) . ')', 0);
+				$this->debug_log('- #' . $Fish_n_Ships->get_prod_or_variation_id($product) . ' ' . $Fish_n_Ships->get_name($product) . ', SKU: [' . $product['data']->get_sku() . '] (' . $Fish_n_Ships->get_quantity($product) . ')', 0);
 			
 			} else {
 				$n_non_shippable += $Fish_n_Ships->get_quantity($product);
 
-				$this->debug_log('- #' . $Fish_n_Ships->get_prod_or_variation_id($product) . ' ' . $Fish_n_Ships->get_name($product) . ' ( non-shippable )', 0);
+				$this->debug_log('- #' . $Fish_n_Ships->get_prod_or_variation_id($product) . ' ' . $Fish_n_Ships->get_name($product) . ', SKU: [' . $product['data']->get_sku() . '] ( non-shippable )', 0);
 			}
 		}
 		
@@ -677,6 +677,16 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 			
 		} // end main loop rules
 		
+		// v.2.1.6 fix: we need to know origin costs fields here, not later:
+		// Main currency (for unsupported MC plugin, nor MC plugin or shipping settings has empty sufix)
+		$curr_sufix = $this->get_currency_sufix_fields();
+		$origin_costs_fields = 'main-currency';
+		
+		if ( $curr_sufix != '' ) {
+			// We are getting cart currency that isn't the main, let's update the main/legacy values:
+			$origin_costs_fields = 'cart-currency';
+		}
+
 		$this->debug_log('#');
 		
 		// Disallow if shipping rate = 0?
@@ -687,6 +697,7 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 		
 		if ($active) {
 			
+			/*
 			// Main currency (for unsupported MC plugin, nor MC plugin or shipping settings has empty sufix)
 			$curr_sufix = $this->get_currency_sufix_fields();
 			
@@ -694,11 +705,15 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 				$origin_costs_fields = 'main-currency';
 			
 			} else {
+			*/
+			if( $origin_costs_fields == 'cart-currency' )
+			{
 				// We are getting cart currency that isn't the main, let's update the main/legacy values:
-				$origin_costs_fields = 'cart-currency';
+				// $origin_costs_fields = 'cart-currency';
 				$this->min_shipping_price       = $this->get_option( 'min_shipping_price' . $curr_sufix);
 				$this->max_shipping_price       = $this->get_option( 'max_shipping_price' . $curr_sufix );
 			}
+
 
 			// Finally maybe the global cost is less than the minimum or much than the maximum:
 			if (trim($this->min_shipping_price) != '') {

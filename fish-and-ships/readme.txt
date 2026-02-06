@@ -2,12 +2,12 @@
 
 Contributors: wpcentrics
 Donate link: https://www.wp-centrics.com/
-Tags: shipping rates, table rate shipping, table rate, shipping rules
+Tags: shipping rates, table rate, shipping rules, flexible shipping
 Requires at least: 4.7
-Tested up to: 6.8.2
+Tested up to: 6.9
 WC requires at least: 3.0
-WC tested up to: 10.1.2
-Stable tag: 2.1.2
+WC tested up to: 10.4.3
+Stable tag: 2.1.6
 Requires PHP: 7.0
 Requires Plugins: woocommerce 
 License: GPLv2 or later
@@ -19,7 +19,7 @@ All-in-one Table Rate Shipping: set flexible rules, offer conditional free shipp
 
 ###Build advanced Table Rate Shipping rules based on weight, size, volume, or custom conditions – set up your exact shipping rates without coding.
 
-https://www.youtube.com/watch?v=wRsoUYiHQRY
+https://www.youtube.com/watch?v=HM8sSz9xsbg
 
 \* *Previously known as Fish and Ships, now rebranded as **Advanced Shipping Rates for WooCommerce**. This plugin continues to deliver powerful and flexible shipping rules tailored to your WooCommerce store.*
 
@@ -233,6 +233,24 @@ Please keep Advanced Shipping Rates updated to ensure compatibility with the lat
 Thank you for keeping your store up to date!
 
 == Changelog ==
+
+= 2.1.6 - 08/01/2026 =
+* Checked for PHP 8.4
+* Checked for WC 10.4.3
+* Solved bug in method edition, after rule duplication
+
+= 2.1.5 - 03/12/2025 =
+* Checked for WP 6.9
+* Checked for WC 10.3.6
+* Better log info: added SKU in product list for logging/debugging
+
+= 2.1.4 - 15/10/2025 =
+* Video tutorials updated 
+
+= 2.1.3 - 08/10/2025 =
+* Solved issue on repeatable fields from StudioWombat Advanced Product Fields 
+* Checked for WP 6.8.3
+* Checked for WC 10.2.2
 
 = 2.1.2 - 16/09/2025 =
 * Checked for WP 6.8.2

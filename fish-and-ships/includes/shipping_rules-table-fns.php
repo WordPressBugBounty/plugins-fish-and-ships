@@ -278,7 +278,7 @@ $html .= '
 				<a href="#" class="button add-rule-extra"><span class="dashicons dashicons-plus"></span> ' . esc_html__('Extra fee / discount', 'fish-and-ships') . '</a>
 				<a href="#" class="button duplicate-rules"><span class="dashicons dashicons-admin-page"></span> ' . esc_html__('Duplicate selected rules', 'fish-and-ships') . '</a>
 				<a href="#" class="button delete-rules"><span class="dashicons dashicons-no"></span> ' . esc_html__('Delete selected rules', 'fish-and-ships') . '</a>
-				<a href="#" class="button wc-fns-add-snippet button-wc-fns-colors"><span class="dashicons dashicons-plus"></span> ' . esc_html__('Add snippet', 'fish-and-ships') . '</a>
+				<a href="#" class="button wc-fns-add-snippet button-primary"><span class="dashicons dashicons-plus"></span> ' . esc_html__('Add snippet', 'fish-and-ships') . '</a>
 			</td>
 		</tr>
 	</tfoot>

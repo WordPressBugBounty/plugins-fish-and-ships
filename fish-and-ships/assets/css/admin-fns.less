@@ -6,6 +6,14 @@
  * @version 2.1.0
  */
 
+@infoBlue : #36a1dd;
+@clearBlue : #1199ce;
+@blue :     #0079c4;
+@darkBlue : #0560aa;
+@textBlue : @blue;
+@darkOrange: #f27100;
+@orange: #f29100;
+
 /*************************************************
   Common elements
 *************************************************/
@@ -137,7 +145,7 @@ body div.ui-widget-overlay.fns-loading .wc-fns-spinner {
 	min-width:600px;
 }
 .css-conditions-table-fns .fns-rule-placeholder {
-	background:#bb77ae !important; /* Orange */
+	background:@textBlue !important; /* Orange */
 }
 
 .css-conditions-table-fns .ui-sortable-helper {
@@ -724,33 +732,38 @@ a.button.wc-fns-export {
     box-shadow: 0 1px 1px rgba(0,0,0,.04);
 }
 body.woocommerce_page_wc-settings .notice.wc-fns-wizard {
-	margin-top: 40px !important;
+	//margin-top: 40px !important;
 }
 
+body.woocommerce_page_wc-settings .wrap .notice.wc-fns-wizard {
+	margin-left: 30px;
+	margin-right: 30px;
+}
+
+.fns-pointer h3,
 .notice.wc-fns-wizard h3 {
     position: relative;
     margin: -1px -1px 5px;
     padding: 15px 18px 14px 60px;
-    border: 1px solid #bb77ae;
-	border-top-color: #9d588f;
-	border-right-color: #683a5e;
+    border: 1px solid @blue;
+	border-top-color: lighten(@blue, 5);
+	border-right-color: darken(@blue, 10);
     border-bottom: none;
     line-height: 1.4;
     font-size: 15px;
     color: #fff;
-    background: #9d588f url(../img/bg-wizard.jpg) no-repeat center top;
-	background-image: url(../img/bg-wizard.jpg), linear-gradient(117deg, rgba(157,88,143,1) 0%, rgba(104,58,94,1) 100%);
+    background: @blue url(../img/bg-wizard.jpg?v=2) no-repeat center top;
+	background-image: url(../img/bg-wizard.jpg?v=2), linear-gradient(117deg, lighten(@blue, 5) 0%, darken(@blue, 20) 100%);
 
 	background-size: cover;
 }
-
 body.rtl .notice.wc-fns-wizard h3 {
     padding: 15px 60px 14px 18px;
 }
 .notice.wc-fns-wizard h3::before {
     background: #fff;
     border-radius: 50%;
-    color: #9d588f;
+    color: @infoBlue;
     content: "\f227";
     font: normal 20px/1.6 dashicons;
     position: absolute;
@@ -790,8 +803,7 @@ body.rtl .notice.wc-fns-wizard h3::before {
 
 .notice.wc-fns-wizard.wc-fns-five-stars h3::before {
     content: "\f155";
-    color: #ffe400;
-    background: #491c40;
+    color: @orange;
 }
 
 .notice.wc-fns-wizard p {
@@ -807,13 +819,14 @@ body.rtl .notice.wc-fns-wizard h3::before {
 	margin: 0 0 1em 0;
 }
 .notice.wc-fns-wizard strong {
-	color: #9d588f;
+	color: @darkBlue;
 }
 
 .notice.wc-fns-wizard p.fns-add-sel-p {
 	padding: 10px 0 20px;
 }
-
+ 
+/*
 .woocommerce-layout .notice.wc-fns-wizard a.button:link,
 .woocommerce-layout .notice.wc-fns-wizard a.button:visited {
 	color:#0071a1;
@@ -821,15 +834,22 @@ body.rtl .notice.wc-fns-wizard h3::before {
 .woocommerce-layout .notice.wc-fns-wizard a.button:hover {
 	color:#016087
 }
+
 .button-wc-fns-colors,
 .wp-core-ui .button-wc-fns-colors,
 .notice.wc-fns-wizard .button-primary {
-    background: #ae5a9d;
+   
+	background: #ae5a9d;
     border-color: #874c7c;
     box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 1px 0 #a36597;
-    color: #fff;
     text-shadow: 0 -1px 1px #a36597, 1px 0 1px #a36597, 0 1px 1px #a36597, -1px 0 1px #a36597;
+	background: @blue url(../img/button-primary.png) no-repeat center center !important;
+	background-size: cover;
+    color: #fff;
 }
+.button-wc-fns-colors:active,
+.button-wc-fns-colors:focus,
+.button-wc-fns-colors:hover,
 .wp-core-ui .button-wc-fns-colors:active,
 .wp-core-ui .button-wc-fns-colors:focus,
 .wp-core-ui .button-wc-fns-colors:hover,
@@ -840,12 +860,15 @@ body.rtl .notice.wc-fns-wizard h3::before {
     background: #bb65aa;
     border-color: #bb65aa;
     box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 1px 0 #a36597;
+	filter: brightness(1.1);
+    box-shadow: #22aaff 0 0 4px;
 }
 .button-wc-fns-colors.disabled,
 .wp-core-ui .button-wc-fns-colors.disabled,
 .notice.wc-fns-wizard .button-primary.disabled {
-	text-shadow: none;
+	//text-shadow: none;
 }
+*/
 
 /* video preview */
 .fns-hidden-videos {
@@ -868,12 +891,12 @@ body.rtl .notice.wc-fns-wizard h3::before {
 	margin-right: 20px;
 	font-size: 14px;
 	position: relative;
-}
-	.fns-video-link span {
+
+	span {
 		display: inline-block;
 		margin-top: 5px;
 	}
-	.fns-video-link:before {
+	&:before {
 		content: "\f19b";
 		font-family: dashicons;
 		display: inine-block;
@@ -882,7 +905,8 @@ body.rtl .notice.wc-fns-wizard h3::before {
 
 		position: absolute;
 		margin-left: -25px;
-		margin-top: 40px;
+		margin-top: -35px;
+		top: 50%;
 		width: 50px;
 		height: 50px;
 		line-height: 50px;
@@ -892,17 +916,31 @@ body.rtl .notice.wc-fns-wizard h3::before {
 		background: rgba(255,255,255,0.75);
 		border-radius: 50%;
 	}
-	.fns-video-link:hover:before {
+	&:hover:before {
 		background:#fff;
 		color: rgb(200,0,0);
 	}
-	.fns-video-link:hover {
-		color: #ae5a9d;
+	&:hover {
+		color: @blue;
 	}
-	.fns-video-link img {
+	img {
 		display: block;
+		max-width: 100%;
+		height: auto;
 	}
-
+	&.fns-big {
+		
+		&:before {
+			top: 50%;
+			margin-top: -50px;
+			margin-left: -50px;
+			width: 100px;
+			height: 100px;
+			font-size: 60px;
+			line-height: 100px;
+		}
+	}
+}
 .fns-yt-on-button {
 	line-height: 0.1em;
 	vertical-align: -0.33em;
@@ -936,7 +974,7 @@ body.show_wc_fns_wizard .woocommerce-layout__notice-list-hide > div.wc-fns-wizar
 .wc-fns-inline-code {
 	font-family: monospace;
 	font-weight: bold;
-	color: #bb77ae;
+	color: @textBlue;
 }
 .wc-fns-block-code {
 	display: block;

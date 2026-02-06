@@ -73,7 +73,7 @@ if ( !class_exists( 'Fish_n_Ships_SB' ) ) {
 				<p><?php echo wp_kses( __('This feature is only available in <strong>Advanced Shipping Rates for WooCommerce PRO</strong>.', 'fish-and-ships'),
 					 array('strong'=>array())
 				); ?></p>
-				<p><a href="https://www.youtube.com/watch?v=y2EJFluXx9Q" target="_blank" class="fns-video-link" title="Watch shipping boxes video on YouTube"><img src="<?php echo WC_FNS_URL; ?>assets/img/shipping-boxes-video-preview.jpg" width="800" height="450" alt="Shipping boxes flat rate video" /></a></p>
+				<p><a href="https://www.youtube.com/watch?v=myhFc-NmMO8" target="_blank" class="fns-video-link fns-big" title="Watch shipping boxes video on YouTube"><img src="<?php echo WC_FNS_URL; ?>assets/img/shipping-boxes-video-previewb.jpg" width="800" height="450" alt="Shipping boxes flat rate video" /></a></p>
 				<p><?php _e('Here you can read more about:', 'fish-and-ships'); ?><br />
 				<a href="https://www.wp-centrics.com/shipping-boxes-flat-rate/" target="_blank">https://www.wp-centrics.com/shipping-boxes-flat-rate/</a></p>
 				<style>
@@ -137,7 +137,7 @@ if ( !class_exists( 'Fish_n_Ships_SB' ) ) {
 			echo apply_filters ( 'the_content', esc_html__('Define all the boxes for shipping here, with internal dimensions and max weight.', 'fish-and-ships') );
 			echo '</div>';
 			
-			echo '<a href="https://www.youtube.com/watch?v=y2EJFluXx9Q" target="_blank" title="Watch shipping boxes video on YouTube" style="float: right; margin-left: 5px;" class="button" style="margin:0 10px"><span class="dashicons-before dashicons-video-alt3 fns-yt-on-button"></span>' . esc_html__('Watch video', 'fish-and-ships') . '</a>';
+			echo '<a href="https://www.youtube.com/watch?v=myhFc-NmMO8" target="_blank" title="Watch shipping boxes video on YouTube" style="float: right; margin-left: 5px;" class="button" style="margin:0 10px"><span class="dashicons-before dashicons-video-alt3 fns-yt-on-button"></span>' . esc_html__('Watch video', 'fish-and-ships') . '</a>';
 			echo '<a href="https://www.wp-centrics.com/shipping-boxes-flat-rate/" target="_blank" title="Shipping boxes flat rate" style="float: right" class="button" style="margin:0 10px"><span class="dashicons-before dashicons-editor-help fns-yt-on-button"></span>' . esc_html__('More info', 'fish-and-ships') . '</a>';
 			
 			

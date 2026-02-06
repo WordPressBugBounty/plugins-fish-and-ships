@@ -118,7 +118,7 @@ table.widefat {
 body.js-ready #lang_dropbox {
 	display: none;
 	background: #fff;
-	border: #a36597 1px solid;
+	border: #1199ce 1px solid;
 }
 body.js-ready #lang_dropbox a {
 	display: block;
@@ -127,7 +127,7 @@ body.js-ready #lang_dropbox a {
 	text-decoration: none;
 }
 body.js-ready #lang_dropbox a:hover {
-	background: #a36597;
+	background: #1199ce;
 	color: #fff;
 	text-decoration: none;
 }
@@ -285,7 +285,7 @@ p {
 	}
 	.wc_fns_col_content nav.lang_switch strong a {
 		text-decoration:none;
-		color:#bb77ae !important;
+		color:#0079c4 !important;
 	}
 
 /* bigger size text on big screens */
@@ -322,7 +322,7 @@ p {
 	margin:0;
 }
 .wc_fns_col_content .help_note {
-	border:#a36597 1px solid;
+	border:#1199ce 1px solid;
 	padding:1px 20px;
 	max-width:1040px;
 }
@@ -355,7 +355,7 @@ p {
 		padding-left:30px !important
 	}
 	table.free_pro tr.title td {
-		background:#bb77ae !important;
+		background:#0079c4 !important;
 		color:#fff;
 	}
 	table.free_pro tr.title td strong {
@@ -371,9 +371,9 @@ p {
 	max-width:1082px;
 }
 	.wc_fns_col_content table.methods thead th {
-		background: #a36597;
+		background: #1199ce;
 		color: #fff;
-		border-color: #a36597;
+		border-color: #1199ce;
 	}
 	.wc_fns_col_content table.methods thead th p.subtitle {
 		font-weight:600;
@@ -399,7 +399,7 @@ p {
 		font-weight:600px;
 		font-size:16px;
 		margin:0;
-		color:#bb77ae;
+		color:#0079c4;
 		line-height:1.5em;
 	}
 	.wc_fns_col_content table.methods td p {
@@ -415,8 +415,8 @@ p {
 	border: #999 1px solid;
 }
 .fns-video-link:hover {
-	border-color: #bb77ae;
-	box-shadow: #bb77ae 0 0 1px 2px;
+	border-color: #0079c4;
+	box-shadow: #0079c4 0 0 1px 2px;
 }
 .fns-video-link img {
 	display: block;
@@ -426,10 +426,10 @@ p {
 	font-size:1.2em;
 	line-height:0.8em;
 	font-weight:bold;
-	color:#a36597;
+	color:#1199ce;
 }
 table.free_pro .dashicons.purple {
-	color:#a36597;
+	color:#1199ce;
 }
 
 /*
@@ -497,7 +497,7 @@ table.free_pro .dashicons.purple {
 	}
 	.wc_fns_col_content th,
 	.wc_fns_col_content .widefat thead tr th {
-		color:#a36597;
+		color:#1199ce;
 		vertical-align:bottom;
 		text-align:left;
 	}
@@ -506,7 +506,7 @@ table.free_pro .dashicons.purple {
 		vertical-align:middle;
 	}
 	.wc_fns_col_content .widefat tfoot tr th {
-		color:#a36597;
+		color:#1199ce;
 		text-align:left;
 	}
 	.wc_fns_col_content td.align_center,
@@ -530,10 +530,10 @@ table.free_pro .dashicons.purple {
 	.wc_fns_col_content .gray_grouped,
 	.wc_fns_col_content .grouped {
 		vertical-align: middle;
-		border: #b875ad dotted 2px;
+		border: #1199ce dotted 2px;
 		border-right-width: 0;
 		padding: 5px;
-		background: #f6e8f4;
+		background: #e6f4ff;
 		color: #111;
 		text-align:center;
 		padding-left:4px;
@@ -569,20 +569,20 @@ table.free_pro .dashicons.purple {
 	.wc_fns_col_content h2,
 	.wc_fns_col_content h3,
 	.wc_fns_col_content a {
-		color:#a36597;
+		color:#1199ce;
 	}
 	.wc_fns_col_content p.img {
 		max-width:none;
 	}
 	.wc_fns_col_content strong {
-		color:#a36597;
+		color:#1199ce;
 	}
 	.wc_fns_col_content a {
-		color:#a36597;
+		color:#1199ce;
 		text-decoration:underline;
 	}
 	.wc_fns_col_content a:hover {
-		color:#bb77ae;
+		color:#0079c4;
 	}
 	.wc_fns_col_content a.button-primary {
 		color:#fff;
@@ -619,7 +619,7 @@ table.free_pro .dashicons.purple {
 }
 #cookie_advisor_help_alone .button-rounded:hover,
 .wc_fns_col_content .fns_do_actions .button-rounded:hover {
-    background: #a36597;
+    background: #1199ce;
     color: #fff !important;
 }
 #cookie_advisor_help_alone .button-rounded.alt,
@@ -627,12 +627,12 @@ table.free_pro .dashicons.purple {
 .wc_fns_col_content .fns_do_actions .button-rounded.here,
 .wc_fns_col_content .fns_do_actions .button-rounded.here:hover {
     cursor: default;
-    background: #7e4574;
+    background: #0560aa;
     color: #fff !important;
 }
 #cookie_advisor_help_alone .button-rounded.alt:hover,
 .wc_fns_col_content .fns_do_actions .button-rounded.alt:hover {
-    background: #000;
+    background: #1199ce;
     cursor: pointer;
 }
 /* special tweaks for the alone help files */
@@ -642,12 +642,20 @@ table.free_pro .dashicons.purple {
 }
 
 header {
-	background:#7e4574 url(../img/bg-header-mini.jpg) no-repeat top right;
+	background:#0560aa url(../img/bg-header-mini.jpg) no-repeat top right;
 	background-size:cover;
 	text-align:left;
 	height:90px;
 	overflow:hidden;
+	display: flex;
+	align-items: flex-end;
 }
+	header .product-name {
+		font-weight: bold;
+		color: #fff;
+		font-size: 24px;
+		margin: 0 0 15px 20px;
+	}
 	header img {
 		display:inline-block;
 	}
@@ -678,7 +686,7 @@ h1 {
 	margin:0.5em 0;
 }
 .pro {
-	color:#bb77ae;
+	color:#0079c4;
 	font-weight:700;
 	font-size:0.9em;
 }
@@ -690,7 +698,7 @@ p.signature {
 	padding-left: 20px;
 }
 p.signature a {
-	color:#a36597;
+	color:#1199ce;
 	text-decoration: none;
 }
 p.signature a:hover {
