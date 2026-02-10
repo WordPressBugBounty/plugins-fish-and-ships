@@ -10,7 +10,7 @@
  *
  * @package Advanced Shipping Rates for WC
  * @since 1.0.0
- * @version 2.0
+ * @version 2.1.7
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -36,30 +36,28 @@ if ( isset($_POST['fns-remove_logs']) ) {
 }
 
 // Prevent too much logs, show error in the method that has the wrong setting only
-if ( ! wp_doing_ajax() && count($logs_index) >= 750 && $this->write_logs == 'everyone' ) {
+if ( ! wp_doing_ajax() && count($logs_index) >= 300 && $this->write_logs == 'everyone' ) {
 
 	?>
 	<div class="notice notice-error inline"><h3>Please, disable write logs or set them only for Admin and Shop managers (too many logs will affect performance).</h3></div>
 	<?php
 }
+
 // ...cut if more than 1000
 if ( count($logs_index) > 1000 ) {
-	
-	$n = 0;
-	$logs_index_aux = array();
-	
-	foreach ($logs_index as $key => $val) {
-		$n++;
-		$logs_index_aux[$key] = $val;
-		if ($n > 1000) break;
-	}
-	$logs_index = $logs_index_aux;
+	array_splice($logs_index, 950);
 }
-// End too much logs prevention
-
 
 foreach ($logs_index as $key=>$log) {
-	// Remove from index the missing transients (WP expired)
+	
+	// For performance, only will check current method logs & outdated transient logs
+	if(    $log['instance_id'] != $instance_id 
+		&& $log['time'] + DAY_IN_SECONDS * ( defined('WC_FNS_DAYS_LOG') ? WC_FNS_DAYS_LOG : 7 ) < time() 
+	){
+		continue;
+	}
+	
+	// Remove from index the missing transients (WP expired or lost)
 	if (get_transient($log['name']) === false) {
 		unset ($logs_index[$key]);
 	} else {
@@ -86,7 +84,7 @@ foreach ($logs_index as $key=>$log) {
 if ($deleted !=0) echo '<div id="message" class="updated notice inline"><p>' . esc_html( sprintf(__('%s Logs have been deleted.', 'fish-and-ships'), $deleted ) ) . '</p></div>';
 
 // too much messages? tell about in the logs pane
-if ( count($logs_index) >= 1000 ) {
+if ( count($logs_index) >= 950 ) {
 	$html .= '<div class="notice notice-warning inline"><p><strong>Logs are limited to 1000 for performance reasons.</strong><br> Please, check if some Advanced Shipping Rates for WooCommerce method are logging calculations for all users (not only Admins / Shop managers).</p></div>';
 }
 

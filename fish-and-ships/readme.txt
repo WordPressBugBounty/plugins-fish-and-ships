@@ -6,8 +6,8 @@ Tags: shipping rates, table rate, shipping rules, flexible shipping
 Requires at least: 4.7
 Tested up to: 6.9
 WC requires at least: 3.0
-WC tested up to: 10.4.3
-Stable tag: 2.1.6
+WC tested up to: 10.5.0
+Stable tag: 2.1.7
 Requires PHP: 7.0
 Requires Plugins: woocommerce 
 License: GPLv2 or later
@@ -233,6 +233,10 @@ Please keep Advanced Shipping Rates updated to ensure compatibility with the lat
 Thank you for keeping your store up to date!
 
 == Changelog ==
+
+= 2.1.7 - 09/02/2026 =
+* Checked for WC 10.5.0
+* Improved performance when there are more than 1000 calculation logs saved
 
 = 2.1.6 - 08/01/2026 =
 * Checked for PHP 8.4

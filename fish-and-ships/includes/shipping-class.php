@@ -5,7 +5,7 @@
  * This is the shipping class that extends WC
  *
  * @package Advanced Shipping Rates for WC
- * @version 2.1.1
+ * @version 2.1.7
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -1027,7 +1027,7 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 	 * Save the debug log at end shipping calculation process
 	 *
 	 * @since 1.0.0
-	 * @version 1.5.2
+	 * @version 2.1.7
 	 */
 	 public function save_debug_log() {
 		 
@@ -1035,6 +1035,11 @@ class WC_Fish_n_Ships extends WC_Shipping_Method {
 		 
 		// Get the main list
 		$logs_index = get_option('wc_fns_logs_index', array() );
+
+		// ...cut if more than 1000
+		if ( count($logs_index) > 1000 ) {
+			array_splice($logs_index, 950);
+		}
 
 		// Check if the last log is the same that current log
 		$last = end($logs_index);

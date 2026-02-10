@@ -3,7 +3,7 @@
  * Plugin Name: Advanced Shipping Rates for WooCommerce
  * Plugin URI: https://www.wp-centrics.com/
  * Description: The most flexible and all-in-one table rate shipping plugin. Previously named "Fish and Ships"
- * Version: 2.1.6
+ * Version: 2.1.7
  * Author: wpcentrics
  * Author URI: https://www.wp-centrics.com
  * Text Domain: fish-and-ships
@@ -11,7 +11,7 @@
  * Requires at least: 4.7
  * Tested up to: 6.9
  * WC requires at least: 3.0
- * WC tested up to: 10.4.3
+ * WC tested up to: 10.5.0
  * Requires PHP: 7.0
  * Requires Plugins: woocommerce 
  * License: GPLv2
@@ -42,7 +42,7 @@ if ( defined('WC_FNS_VERSION') || class_exists( 'Fish_n_Ships' ) ) {
 
 } else {
 
-	define ('WC_FNS_VERSION', '2.1.6' );
+	define ('WC_FNS_VERSION', '2.1.7' );
 	define ('WC_FNS_PATH', dirname(__FILE__) . '/' );
 	define ('WC_FNS_URL', plugin_dir_url( __FILE__ ) );
 
