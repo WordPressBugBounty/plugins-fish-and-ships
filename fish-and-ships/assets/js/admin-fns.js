@@ -2,7 +2,7 @@
  * Javascript for the shipping method functionality.
  *
  * @package Advanced Shipping Rates for WC
- * @version 2.1.6
+ * @version 2.1.8
  */
 
 jQuery(document).ready(function($) {
@@ -2515,6 +2515,19 @@ jQuery(document).ready(function($) {
 		jQuery('input, textarea, select', cont).removeAttr('required');
 	});
 	
+	// Prevent unsaved message on plugin registration
+	var replaced_field = false;
+	$('#fns-serial').one('focus', function()
+	{
+		if( replaced_field ) return;
+		replaced_field = true;
+		
+		var $el = $(this);
+		var $clone = $el.clone(false);
+		$el.replaceWith($clone);
+		$clone.focus();
+	});
+
 	/*******************************************************
 	    7. Free shipping options
 	 *******************************************************/
@@ -3024,7 +3037,7 @@ jQuery(document).ready(function($) {
 						return
 					
 					val = $(el).val();
-					$('[data-fns-range-field="'+name.substr(7)+'"]', cont).val(val);
+					$('[data-fns-range-field="'+name.substr(7)+'"]', cont).val(val).trigger('change');
 				});
 
 				close_popup_dialog();
@@ -3270,3 +3283,4 @@ jQuery(document).ready(function($) {
 		return false;
 	});
 });
+

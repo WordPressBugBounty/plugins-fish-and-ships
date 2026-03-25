@@ -5,7 +5,7 @@
  *
  * @package Fish and Ships
  * @since 1.5
- * @version 2.1.1
+ * @version 2.1.8
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -135,6 +135,7 @@ if ( !class_exists( 'Fish_n_Ships_WAPF' ) ) {
 		 * Filter to get all selection methods
 		 *
 		 * @since 1.5
+		 * @version 2.1.8
 		 *
 		 * @param $methods (array) maybe incomming  a pair method-id / method-name array
 		 *
@@ -154,7 +155,7 @@ if ( !class_exists( 'Fish_n_Ships_WAPF' ) ) {
 			if ( count( $fields ) == 0 )
 			{
 				if( $legacy_keep_always_visible ) 
-					$methods['wapf-x'] = array('onlypro' => false, 'group' => 'Adv. Product Fields', 'scope' => $scope_all,  'label' => 'WAPF - ' . _x('No global fields', 'shorted, select-by conditional', 'fish-and-ships'));
+					$methods['wapf-x'] = array('onlypro' => false, 'group' => 'Adv. Product Fields (legacy)', 'scope' => $scope_all,  'label' => 'WAPF - ' . _x('No global fields', 'shorted, select-by conditional', 'fish-and-ships'));
 			}
 			else
 			{
@@ -165,7 +166,7 @@ if ( !class_exists( 'Fish_n_Ships_WAPF' ) ) {
 					if( ! $legacy_keep_always_visible ) 
 						$legacy_method['legacy'] = 'wapf';
 					
-					$methods[] = $legacy_method;
+					$methods[ 'wapf-' . $id ] = $legacy_method;
 				}
 			}
 			return $methods;
